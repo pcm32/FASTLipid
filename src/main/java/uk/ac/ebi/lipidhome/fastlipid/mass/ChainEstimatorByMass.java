@@ -25,8 +25,8 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
-import structure.HeadGroup;
-import structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
 import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
 

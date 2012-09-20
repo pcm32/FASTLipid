@@ -17,8 +17,8 @@ import org.openscience.cdk.interfaces.IPseudoAtom;
 import org.openscience.cdk.io.MDLV2000Reader;
 import org.openscience.cdk.silent.AtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import structure.ChemInfoContainer;
-import structure.LipidFactory;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.LipidFactory;
 
 /**
  *

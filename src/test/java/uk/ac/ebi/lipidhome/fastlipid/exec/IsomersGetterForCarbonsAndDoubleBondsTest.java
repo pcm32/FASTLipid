@@ -8,9 +8,9 @@ import uk.ac.ebi.lipidhome.fastlipid.exec.IterativePhospholipidGetterDefCarbsDou
 import uk.ac.ebi.lipidhome.fastlipid.exec.IsomersGetterForCarbonsAndDoubleBonds;
 import java.util.Set;
 import junit.framework.TestCase;
-import structure.ChainFactory;
-import structure.SingleLinkConfiguration;
-import structure.PooledChainFactory;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChainFactory;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.PooledChainFactory;
 import structure.rule.BondDistance3nPlus2Rule;
 import structure.rule.NoDoubleBondsTogetherRule;
 import structure.rule.StarterDoubleBondRule;

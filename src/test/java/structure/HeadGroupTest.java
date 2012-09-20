@@ -4,6 +4,7 @@
  */
 package structure;
 
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import java.io.IOException;
 import java.util.List;
 import junit.framework.TestCase;

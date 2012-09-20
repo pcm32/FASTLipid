@@ -23,8 +23,8 @@ import org.apache.log4j.Logger;
 import org.paukov.combinatorics.CombinatoricsVector;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.permutations.PermutationWithRepetitionGenerator;
-import structure.HeadGroup;
-import structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 
 /**
  * @name SuccesiveIntegerListIterator @date 2012.08.17

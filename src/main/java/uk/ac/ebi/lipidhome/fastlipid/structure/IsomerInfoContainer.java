@@ -19,7 +19,7 @@
  * along with CheMet.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package structure;
+package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 
 import java.util.List;

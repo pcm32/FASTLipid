@@ -7,7 +7,7 @@ package uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import structure.ChemInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
 
 /**
  *

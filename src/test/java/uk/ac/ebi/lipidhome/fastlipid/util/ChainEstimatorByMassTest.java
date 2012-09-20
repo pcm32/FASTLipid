@@ -9,8 +9,8 @@ import uk.ac.ebi.lipidhome.fastlipid.mass.ChainEstimatorByMass;
 import java.util.ArrayList;
 import java.util.List;
 import junit.framework.TestCase;
-import structure.HeadGroup;
-import structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 
 /**
  *

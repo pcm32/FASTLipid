@@ -7,7 +7,7 @@ package uk.ac.ebi.lipidhome.fastlipid.exec;
 
 import java.io.InputStream;
 import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.IsomersGeneratorDefinedFattyAcids;
-import structure.ChemInfoContainerGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 
 /**
  *
