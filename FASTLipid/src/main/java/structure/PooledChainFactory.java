@@ -9,10 +9,10 @@ import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import util.AtomPool;
-import util.BondPool;
-import util.MoleculePool;
-import util.PoolProvider;
+import uk.ac.ebi.lipidhome.fastlipid.util.AtomPool;
+import uk.ac.ebi.lipidhome.fastlipid.util.BondPool;
+import uk.ac.ebi.lipidhome.fastlipid.util.MoleculePool;
+import uk.ac.ebi.lipidhome.fastlipid.util.PoolProvider;
 
 /**
  *
