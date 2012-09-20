@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package structure;
+package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 import structure.rule.BondDistance3nPlus2Rule;
 import structure.rule.StarterDoubleBondRule;

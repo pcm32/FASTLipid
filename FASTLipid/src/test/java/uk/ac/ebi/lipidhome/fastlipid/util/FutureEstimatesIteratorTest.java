@@ -16,8 +16,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import junit.framework.TestCase;
 import org.openscience.cdk.exception.CDKException;
-import structure.HeadGroup;
-import structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 
 /**
  *

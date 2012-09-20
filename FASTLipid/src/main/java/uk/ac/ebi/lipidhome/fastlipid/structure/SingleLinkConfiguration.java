@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package structure;
+package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package structure;
+package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 /**
  * This enumeration specifies how the chain should be bounded to the head,

@@ -20,8 +20,8 @@ package uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.util.List;
 import org.apache.log4j.Logger;
-import structure.ChainFactory;
-import structure.PooledChainFactory;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChainFactory;
+import uk.ac.ebi.lipidhome.fastlipid.structure.PooledChainFactory;
 import structure.rule.BondRule;
 import uk.ac.ebi.lipidhome.fastlipid.util.PoolProvider;
 

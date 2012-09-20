@@ -4,6 +4,13 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator;
 
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChainFactory;
+import uk.ac.ebi.lipidhome.fastlipid.structure.LipidFactory;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,7 +25,6 @@ import org.openscience.cdk.interfaces.IPseudoAtom;
 import org.openscience.cdk.io.MDLV2000Reader;
 import org.openscience.cdk.silent.AtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import structure.*;
 import structure.rule.BondDistance3nPlus2Rule;
 import structure.rule.BondRule;
 import structure.rule.NoDoubleBondsTogetherRule;

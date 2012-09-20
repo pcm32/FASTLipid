@@ -24,9 +24,9 @@ import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.ChainFactoryGenerator
 import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.GeneralIsomersGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.LinkersIterator;
 import org.apache.log4j.Logger;
-import structure.ChemInfoContainerGenerator;
-import structure.HeadGroup;
-import structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
 
 /**

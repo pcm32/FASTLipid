@@ -8,10 +8,10 @@ import java.io.InputStream;
 import java.util.Set;
 import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.IsomersGeneratorDefinedFattyAcids;
 import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.LNetMoleculeGeneratorException;
-import structure.ChainInfoContainer;
-import structure.ChemInfoContainer;
-import structure.ChemInfoContainerGenerator;
-import structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChainInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 
 /**
  * An iterative generator of phospholipids with defined carbons and double bonds per chain.

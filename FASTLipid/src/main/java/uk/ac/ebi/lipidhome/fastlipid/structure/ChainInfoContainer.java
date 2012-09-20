@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with CheMet.  If not, see <http://www.gnu.org/licenses/>.
  */
-package structure;
+package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 import java.util.ArrayList;
 import java.util.Collections;

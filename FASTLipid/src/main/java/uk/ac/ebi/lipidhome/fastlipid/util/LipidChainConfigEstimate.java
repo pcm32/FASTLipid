@@ -25,7 +25,7 @@ package uk.ac.ebi.lipidhome.fastlipid.util;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
-import structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 
 /**
  * @name    LipidChainConfigEstimate

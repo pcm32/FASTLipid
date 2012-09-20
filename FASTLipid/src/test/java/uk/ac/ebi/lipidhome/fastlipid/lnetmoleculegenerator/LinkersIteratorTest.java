@@ -8,8 +8,8 @@ import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.LinkersIterator;
 import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
-import structure.HeadGroup;
-import structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 
 /**
  *
