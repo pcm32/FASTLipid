@@ -17,7 +17,7 @@
  */
 package lnetmoleculegenerator;
 
-import counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.util.List;
 import org.apache.log4j.Logger;
 import structure.ChainFactory;

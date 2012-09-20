@@ -4,7 +4,7 @@
  */
 package exec;
 
-import counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

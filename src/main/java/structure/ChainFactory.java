@@ -4,9 +4,9 @@
  */
 package structure;
 
-import counter.BooleanRBCounter;
-import counter.BooleanRBCounterRuleBased;
-import counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounter;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterRuleBased;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import structure.rule.BondRule;
 import java.util.ArrayList;
 import java.util.List;

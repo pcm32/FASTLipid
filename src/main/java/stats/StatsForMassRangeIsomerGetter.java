@@ -22,7 +22,7 @@
 package stats;
 
 
-import counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import exec.MassRangeIsomersGetter;
 import java.io.IOException;
 import java.util.Arrays;
