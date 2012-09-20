@@ -4,7 +4,7 @@
  */
 package lnetmoleculegenerator;
 
-import counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;

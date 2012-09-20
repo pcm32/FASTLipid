@@ -4,7 +4,7 @@
  */
 package lnetmoleculegenerator;
 
-import counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;

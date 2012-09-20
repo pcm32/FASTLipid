@@ -12,7 +12,7 @@ import structure.PooledChainFactory;
 import structure.rule.BondDistance3nPlus2Rule;
 import structure.rule.NoDoubleBondsTogetherRule;
 import structure.rule.StarterDoubleBondRule;
-import counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.util.Arrays;
 import java.util.List;
 import lnetmoleculegenerator.LNetMoleculeGeneratorException;
