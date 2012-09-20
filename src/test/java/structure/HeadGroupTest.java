@@ -12,7 +12,7 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IPseudoAtom;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import util.GenericAtomDetector;
+import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
 
 /**
  *

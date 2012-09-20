@@ -24,7 +24,7 @@ package structure;
 
 import java.util.ArrayList;
 import java.util.List;
-import lnetmoleculegenerator.LNetMoleculeGeneratorException;
+import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.LNetMoleculeGeneratorException;
 import org.apache.log4j.Logger;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;

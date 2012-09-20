@@ -16,8 +16,8 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
-import mass.IsotopeCacheStaticDec;
-import mass.MolMassCachedCalculator;
+import uk.ac.ebi.lipidhome.fastlipid.mass.IsotopeCacheStaticDec;
+import uk.ac.ebi.lipidhome.fastlipid.mass.MolMassCachedCalculator;
 import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
