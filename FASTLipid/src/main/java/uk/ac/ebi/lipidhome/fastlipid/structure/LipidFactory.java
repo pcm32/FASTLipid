@@ -16,9 +16,9 @@ import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import structure.rule.BondDistance3nPlus2Rule;
-import structure.rule.NoDoubleBondsTogetherRule;
-import structure.rule.StarterDoubleBondRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
 
 /**
  * Given a head and chain constraints (number of double bonds and carbons), generates lipids on demand when the nextLipid

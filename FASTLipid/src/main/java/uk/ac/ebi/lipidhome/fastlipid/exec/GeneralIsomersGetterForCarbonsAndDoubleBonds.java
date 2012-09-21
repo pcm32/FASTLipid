@@ -10,17 +10,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.ChainFactoryGenerator;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.GeneralIsomersGenerator;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.LNetMoleculeGeneratorException;
+import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.generator.GeneralIsomersGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
-import structure.rule.BondDistance3nPlus2Rule;
-import structure.rule.BondRule;
-import structure.rule.NoDoubleBondsTogetherRule;
-import structure.rule.StarterDoubleBondRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
 
 /**
  *

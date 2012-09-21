@@ -7,7 +7,7 @@ package uk.ac.ebi.lipidhome.fastlipid.structure;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounter;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterRuleBased;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
-import structure.rule.BondRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 import java.util.ArrayList;
 import java.util.List;
 import org.openscience.cdk.Atom;
@@ -202,7 +202,8 @@ public class ChainFactory {
             }
             if (this.currentUnsatBonds > 0) {
                 boolean binaryCounterGotToTheTop = false;
-                while (Long.bitCount(this.binaryCounter) != this.currentUnsatBonds || !this.complyWithRules(this.realbinaryCounter.getBooleanArrayCounter())) {
+                while (Long.bitCount(this.binaryCounter) != this.currentUnsatBonds 
+                        || !this.complyWithRules(this.realbinaryCounter.getCounter())) {
                     if (this.realbinaryCounter.hasNext()) {
                         this.binaryCounter = this.realbinaryCounter.nextBinaryAsLong();
                     } else {

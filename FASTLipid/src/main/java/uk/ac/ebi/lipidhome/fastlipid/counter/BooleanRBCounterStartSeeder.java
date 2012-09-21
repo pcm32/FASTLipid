@@ -7,7 +7,7 @@ package uk.ac.ebi.lipidhome.fastlipid.counter;
 
 import java.util.ArrayList;
 import java.util.List;
-import structure.rule.BondRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 
 /**
  *

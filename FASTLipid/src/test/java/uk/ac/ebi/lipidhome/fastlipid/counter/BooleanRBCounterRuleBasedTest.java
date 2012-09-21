@@ -9,10 +9,10 @@ import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
-import structure.rule.BondDistance3nPlus2Rule;
-import structure.rule.BondRule;
-import structure.rule.NoDoubleBondsTogetherRule;
-import structure.rule.StarterDoubleBondRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
+import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
 
 /**
  *
