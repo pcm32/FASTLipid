@@ -17,15 +17,13 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.exec;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.ChainFactoryGenerator;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.GeneralIsomersGenerator;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.LinkersIterator;
 import org.apache.log4j.Logger;
+import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.generator.GeneralIsomersGenerator;
+import uk.ac.ebi.lipidhome.fastlipid.generator.LinkersIterator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
-import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
 

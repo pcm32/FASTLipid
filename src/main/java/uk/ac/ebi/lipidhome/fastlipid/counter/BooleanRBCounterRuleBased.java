@@ -4,13 +4,6 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.counter;
 
-import java.util.Arrays;
-import java.util.List;
-import structure.rule.BondDistance3nPlus2Rule;
-import structure.rule.BondRule;
-import structure.rule.NoDoubleBondsTogetherRule;
-import structure.rule.StarterDoubleBondRule;
-
 /**
  *
  * @author pmoreno
@@ -56,7 +49,7 @@ public class BooleanRBCounterRuleBased extends BooleanRBCounter {
 
     private int getNextOne(int pos_i) {
         int next_one = -1;
-        for (int i = pos_i + 1; i < super.getBooleanArrayCounter().length; i++) {
+        for (int i = pos_i + 1; i < super.getCounter().length; i++) {
             if (this.testBit(i)) {
                 next_one = i;
                 break;
@@ -108,9 +101,9 @@ public class BooleanRBCounterRuleBased extends BooleanRBCounter {
         }
 
         int leftMost_pos = -1;
-        for (int i = super.getBooleanArrayCounter().length - 1; i >= 0; i--) //for(int i=0;i<this.counter.length;i++)
+        for (int i = super.getCounter().length - 1; i >= 0; i--) //for(int i=0;i<this.counter.length;i++)
         {
-            if (this.getBooleanArrayCounter()[i]) {
+            if (this.getCounter()[i]) {
                 leftMost_pos = i;
                 break;
             }
@@ -129,7 +122,7 @@ public class BooleanRBCounterRuleBased extends BooleanRBCounter {
     private int counterShiftableSpace() {
         int biggerIndex = -1;
         for (int i = this.getCounter().length - 1; i > 0; i--) {
-            if (super.getBooleanArrayCounter()[i]) {
+            if (super.getCounter()[i]) {
                 biggerIndex = i;
                 break;
             }
@@ -148,12 +141,12 @@ public class BooleanRBCounterRuleBased extends BooleanRBCounter {
         int previous_one = getPreviousOne(pos_i);
         int next_one = getNextOne(pos_i);
 
-        int nextPos = seeder.nextStepTypeIGivenContext(previous_one, pos_i, next_one, super.getBooleanArrayCounter().length);
+        int nextPos = seeder.nextStepTypeIGivenContext(previous_one, pos_i, next_one, super.getCounter().length);
         if (nextPos < 0) // this will mean that no suitable position could be found.
         {
             return false;
         }
-        if (nextPos < super.getBooleanArrayCounter().length && !testBit(nextPos)) {
+        if (nextPos < super.getCounter().length && !testBit(nextPos)) {
             //counter = counter.setBit(pos_i+1);
             this.setBit(nextPos);
             //counter = counter.flipBit(pos_i);
@@ -177,8 +170,8 @@ public class BooleanRBCounterRuleBased extends BooleanRBCounter {
         // last position obtained that was compliant.
         int previously_accepted = -1;
         int initial_position = pos_i;
-        int minimalPos = seeder.getInitialPosition(super.getBooleanArrayCounter().length, super.bitCount);
-        while (pos_i - 1 >= minimalPos && !super.getBooleanArrayCounter()[pos_i - 1]) {
+        int minimalPos = seeder.getInitialPosition(super.getCounter().length, super.bitCount);
+        while (pos_i - 1 >= minimalPos && !super.getCounter()[pos_i - 1]) {
             //setBit(pos_i-1);
             //flipBit(pos_i);
             if (seeder.acceptContext(previous_one, pos_i - 1, next_one)) {

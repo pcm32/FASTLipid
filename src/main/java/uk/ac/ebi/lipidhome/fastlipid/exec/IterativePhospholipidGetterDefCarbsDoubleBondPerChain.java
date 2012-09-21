@@ -6,8 +6,8 @@ package uk.ac.ebi.lipidhome.fastlipid.exec;
 
 import java.io.InputStream;
 import java.util.Set;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.IsomersGeneratorDefinedFattyAcids;
-import uk.ac.ebi.lipidhome.fastlipid.lnetmoleculegenerator.LNetMoleculeGeneratorException;
+import uk.ac.ebi.lipidhome.fastlipid.generator.IsomersGeneratorDefinedFattyAcids;
+import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChainInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;

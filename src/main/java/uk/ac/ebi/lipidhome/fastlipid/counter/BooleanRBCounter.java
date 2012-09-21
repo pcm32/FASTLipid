@@ -35,15 +35,6 @@ public class BooleanRBCounter {
         }        
 
     }
-    
-    /**
-     * Returns the counter in the form of a boolean array.
-     * 
-     * @return boolean array for the counter in the current position. 
-     */
-    public boolean[] getBooleanArrayCounter() {
-        return this.counter;
-    }
 
     /**
      * Changes the value of position i of the boolean array.
@@ -203,7 +194,9 @@ public class BooleanRBCounter {
     }
 
     /**
-     * @return the counter
+     * Returns the counter in the form of a boolean array.
+     * 
+     * @return boolean array for the counter in the current position. 
      */
     public boolean[] getCounter() {
         return counter;
