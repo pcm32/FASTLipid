@@ -80,7 +80,7 @@ public class StatsForMassRangeIsomerGetter {
 
         System.out.println("Min\tMax\tNumOfMols\tElapsed");
         
-        int steps = 10;
+        int steps = 5;
         int initialMass = 400;
         int increment = 10;
         
