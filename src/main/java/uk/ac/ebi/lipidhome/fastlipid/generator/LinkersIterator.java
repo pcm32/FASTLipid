@@ -20,7 +20,8 @@ package uk.ac.ebi.lipidhome.fastlipid.generator;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.log4j.Logger;
-import org.paukov.combinatorics.CombinatoricsVector;
+import org.paukov.combinatorics.Factory;
+import org.paukov.combinatorics.ICombinatoricsVector;
 import org.paukov.combinatorics.Generator;
 import org.paukov.combinatorics.permutations.PermutationWithRepetitionGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
@@ -42,7 +43,7 @@ public class LinkersIterator {
     private HeadGroup hg;
     private Boolean hasNext = false;
     private Boolean moveTokensBetweenSlot = false;
-    private Iterator<CombinatoricsVector<SingleLinkConfiguration>> swapIterator;
+    private Iterator<ICombinatoricsVector<SingleLinkConfiguration>> swapIterator;
 
 
     /**
@@ -84,12 +85,12 @@ public class LinkersIterator {
          */
 
         // create an initial combinatorics vector
-        CombinatoricsVector<SingleLinkConfiguration> initialVector = new CombinatoricsVector<SingleLinkConfiguration>(possibleLinkers);
+        ICombinatoricsVector<SingleLinkConfiguration> initialVector = Factory.createVector(possibleLinkers);
         // create a permutation with repetition generator, second parameter is a number of slots
         Generator<SingleLinkConfiguration> gen = new PermutationWithRepetitionGenerator<SingleLinkConfiguration>(initialVector , this.hg.getNumOfSlots());
 
         // create an iterator
-        swapIterator = gen.createIterator();
+        swapIterator = gen.iterator();
     }
 
 }

@@ -143,11 +143,21 @@ public class GeneralIsomersGeneratorTest extends TestCase {
      * Test of execute method, of class GeneralIsomersGenerator.
      */
     public void testExecuteForMG1() {
-        System.out.println("Test for MG1 generating more than zero molecules");
         int carbons = 20;
         int doubleBonds = 2;
+        HeadGroup hg = HeadGroup.MG1;
+        runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
+    }
+    
+    public void testExecuteForGlycerol() {
+        int carbons = 20;
+        int doubleBonds = 4;
+        HeadGroup hg = HeadGroup.Glycerol;
+        runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
+    }
 
-
+    private void runTestForHeadgroupCarbsAndDBs(HeadGroup hg, int carbons, int doubleBonds) throws LNetMoleculeGeneratorException {
+        System.out.println("Test for "+hg.name()+" generating more than zero molecules");
         ChemInfoContainerGenerator chemInfoContainerGenerator = new ChemInfoContainerGenerator();
         chemInfoContainerGenerator.setUseCachedObjects(Boolean.TRUE);
         chemInfoContainerGenerator.setGenerateInChi(true);
@@ -163,7 +173,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         generator.setChainFactoryGenerator(cfGenerator);
         generator.setChemInfoContainerGenerator(chemInfoContainerGenerator);
         generator.setThreaded(false);
-        generator.setHeadGroup(HeadGroup.MG1);
+        generator.setHeadGroup(hg);
         generator.setTotalCarbons(carbons);
         generator.setTotalDoubleBonds(doubleBonds);
         generator.setPrintOut(Boolean.TRUE);

@@ -198,7 +198,7 @@ public class GeneralIsomersGenerator {
             /**
              * Create and initialize the carbon number iterator.
              */
-            SuccesiveIntegerListIterator carbonIterator = new SuccesiveIntegerListIterator(rAtoms.size(), stepOfChange);
+            IntegerListIterator carbonIterator = new ListBasedIntegerListIterator(rAtoms.size(), stepOfChange);
             carbonIterator.initialize(this.totalCarbons, minCarbonChain);
             
             numberOfCarbonsLoop:
@@ -211,7 +211,7 @@ public class GeneralIsomersGenerator {
                  * Create and initalize the double bond number iterator. Maybe have a variable for the double bond
                  * step size.
                  */
-                SuccesiveIntegerListIterator dbIterator = new SuccesiveIntegerListIterator(rAtoms.size(), 1);
+                IntegerListIterator dbIterator = new ListBasedIntegerListIterator(rAtoms.size(), 1);
                 dbIterator.initialize(this.totalDoubleBonds, 0);
                 
 
