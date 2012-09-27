@@ -22,18 +22,18 @@
 package uk.ac.ebi.lipidhome.fastlipid.stats;
 
 
-import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
-import uk.ac.ebi.lipidhome.fastlipid.exec.MassRangeIsomersGetter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.log4j.Logger;
+import org.openscience.cdk.exception.CDKException;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
+import uk.ac.ebi.lipidhome.fastlipid.exec.MassRangeIsomersGetter;
 import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.mass.MassRange;
 import uk.ac.ebi.lipidhome.fastlipid.mass.PPMBasedMassRange;
-import org.apache.log4j.Logger;
-import org.openscience.cdk.exception.CDKException;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
