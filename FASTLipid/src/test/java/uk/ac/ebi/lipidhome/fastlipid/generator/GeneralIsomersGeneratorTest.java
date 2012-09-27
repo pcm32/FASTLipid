@@ -114,29 +114,8 @@ public class GeneralIsomersGeneratorTest extends TestCase {
     public void testExecute() {
         int carbons = 20;
         int doubleBonds = 5;
-
-
-        ChemInfoContainerGenerator chemInfoContainerGenerator = new ChemInfoContainerGenerator();
-        chemInfoContainerGenerator.setUseCachedObjects(Boolean.TRUE);
-        chemInfoContainerGenerator.setGenerateInChi(true);
-        chemInfoContainerGenerator.setGenerateInChiKey(true);
-        chemInfoContainerGenerator.setGenerateInChIAux(true);
-        chemInfoContainerGenerator.setGenerateSmiles(true);
-        chemInfoContainerGenerator.setGenerateMolFormula(Boolean.TRUE);
-        
-        List<BondRule> rules = Arrays.asList(new BondDistance3nPlus2Rule(), new NoDoubleBondsTogetherRule(), new StarterDoubleBondRule(2));
-        ChainFactoryGenerator cfGenerator = new ChainFactoryGenerator(rules, new BooleanRBCounterStartSeeder(rules), true);
-
-        GeneralIsomersGenerator generator = new GeneralIsomersGenerator();
-        generator.setChainFactoryGenerator(cfGenerator);
-        generator.setChemInfoContainerGenerator(chemInfoContainerGenerator);
-        generator.setThreaded(false);
-        generator.setHeadGroup(HeadGroup.PC);
-        generator.setTotalCarbons(carbons);
-        generator.setTotalDoubleBonds(doubleBonds);
-        generator.setPrintOut(Boolean.TRUE);
-
-        generator.execute();
+        HeadGroup hg = HeadGroup.PC;
+        runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
     }
     
         /**
@@ -150,7 +129,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
     }
     
     public void testExecuteForGlycerol() {
-        int carbons = 20;
+        int carbons = 30;
         int doubleBonds = 4;
         HeadGroup hg = HeadGroup.Glycerol;
         runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
