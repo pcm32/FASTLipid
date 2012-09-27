@@ -7,6 +7,7 @@ package uk.ac.ebi.lipidhome.fastlipid.exec;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,10 +50,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
          * Before setting up chain factories, we need to read the head and decide the number of chains for it.
          * We should avoid having to deal with chainFactories at this level. What is the need for it??
          */
-        List<BondRule> rules = new ArrayList<BondRule>();
-        rules.add(new BondDistance3nPlus2Rule());
-        rules.add(new NoDoubleBondsTogetherRule());
-        rules.add(new StarterDoubleBondRule(2));
+        List<BondRule> rules = Arrays.asList(new BondDistance3nPlus2Rule(), new NoDoubleBondsTogetherRule(), new StarterDoubleBondRule(2));
         ChainFactoryGenerator cfGenerator = new ChainFactoryGenerator(rules,
                                                                       new BooleanRBCounterStartSeeder(rules),
                                                                       true);
