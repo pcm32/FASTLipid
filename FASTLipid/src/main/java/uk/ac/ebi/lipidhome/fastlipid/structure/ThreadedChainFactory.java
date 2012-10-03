@@ -4,9 +4,10 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.structure;
 
+import org.openscience.cdk.interfaces.IAtomContainer;
+
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import org.openscience.cdk.interfaces.IMolecule;
 
 /**
  *
@@ -14,14 +15,14 @@ import org.openscience.cdk.interfaces.IMolecule;
  */
 public class ThreadedChainFactory extends ChainFactory implements Runnable {
 
-    private BlockingQueue<IMolecule> dataQueue;
+    private BlockingQueue<IAtomContainer> dataQueue;
     private boolean initialized;
     private boolean stopThread;
-    private IMolecule currentMol;
+    private IAtomContainer currentMol;
 
     public ThreadedChainFactory() {
         super();
-        dataQueue = new LinkedBlockingQueue<IMolecule>(20);
+        dataQueue = new LinkedBlockingQueue<IAtomContainer>(20);
         initialized = false;
         stopThread = false;
     }
@@ -33,12 +34,12 @@ public class ThreadedChainFactory extends ChainFactory implements Runnable {
     }
 
     @Override
-    public IMolecule nextChain() {
+    public IAtomContainer nextChain() {
         try {
             if (dataQueue.size() == 0 && !super.couldNextExist()) {
                 return null;
             }
-            IMolecule mol = this.dataQueue.take();
+            IAtomContainer mol = this.dataQueue.take();
             this.currentMol = mol;
             return mol;
         } catch (InterruptedException ex) {
@@ -48,7 +49,7 @@ public class ThreadedChainFactory extends ChainFactory implements Runnable {
     }
 
     @Override
-    public IMolecule getCurrentChain() {
+    public IAtomContainer getCurrentChain() {
         return this.currentMol;
     }
 
@@ -70,7 +71,7 @@ public class ThreadedChainFactory extends ChainFactory implements Runnable {
         while (!stopThread) {
             try {
                 if (super.couldNextExist()) {
-                    IMolecule mol = super.nextChain();
+                    IAtomContainer mol = super.nextChain();
                     if(mol!=null)
                         this.dataQueue.put(mol);
                 }

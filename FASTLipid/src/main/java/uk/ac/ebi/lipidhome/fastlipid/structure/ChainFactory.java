@@ -4,20 +4,18 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.structure;
 
+import org.openscience.cdk.Atom;
+import org.openscience.cdk.AtomContainer;
+import org.openscience.cdk.Bond;
+import org.openscience.cdk.interfaces.*;
+import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounter;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterRuleBased;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.openscience.cdk.Atom;
-import org.openscience.cdk.Bond;
-import org.openscience.cdk.Molecule;
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.interfaces.IMolecule;
-import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 /**
  *
@@ -26,7 +24,7 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
 public class ChainFactory {
 
     private IChemObjectBuilder builder;
-    private IMolecule currentChain;
+    private IAtomContainer currentChain;
     private char[] currentCharChain;
     private int maxCarbons;
     private int minCarbons;
@@ -72,9 +70,8 @@ public class ChainFactory {
         return chain;
     }
 
-    public IMolecule getChain(int bondsNumber) {
-        IMolecule chain = builder.newInstance(Molecule.class);
-        //IMolecule chain = builder.newMolecule();
+    public IAtomContainer getChain(int bondsNumber) {
+        IAtomContainer chain = builder.newInstance(AtomContainer.class);
         IBond previousBond = null;
         for (int i = 0; i < bondsNumber; i++) {
             IBond bond;
@@ -190,11 +187,11 @@ public class ChainFactory {
      * tmpChain;
     }
      */
-    public IMolecule nextChain() {
+    public IAtomContainer nextChain() {
         if (!this.iteratorHasNext) {
             return null;
         }
-        IMolecule tmp = this.getChain(this.currentCarbons - 1);
+        IAtomContainer tmp = this.getChain(this.currentCarbons - 1);
         boolean molProd = false;
         while (!molProd) {
             if (this.currentCarbons > this.maxCarbons) {
@@ -306,7 +303,7 @@ public class ChainFactory {
         return tmp;
     }
 
-    public IMolecule getCurrentChain() {
+    public IAtomContainer getCurrentChain() {
         return this.currentChain;
     }
 
@@ -327,7 +324,7 @@ public class ChainFactory {
         return container;
     }
 
-    protected void setCurrentChain(IMolecule chain) {
+    protected void setCurrentChain(IAtomContainer chain) {
         this.currentChain = chain;
     }
 

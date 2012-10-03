@@ -4,10 +4,7 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.structure;
 
-import org.openscience.cdk.interfaces.IAtom;
-import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.interfaces.*;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import uk.ac.ebi.lipidhome.fastlipid.util.AtomPool;
 import uk.ac.ebi.lipidhome.fastlipid.util.BondPool;
@@ -44,8 +41,8 @@ public class PooledChainFactory extends ChainFactory {
         usingPoolProvider = true;
     }
 
-    public IMolecule refurbishCurrentChain() {
-        IMolecule currentChain = super.getCurrentChain();
+    public IAtomContainer refurbishCurrentChain() {
+        IAtomContainer currentChain = super.getCurrentChain();
         for (IBond bond : currentChain.bonds()) {
             if(bond.getOrder().equals(IBond.Order.DOUBLE) && bond.getAtom(0).getSymbol().equals("C") && bond.getAtom(1).getSymbol().equals("C")) {
                 bond.setOrder(IBond.Order.SINGLE);
@@ -58,8 +55,8 @@ public class PooledChainFactory extends ChainFactory {
     }
     
     @Override
-    public IMolecule getChain(int bondsNumber) {
-        IMolecule currentChain = super.getCurrentChain();
+    public IAtomContainer getChain(int bondsNumber) {
+        IAtomContainer currentChain = super.getCurrentChain();
         if (currentChain != null) {
             // tries to avoid creating additional mols, bonds, etc.
             if(getChainBondSize(currentChain)==bondsNumber)
@@ -74,7 +71,7 @@ public class PooledChainFactory extends ChainFactory {
             currentChain.removeAllElements();
             molPool.checkIn(currentChain);
         }
-        IMolecule chain = molPool.checkOut();
+        IAtomContainer chain = molPool.checkOut();
         //chain.removeAllElements();
         IBond previousBond = null;
         String element = "C";
@@ -133,7 +130,7 @@ public class PooledChainFactory extends ChainFactory {
         }
     }
 
-    private int getChainBondSize(IMolecule currentChain) {
+    private int getChainBondSize(IAtomContainer currentChain) {
         int carbon2carbonBonds = 0;
         for (IBond bond : currentChain.bonds()) {
             if(bond.getAtom(0).getSymbol().equals("C") && bond.getAtom(1).getSymbol().equals("C"))

@@ -5,15 +5,15 @@
 
 package uk.ac.ebi.lipidhome.fastlipid.util;
 
-import org.openscience.cdk.Molecule;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.silent.AtomContainer;
 
 /**
  *
  * @author pmoreno
  */
-public class MoleculePool extends ObjectPool<IMolecule> {
+public class MoleculePool extends ObjectPool<IAtomContainer> {
 
     private IChemObjectBuilder builder;
 
@@ -23,15 +23,13 @@ public class MoleculePool extends ObjectPool<IMolecule> {
     }
 
     @Override
-    protected IMolecule create() {
-        return builder.newInstance(Molecule.class);
+    protected IAtomContainer create() {
+        return builder.newInstance(AtomContainer.class);
         //return builder.newMolecule();
     }
 
-
     @Override
-    public void expire(IMolecule o) {
+    public void expire(IAtomContainer o) {
         o=null;
     }
-
 }
