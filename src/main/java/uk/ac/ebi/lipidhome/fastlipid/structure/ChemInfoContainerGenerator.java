@@ -11,7 +11,6 @@ import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IIsotope;
-import org.openscience.cdk.interfaces.IMolecule;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
@@ -78,10 +77,10 @@ public class ChemInfoContainerGenerator {
 
     public ChemInfoContainer generateChemInfoContainer(IAtomContainer molOriginal) {
         ChemInfoContainer container = new ChemInfoContainer();
-        IMolecule mol=null;
+        IAtomContainer mol=null;
         if (this.generateInChi || this.generateSmiles || this.generateMolFormula || this.generateMass) {
             try {
-                mol = (IMolecule) molOriginal.clone();
+                mol = (IAtomContainer) molOriginal.clone();
                 //mol = molOriginal;
                 AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(mol);
             } catch (CDKException ex) {

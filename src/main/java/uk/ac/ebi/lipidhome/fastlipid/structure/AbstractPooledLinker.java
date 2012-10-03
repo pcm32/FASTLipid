@@ -28,7 +28,7 @@ import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 import org.apache.log4j.Logger;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
  * @name    AbstractPooledLinker
@@ -50,7 +50,7 @@ public abstract class AbstractPooledLinker {
      * @param carbon1
      * @return
      */
-    boolean checkForAcyl(IMolecule mol, IAtom carbon1) {
+    boolean checkForAcyl(IAtomContainer mol, IAtom carbon1) {
         for (IBond bond : mol.getConnectedBondsList(carbon1)) {
             if (bond.getOrder().equals(IBond.Order.DOUBLE)) {
                 IAtom suspOxygen = bond.getConnectedAtom(carbon1);
@@ -66,7 +66,7 @@ public abstract class AbstractPooledLinker {
      * @param carbon1
      * @return
      */
-    boolean checkForAlkyl(IMolecule mol, IAtom carbon1) {
+    boolean checkForAlkyl(IAtomContainer mol, IAtom carbon1) {
         int numberOfSingleBondsToCs = 0;
         int numberOfBonds = 0;
         for (IBond bond : mol.getConnectedBondsList(carbon1)) {
@@ -80,7 +80,7 @@ public abstract class AbstractPooledLinker {
         return numberOfBonds == numberOfSingleBondsToCs && numberOfSingleBondsToCs == 1;
     }
 
-    public boolean checkLinker(IMolecule mol, SingleLinkConfiguration linker) {
+    public boolean checkLinker(IAtomContainer mol, SingleLinkConfiguration linker) {
         IAtom carbon1 = mol.getFirstAtom();
         if (linker.equals(SingleLinkConfiguration.Acyl)) {
             return checkForAcyl(mol, carbon1);
@@ -94,16 +94,16 @@ public abstract class AbstractPooledLinker {
 
     abstract IBond getBond();
 
-    abstract void removeAtom(IAtom atom, IMolecule mol);
+    abstract void removeAtom(IAtom atom, IAtomContainer mol);
 
-    abstract void removeBond(IBond bond, IMolecule mol);
+    abstract void removeBond(IBond bond, IAtomContainer mol);
 
     /**
      * C=O for first carbon.
      * @param mol
      * @param carbon1
      */
-    void setAcyl(IMolecule mol, IAtom carbon1) {
+    void setAcyl(IAtomContainer mol, IAtom carbon1) {
         setAlkyl(mol, carbon1);
         IBond bondOx = getBond();
         IAtom ox = getAtom();
@@ -119,7 +119,7 @@ public abstract class AbstractPooledLinker {
      * @param mol
      * @param carbon1
      */
-    void setAlkyl(IMolecule mol, IAtom carbon1) {
+    void setAlkyl(IAtomContainer mol, IAtom carbon1) {
         List<IBond> toRemoveBond = new ArrayList<IBond>();
         List<IAtom> toRemoveAtom = new ArrayList<IAtom>();
         int bonds2C = 0;
@@ -142,7 +142,7 @@ public abstract class AbstractPooledLinker {
         }
     }
 
-    public void setLinker(IMolecule mol, SingleLinkConfiguration linker) {
+    public void setLinker(IAtomContainer mol, SingleLinkConfiguration linker) {
         IAtom carbon1 = mol.getFirstAtom();
         if (linker.equals(SingleLinkConfiguration.Acyl)) {
             setAcyl(mol, carbon1);

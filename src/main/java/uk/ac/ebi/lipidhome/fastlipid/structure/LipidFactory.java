@@ -14,7 +14,7 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.interfaces.IMolecule;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
@@ -144,7 +144,7 @@ public class LipidFactory {
         if (!this.firstSet) {
             // first run
             for(int i=0;i<this.chainFactories.size();i++) {
-                IMolecule chain = this.chainFactories.get(i).nextChain();
+                IAtomContainer chain = this.chainFactories.get(i).nextChain();
                 if(chain!=null) {
                     //IBond chain2head = builder.newInstance(Bond.class);
                     //chain2head.setAtom(chain.getFirstAtom(), 0);
@@ -158,11 +158,11 @@ public class LipidFactory {
             this.firstSet=true;
             return this.getCDKObjectAsChemInfoObj(head);
         } else {
-            //IMolecule currentChain = chainFactories.get(this.currentIteratingChainFactory).getCurrentChain();
+            //IAtomContainer currentChain = chainFactories.get(this.currentIteratingChainFactory).getCurrentChain();
             char[] currentCharChain = chainFactories.get(this.currentIteratingChainFactory).getCurrentCharChain();
             //this.head.remove(currentChain);
             //this.head.removeBond(this.currentRadicalBonds.get(this.currentIteratingChainFactory));
-            //IMolecule nextChain = chainFactories.get(this.currentIteratingChainFactory).nextChain();
+            //IAtomContainer nextChain = chainFactories.get(this.currentIteratingChainFactory).nextChain();
             char[] nextCharChain = chainFactories.get(this.currentIteratingChainFactory).nextCharChain();
             if (nextCharChain != null) {
                 //this.printChain(nextChain);
@@ -175,10 +175,10 @@ public class LipidFactory {
             } else {
                 // no more chains in the current iterating chain factory (inner loop)
                 char[] currentOuterLoopCharChain = chainFactories.get(this.currentIteratingChainFactory+1).getCurrentCharChain();
-                //IMolecule currentOuterLoopChain = chainFactories.get(this.currentIteratingChainFactory+1).getCurrentChain();
+                //IAtomContainer currentOuterLoopChain = chainFactories.get(this.currentIteratingChainFactory+1).getCurrentChain();
                 //this.head.remove(currentOuterLoopChain);
                 //this.head.removeBond(this.currentRadicalBonds.get(this.currentIteratingChainFactory+1));
-                //IMolecule outerLoopChain = chainFactories.get(this.currentIteratingChainFactory+1).nextChain();
+                //IAtomContainer outerLoopChain = chainFactories.get(this.currentIteratingChainFactory+1).nextChain();
                 char[] outerLoopCharChain = chainFactories.get(this.currentIteratingChainFactory+1).nextCharChain();
                 if(outerLoopCharChain==null) {
                     // we have done iterating on the 2 molecules;
@@ -197,7 +197,7 @@ public class LipidFactory {
                     //this.head.addBond(bondChain2head);
                     char[] prevInnerLoopCharChain = this.chainFactories.get(currentIteratingChainFactory).getCurrentCharChain();
                     this.chainFactories.get(currentIteratingChainFactory).resetChainIterator();
-                    IMolecule innerLoopChain = this.chainFactories.get(currentIteratingChainFactory).nextChain();
+                    IAtomContainer innerLoopChain = this.chainFactories.get(currentIteratingChainFactory).nextChain();
                     char[] innerLoopCharChain = this.chainFactories.get(currentIteratingChainFactory).nextCharChain();
                     this.changeChain(prevInnerLoopCharChain, innerLoopCharChain, this.radicalAnchors.get(currentIteratingChainFactory));
                     //this.printChain(innerLoopChain);
@@ -215,7 +215,7 @@ public class LipidFactory {
         if (!this.firstSet) {
             initializeChainInfoContainers();
             for(int i=0;i<this.chainFactories.size();i++) {
-                IMolecule chain = this.chainFactories.get(i).nextChain();
+                IAtomContainer chain = this.chainFactories.get(i).nextChain();
                 if(chain!=null) {
                     addChainInfoContainerFromChainFactory(this.chainFactories.get(i));
                     IBond chain2head = builder.newInstance(Bond.class);
@@ -230,7 +230,7 @@ public class LipidFactory {
                     // one of the chain factories is not producing any results
                     // iterate over the previous ones and remove what ever was inserted into head.
                     for(int j=0;j<i;j++) {
-                        IMolecule currentChain = chainFactories.get(j).getCurrentChain();
+                        IAtomContainer currentChain = chainFactories.get(j).getCurrentChain();
                         if(currentChain!=null) {
                             this.head.remove(currentChain);
                             this.head.removeBond(this.currentRadicalBonds.get(j));
@@ -246,10 +246,10 @@ public class LipidFactory {
                 cont.setChainsInfo(chainsInfo);
             return cont;
         } else {
-            IMolecule currentChain = chainFactories.get(this.currentIteratingChainFactory).getCurrentChain();
+            IAtomContainer currentChain = chainFactories.get(this.currentIteratingChainFactory).getCurrentChain();
             this.head.remove(currentChain);
             this.head.removeBond(this.currentRadicalBonds.get(this.currentIteratingChainFactory));
-            IMolecule nextChain = chainFactories.get(this.currentIteratingChainFactory).nextChain();
+            IAtomContainer nextChain = chainFactories.get(this.currentIteratingChainFactory).nextChain();
             if (nextChain != null) {
                 replaceChainInfoContainerIndexFromFactory(this.currentIteratingChainFactory,chainFactories.get(currentIteratingChainFactory));
                 IBond bondChain2Head = builder.newInstance(Bond.class);
@@ -268,10 +268,10 @@ public class LipidFactory {
                 Integer indexOfMaxFactoryToUse=null;
                 Boolean allChainFactoriesDone=true;
                 for(int i=currentIteratingChainFactory+1;i<chainFactories.size();i++) {
-                    IMolecule currentoOuterLoopChain = chainFactories.get(i).getCurrentChain();
+                    IAtomContainer currentoOuterLoopChain = chainFactories.get(i).getCurrentChain();
                     this.head.remove(currentoOuterLoopChain);
                     this.head.removeBond(this.currentRadicalBonds.get(i));
-                    IMolecule outerLoopChain = chainFactories.get(i).nextChain();
+                    IAtomContainer outerLoopChain = chainFactories.get(i).nextChain();
                     if(outerLoopChain!=null) {
                         indexOfMaxFactoryToUse=i;
                         allChainFactoriesDone=false;
@@ -324,7 +324,7 @@ public class LipidFactory {
     private void addChainToHead(Integer chainIndex, Boolean current) throws IllegalArgumentException {
         IBond bondChain2head;
         replaceChainInfoContainerIndexFromFactory(chainIndex, chainFactories.get(chainIndex));
-        IMolecule chain;
+        IAtomContainer chain;
         if(current)
             chain = chainFactories.get(chainIndex).getCurrentChain();
         else
@@ -437,7 +437,7 @@ public class LipidFactory {
         return null;
     }
 
-    private void printChain(IMolecule mol) {
+    private void printChain(IAtomContainer mol) {
         String res = "C";
         for(IBond bond : mol.bonds()) {
             if(bond.getOrder().equals(IBond.Order.SINGLE))

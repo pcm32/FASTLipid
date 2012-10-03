@@ -24,11 +24,12 @@ package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.openscience.cdk.interfaces.IAtomContainer;
 import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 import org.apache.log4j.Logger;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.interfaces.IMolecule;
 import uk.ac.ebi.lipidhome.fastlipid.util.AtomPool;
 import uk.ac.ebi.lipidhome.fastlipid.util.BondPool;
 
@@ -53,12 +54,12 @@ public class PooledLinkerHandler extends AbstractPooledLinker implements LinkerH
         this.bondPool = bondPool;
     }
 
-    void removeBond(IBond bond, IMolecule mol) {
+    void removeBond(IBond bond, IAtomContainer mol) {
         mol.removeBond(bond);
         this.bondPool.checkIn(bond);
     }
 
-    void removeAtom(IAtom atom, IMolecule mol) {
+    void removeAtom(IAtom atom, IAtomContainer mol) {
         mol.removeAtom(atom);
         this.atomPool.checkIn(atom);
     }

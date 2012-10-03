@@ -5,12 +5,12 @@
 
 package uk.ac.ebi.lipidhome.fastlipid.structure;
 
+import org.openscience.cdk.interfaces.IAtomContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
 import org.openscience.cdk.interfaces.IBond;
-import org.openscience.cdk.interfaces.IMolecule;
 
 /**
  *
@@ -27,7 +27,7 @@ public class execExample {
         factory.addAlwaysRule(new NoDoubleBondsTogetherRule());
         factory.addAlwaysRule(new BondDistance3nPlus2Rule());
         long start = System.currentTimeMillis();
-        IMolecule mol = factory.nextChain();
+        IAtomContainer mol = factory.nextChain();
         //char[] mol = factory.nextCharChain();
         long generatedStructs=0;
         long current=start;
@@ -46,7 +46,7 @@ public class execExample {
         System.out.println("Time:"+current);
     }
 
-    private static void printChain(IMolecule mol) {
+    private static void printChain(IAtomContainer mol) {
         String res = "C";
         for(IBond bond : mol.bonds()) {
             if(bond.getOrder().equals(IBond.Order.SINGLE))

@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import org.openscience.cdk.Molecule;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -89,8 +88,6 @@ public class Main {
             }
         }
 
-//        IMolecule testMolR1 = builder.newMolecule();
-//
 //        ArrayList<IBond> bonds = new ArrayList<IBond>();
 //        for(int i=0;i<3;i++) {
 //            if(i==0)
