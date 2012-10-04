@@ -10,6 +10,8 @@ import java.util.List;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 
 /**
+ * Produces a start vector of length defined and with a number of bits set on, according to the rules given. Used for the
+ * fatty acids enumeration.
  *
  * @author pmoreno
  */

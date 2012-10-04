@@ -47,6 +47,7 @@ public class IsomerInfoContainer {
     private List<SingleLinkConfiguration> linkers;
     private Integer numOfDoubleBonds;
     private Integer numOfCarbons;
+    private double massDevPPM;
 
     /**
      * Get the value of numOfCarbons
@@ -194,6 +195,24 @@ public class IsomerInfoContainer {
      */
     public void setNumOfMolsGenerated(Integer numOfMolsGenerated) {
         this.numOfMolsGenerated = numOfMolsGenerated;
+    }
+
+    /**
+     * Sets the mass deviation in PPM
+     * 
+     * @param massDevPPM 
+     */
+    public void setMassDeviationInPPM(double massDevPPM) {
+        this.massDevPPM = massDevPPM;
+    }
+
+    /**
+     * Gets the mass deviation in PPM.
+     * 
+     * @return the massDevPPM
+     */
+    public double getMassDeviationInPPM() {
+        return massDevPPM;
     }
 
 

@@ -29,13 +29,12 @@ import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.generator.GeneralIsomersGenerator;
 import org.apache.log4j.Logger;
 import org.openscience.cdk.exception.CDKException;
+import uk.ac.ebi.lipidhome.fastlipid.mass.*;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
-import uk.ac.ebi.lipidhome.fastlipid.mass.ChainEstimatorByMass;
 import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
-import uk.ac.ebi.lipidhome.fastlipid.mass.MassRange;
 
 /**
  * @name MassRangeIsomersGetter @date 2012.09.03
@@ -63,6 +62,8 @@ public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
     private final ChainFactoryGenerator cfGenerator;
     private Boolean exoticModeOn;
     private final ChemInfoContainerGenerator cicg;
+    private MassDeviationCalculator devCalculator;
+    private boolean calculateDeviation = false;
 
     /**
      * Setups the iteration process, using the ChainEstimatorByMass to decide which carbons and double bonds ranges to
@@ -94,10 +95,14 @@ public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
         resetGeneratorIterator(allowedLinkers, cfGenerator);
         getNextGenerator();
     }
-    
+
     public MassRangeIsomersGetter(List<HeadGroup> allowedHeadGroups, List<SingleLinkConfiguration> allowedLinkers, ChainFactoryGenerator cfGenerator,
             MassRange range, Boolean exoticModeOn, ChemInfoContainerGenerator cicg) throws CDKException, IOException {
         this(allowedHeadGroups, allowedLinkers, cfGenerator, range.getMinMass(), range.getMaxMass(), exoticModeOn, cicg);
+        if (range instanceof PPMBasedMassRange) {
+            this.devCalculator = new MassDeviationCalculator(((PPMBasedMassRange) range).getQueriedMass());
+            this.calculateDeviation = true;
+        }
     }
 
     /**
@@ -121,8 +126,12 @@ public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
          * use.
          */
         IsomerInfoContainer toRet = currentResult;
-        if(this.generator!=null)
+        if (this.generator != null) {
             currentResult = this.generator.getIsomerInfoContainer();
+            if (this.calculateDeviation) {
+                currentResult.setMassDeviationInPPM(devCalculator.calculateDeviationInPPM(currentResult.getMass()));
+            }
+        }
         getNextGenerator();
 
         return toRet;
@@ -151,6 +160,9 @@ public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
                 if (res.getMass() != null) {
                     if (res.getMass() >= this.minMass && res.getMass() <= this.maxMass) {
                         this.currentResult = res;
+                        if (this.calculateDeviation) {
+                            currentResult.setMassDeviationInPPM(devCalculator.calculateDeviationInPPM(currentResult.getMass()));
+                        }
                         break;
                     }
                     //else {

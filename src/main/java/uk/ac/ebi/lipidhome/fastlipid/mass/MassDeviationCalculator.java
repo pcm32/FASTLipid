@@ -1,7 +1,7 @@
 /**
- * PPMBasedMassRange.java
+ * MassDeviationCalculator.java
  *
- * 2012.09.12
+ * 2012.10.03
  *
  * This file is part of the CheMet library
  * 
@@ -22,42 +22,30 @@
 package uk.ac.ebi.lipidhome.fastlipid.mass;
 
 
-//import org.apache.log4j.Logger;
+import org.apache.log4j.Logger;
 
 /**
- * @name    PPMBasedMassRange
- * @date    2012.09.12
+ * @name    MassDeviationCalculator
+ * @date    2012.10.03
  * @version $Rev$ : Last Changed $Date$
  * @author  pmoreno
  * @author  $Author$ (this version)
- * @brief   Calculates a mass range starting from a central mass and a ppm.
+ * @brief   ...class description...
  *
  */
-public class PPMBasedMassRange implements MassRange{
+public class MassDeviationCalculator {
 
-    //private static final Logger LOGGER = Logger.getLogger( PPMBasedMassRange.class );
+    private static final Logger LOGGER = Logger.getLogger( MassDeviationCalculator.class );
+
+    private double queriedMass;
     
-    private Double minMass;
-    private Double maxMass;
-    private Double queriedMass;
-    
-    public PPMBasedMassRange(Double mass, Float ppm) {
-        double interval = Math.pow(10, -6)*ppm*mass;
-        this.minMass = mass - interval;
-        this.maxMass = mass + interval;
-        this.queriedMass = mass;
+    public MassDeviationCalculator(Double queriedMass) {
+        this.queriedMass = queriedMass;
     }
 
-    public Double getMinMass() {
-        return minMass;
-    }
-
-    public Double getMaxMass() {
-        return maxMass;
-    }
-    
-    public Double getQueriedMass() {
-        return this.queriedMass;
+    public double calculateDeviationInPPM(Double mass) {
+        double diff = Math.abs(queriedMass - mass);
+        return diff/(Math.pow(10, -6)*queriedMass);
     }
 
 
