@@ -5,7 +5,9 @@
 package uk.ac.ebi.lipidhome.fastlipid.counter;
 
 /**
- *
+ * Extension of {@link BooleanRBCounter} which uses the rules given to traverse the space, in a branch & bound manner
+ * (by neglecting intermediate results that do not observe the rules). Only feasible solutions are visited.
+ * 
  * @author pmoreno
  */
 public class BooleanRBCounterRuleBased extends BooleanRBCounter {

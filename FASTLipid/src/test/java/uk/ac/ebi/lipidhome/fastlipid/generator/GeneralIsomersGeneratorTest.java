@@ -129,14 +129,28 @@ public class GeneralIsomersGeneratorTest extends TestCase {
     }
     
     public void testExecuteForGlycerol() {
-        int carbons = 30;
-        int doubleBonds = 4;
+        int carbons = 16;
+        int doubleBonds = 0;
         HeadGroup hg = HeadGroup.Glycerol;
+        runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
+    }
+    
+    public void testExecuteForPC10_0() {
+        int carbons = 10;
+        int doubleBonds = 0;
+        HeadGroup hg = HeadGroup.PC;
+        runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
+    }
+    
+    public void testExecuteForLPC() {
+        int carbons = 11;
+        int doubleBonds = 3;
+        HeadGroup hg = HeadGroup.LPC1;
         runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
     }
 
     private void runTestForHeadgroupCarbsAndDBs(HeadGroup hg, int carbons, int doubleBonds) throws LNetMoleculeGeneratorException {
-        System.out.println("Test for "+hg.name()+" generating more than zero molecules");
+        System.out.println("Test for "+hg.name()+" "+carbons+" carbons and "+doubleBonds+" double bonds");
         ChemInfoContainerGenerator chemInfoContainerGenerator = new ChemInfoContainerGenerator();
         chemInfoContainerGenerator.setUseCachedObjects(Boolean.TRUE);
         chemInfoContainerGenerator.setGenerateInChi(true);
@@ -149,6 +163,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         ChainFactoryGenerator cfGenerator = new ChainFactoryGenerator(rules, new BooleanRBCounterStartSeeder(rules), true);
 
         GeneralIsomersGenerator generator = new GeneralIsomersGenerator();
+        generator.setExoticModeOn(true);
         generator.setChainFactoryGenerator(cfGenerator);
         generator.setChemInfoContainerGenerator(chemInfoContainerGenerator);
         generator.setThreaded(false);
@@ -156,6 +171,9 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         generator.setTotalCarbons(carbons);
         generator.setTotalDoubleBonds(doubleBonds);
         generator.setPrintOut(Boolean.TRUE);
+        generator.setStepOfChange(1);
+        // TODO Check behaviour of TG with stepChange = 1 and exotic mode on.
+        
 
         generator.execute();
         

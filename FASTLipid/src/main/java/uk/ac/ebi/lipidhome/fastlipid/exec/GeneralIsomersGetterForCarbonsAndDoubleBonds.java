@@ -183,14 +183,6 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
     }
 
     /**
-     * @param pathToHead the pathToHead to set
-     */
-    public void setPathToHead(String pathToHead) {
-        this.pathToHead = pathToHead;
-        this.generator.setHeadMolFile(this.pathToHead);
-    }
-
-    /**
      * @param generator the generator to set
      */
     public void setGenerator(GeneralIsomersGenerator generator) {
@@ -259,14 +251,6 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
      */
     public Set<String> getChainConfigs() {
         return chainConfigs;
-    }
-
-    /**
-     * @param headMolStream the headMolStream to set
-     */
-    public void setHeadMolStream(InputStream headMolStream) {
-        this.headMolStream = headMolStream;
-        this.generator.setHeadMolStream(headMolStream);
     }
 
     public void setMaxNumberOfCarbonsInSingleChain(Integer maxNumCarbons) {

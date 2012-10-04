@@ -11,11 +11,6 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChainFactory;
 import uk.ac.ebi.lipidhome.fastlipid.structure.LipidFactory;
-import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
@@ -25,67 +20,23 @@ import org.openscience.cdk.interfaces.IPseudoAtom;
 import org.openscience.cdk.io.MDLV2000Reader;
 import org.openscience.cdk.silent.AtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
-import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
-import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
-import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
 import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
 
 /**
  *
  * @author pmoreno
  */
-public class GeneralIsomersGenerator {
-
-    private String headMolFile;
-    private InputStream headMolStream;
-    private HeadGroup headGroup;
+public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
     private Integer totalCarbons;
     private Integer totalDoubleBonds;
     private Boolean threaded = false;
-    private ChemInfoContainerGenerator chemInfoContainerGenerator;
     private Integer totalGeneratedStructs;
     private Boolean printOut;
     private String molFormula;
     private Double exactMass;
     private Double naturalMass;
-    private List<ChainFactory> chainFactories;
     private IAtomContainer originalMol = null;
     private Set<String> chainsConfig;
-    private Integer maxCarbonsPerSingleChain = 0;
-    private Integer stepOfChange;
-    private List<SingleLinkConfiguration> linkConfigs;
-    private boolean exoticModeOn = false;
-    private boolean firstResultOnly = false;
-    
-    private ChainFactoryGenerator chainFactoryGenerator;
-    
-
-    public void setChemInfoContainerGenerator(ChemInfoContainerGenerator generator) {
-        this.chemInfoContainerGenerator = generator;
-    }
-
-    /**
-     * This method sets the linkage to be used in each of the positions. 
-     * 
-     * @param configs 
-     */
-    public void setLinkConfigs(SingleLinkConfiguration... configs) {
-        this.linkConfigs = Arrays.asList(configs);
-    }
-
-    /**
-     * Sets the head molecule file by receiving an MDL Mol file path.
-     * 
-     * @deprecated use {@link #setHeadGroup(structure.HeadGroup) } instead.
-     * 
-     * @param headMolFile the path to the MDL Mol file.
-     */
-    @Deprecated
-    public void setHeadMolFile(String headMolFile) {
-        this.headMolFile = headMolFile;
-        this.originalMol = null;
-    }
 
     public void setTotalCarbons(Integer totalCarbons) throws LNetMoleculeGeneratorException {
         if (!this.exoticModeOn && (totalCarbons % 2 != 0)) {
@@ -125,34 +76,16 @@ public class GeneralIsomersGenerator {
         // TODO This part should be refactored to a head reader class.
         if (originalMol == null) {
             try {
-                MDLV2000Reader reader = null;
-                if (this.headMolFile == null) {
-                    reader = new MDLV2000Reader(this.headGroup.getHeadMolStream());
-                } else {
-                    reader = new MDLV2000Reader(new FileReader(this.headMolFile));
-                }
+                MDLV2000Reader reader = new MDLV2000Reader(this.headGroup.getHeadMolStream());
                 // We keep a copy of the original mol to avoid reading it later.
-                //originalMol = (NNMolecule) reader.read(builder.newMolecule());
                 originalMol = reader.read(builder.newInstance(AtomContainer.class));
                 mol = (IAtomContainer) originalMol.clone();
-                
-                if (this.headMolStream != null) {
-                    this.headMolStream.close();
-                }
-                //mol = (NNMolecule) reader.read(builder.newInstance(Molecule.class));
             } catch (CloneNotSupportedException e) {
                 System.out.println("Cloning not supported");
                 System.exit(1);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                System.out.println("Could not find file for " + this.headMolFile);
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-                System.out.println("Problems here.");
             } catch (CDKException e) {
                 // TODO Auto-generated catch block
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         } else {
             try {
@@ -198,7 +131,8 @@ public class GeneralIsomersGenerator {
             /**
              * Create and initialize the carbon number iterator.
              */
-            IntegerListIterator carbonIterator = new ListBasedIntegerListIterator(rAtoms.size(), stepOfChange);
+            //IntegerListIterator carbonIterator = new ListBasedIntegerListIterator(rAtoms.size(), stepOfChange);
+            IntegerListIterator carbonIterator = new AccAscConstrainedBasedIntegerListIterator(rAtoms.size(), stepOfChange);
             carbonIterator.initialize(this.totalCarbons, minCarbonChain);
             
             numberOfCarbonsLoop:
@@ -211,7 +145,8 @@ public class GeneralIsomersGenerator {
                  * Create and initalize the double bond number iterator. Maybe have a variable for the double bond
                  * step size.
                  */
-                IntegerListIterator dbIterator = new ListBasedIntegerListIterator(rAtoms.size(), 1);
+                //IntegerListIterator dbIterator = new ListBasedIntegerListIterator(rAtoms.size(), 1);
+                IntegerListIterator dbIterator = new AccAscConstrainedBasedIntegerListIterator(rAtoms.size(), 1);
                 dbIterator.initialize(this.totalDoubleBonds, 0);
                 
 
@@ -368,84 +303,10 @@ public class GeneralIsomersGenerator {
     }
 
     /**
-     * @deprecated use setHeadGroup() instead.
-     * 
-     * @param headMolStream the headMolStream to set
-     */
-    @Deprecated
-    public void setHeadMolStream(InputStream headMolStream) {
-        this.headMolStream = headMolStream;
-    }
-
-    /**
-     * @param maxCarbonsPerSingleChain the maxCarbonsPerSingleChain to set
-     */
-    public void setMaxCarbonsPerSingleChain(Integer maxCarbonsPerSingleChain) {
-        this.maxCarbonsPerSingleChain = maxCarbonsPerSingleChain;
-    }
-
-    /**
      * @return the stepOfChange
      */
     public Integer getStepOfChange() {
         return stepOfChange;
-    }
-
-    /**
-     * @param stepOfChange the stepOfChange to set
-     */
-    public void setStepOfChange(Integer stepOfChange) throws LNetMoleculeGeneratorException {
-        if (!exoticModeOn && stepOfChange % 2 != 0) {
-            throw new LNetMoleculeGeneratorException("Steps of change can only be even if the exotic mode is not on");
-        }
-        this.stepOfChange = stepOfChange;
-    }
-
-    /**
-     * @return the weirdModeOn
-     */
-    public boolean isExoticModeOn() {
-        return exoticModeOn;
-    }
-
-    /**
-     * @param exoticModeOn the weirdModeOn to set
-     */
-    public void setExoticModeOn(boolean exoticModeOn) {
-        this.exoticModeOn = exoticModeOn;
-    }
-
-    private boolean allRAtomAreNotNull(List<IPseudoAtom> rAtoms) {
-        for (IPseudoAtom atom : rAtoms) {
-            if(atom==null)
-                return false;
-        }
-        return true;
-    }
-
-    private boolean incompatibleDoubleBondsWithCarbons(List<Integer> doubleBondsDisp, List<Integer> carbonDisp) {
-        for (int i = 0; i < doubleBondsDisp.size(); i++) {
-            if(doubleBondsDisp.get(i) >= carbonDisp.get(i))
-                return true;
-        }
-        return false;
-    }
-
-    private String makeChainConfigStr(List<Integer> carbonDisp, List<Integer> dbDisp) {
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < carbonDisp.size(); i++) {
-            builder.append(carbonDisp.get(i)).append(":").append(dbDisp.get(i));
-            if(i<carbonDisp.size()-1)
-                builder.append("_");
-        }
-        return builder.toString();
-    }
-
-    /**
-     * @param chainFactoryGenerator the chainFactoryGenerator to set
-     */
-    public void setChainFactoryGenerator(ChainFactoryGenerator chainFactoryGenerator) {
-        this.chainFactoryGenerator = chainFactoryGenerator;
     }
 
     private boolean fattyAcidsWithMoreCarbonsThanAllowed(List<Integer> carbonDisp) {
@@ -454,24 +315,6 @@ public class GeneralIsomersGenerator {
                 return true;
         }
         return false;
-    }
-    
-    /**
-     * Get the value of headGroup
-     *
-     * @return the value of headGroup
-     */
-    public HeadGroup getHeadGroup() {
-        return headGroup;
-    }
-
-    /**
-     * Set the value of headGroup
-     *
-     * @param headGroup new value of headGroup
-     */
-    public void setHeadGroup(HeadGroup headGroup) {
-        this.headGroup = headGroup;
     }
 
     public IsomerInfoContainer getIsomerInfoContainer() {
@@ -485,12 +328,5 @@ public class GeneralIsomersGenerator {
         cont.setNumOfMolsGenerated(totalGeneratedStructs);
         
         return cont;
-    }
-
-    /**
-     * @param firstResultOnly the firstResultOnly to set
-     */
-    public void setFirstResultOnly(boolean firstResultOnly) {
-        this.firstResultOnly = firstResultOnly;
     }
 }
