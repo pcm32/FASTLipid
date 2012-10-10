@@ -36,20 +36,20 @@ public class IntegerListIteratorTest extends TestCase {
         Integer slots = 4;
         Integer stepSize = 2;
         Integer minPerSlot = 2;
-        IntegerListIterator multiSetB = new MultiSetBasedIntegerListIterator(slots, stepSize);
-        multiSetB.initialize(carbons, minPerSlot);
+        IntegerListIterator asc = new AccAscConstrainedBasedIntegerListIterator(slots, stepSize);
+        asc.initialize(carbons, minPerSlot);
         IntegerListIterator listB = new ListBasedIntegerListIterator(slots, stepSize);
         listB.initialize(carbons, minPerSlot);
 
         Long startMS = System.currentTimeMillis();
         Integer counts = 0;
-        while (multiSetB.hasNext()) {
+        while (asc.hasNext()) {
             counts++;
-            List<Integer> res = multiSetB.next();
+            List<Integer> res = asc.next();
             System.out.println(res);
         }
         Long time = System.currentTimeMillis() - startMS;
-        System.out.println("Finish MS : " + counts + " Time: " + time);
+        System.out.println("Finish AS : " + counts + " Time: " + time);
 
         Long startL = System.currentTimeMillis();
         counts = 0;

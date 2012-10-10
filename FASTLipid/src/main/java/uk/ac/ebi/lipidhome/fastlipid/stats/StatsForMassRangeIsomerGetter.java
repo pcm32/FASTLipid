@@ -36,7 +36,7 @@ import uk.ac.ebi.lipidhome.fastlipid.mass.MassRange;
 import uk.ac.ebi.lipidhome.fastlipid.mass.PPMBasedMassRange;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
-import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
@@ -95,7 +95,7 @@ public class StatsForMassRangeIsomerGetter {
             MassRangeIsomersGetter instance = new MassRangeIsomersGetter(allowed4HeadGroups, allowedLinkers, cfGen, minMass, maxMass, Boolean.FALSE, cicg);
             int numOfMols = 0;
             while (instance.hasNext()) {
-                IsomerInfoContainer res = instance.next();
+                SpeciesInfoContainer res = instance.next();
                 numOfMols+=res.getNumOfMolsGenerated();
                 if(res.getNumOfMolsGenerated()>0) {
                     seenMass.add(res.getMass());
@@ -115,7 +115,7 @@ public class StatsForMassRangeIsomerGetter {
             MassRangeIsomersGetter isomersGetter = new MassRangeIsomersGetter(allowed4HeadGroups,allowedLinkers,cfGen,range,false,cicg);
             int numOfMols = 0;
             while (isomersGetter.hasNext()) {                
-                IsomerInfoContainer res = isomersGetter.next();
+                SpeciesInfoContainer res = isomersGetter.next();
                 numOfMols += res.getNumOfMolsGenerated();
             }
             Long elapsedTime = System.currentTimeMillis() - startTime;

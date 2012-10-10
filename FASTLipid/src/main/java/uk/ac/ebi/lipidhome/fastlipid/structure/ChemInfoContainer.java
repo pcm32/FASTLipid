@@ -8,6 +8,7 @@ package uk.ac.ebi.lipidhome.fastlipid.structure;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
  * The purpose of the ChemInfoContainer is to produce results at the molecule/sub-specie level. The configuration of which
@@ -34,6 +35,7 @@ public class ChemInfoContainer {
     private List<SingleLinkConfiguration> linkers;
     
     private List<ChainInfoContainer> chains = new ArrayList<ChainInfoContainer>();
+    private IAtomContainer molecule;
 
     public String getAuxInfo() {
         return auxInfo;
@@ -139,10 +141,21 @@ public class ChemInfoContainer {
     }
 
     /**
-     * @param chains the chains to set
+     * Sets the CDK molecule for this ChemInfoContainer.
+     * @param clone 
      */
-    public void setChains(List<ChainInfoContainer> chains) {
-        this.chains = chains;
+    protected void setCDKMolecule(IAtomContainer clone) {
+        this.molecule = clone;
+    }
+    
+    /**
+     * Gets the CDK molecule stored in this ChemInfoContainer. This molecule will be null if the {@link ChemInfoContainerGenerator}
+     * was not set to store the molecule.
+     * 
+     * @return cdk IAtomContainer 
+     */
+    public IAtomContainer getCDKMolecule() {
+        return this.molecule;
     }
 
     

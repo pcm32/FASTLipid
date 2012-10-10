@@ -18,7 +18,7 @@ import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
 import org.openscience.cdk.exception.CDKException;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
-import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
@@ -86,7 +86,7 @@ public class MassRangeIsomersGetterTest extends TestCase {
             MassRangeIsomersGetter instance = new MassRangeIsomersGetter(allowedHeadGroups, allowedLinkers, cfGen, minMass, maxMass, Boolean.FALSE, cicg);
             int numOfMols = 0;
             while (instance.hasNext()) {
-                IsomerInfoContainer res = instance.next();
+                SpeciesInfoContainer res = instance.next();
                 numOfMols += res.getNumOfMolsGenerated();
                 //System.out.print("\tTC:" + res.getNumOfCarbons() + "::TD:" + res.getNumOfDoubleBonds());
                 //if (res.getNumOfMolsGenerated() > 0) {

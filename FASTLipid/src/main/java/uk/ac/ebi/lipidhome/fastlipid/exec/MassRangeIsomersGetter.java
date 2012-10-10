@@ -32,7 +32,7 @@ import org.openscience.cdk.exception.CDKException;
 import uk.ac.ebi.lipidhome.fastlipid.mass.*;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
-import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
 
@@ -48,16 +48,16 @@ import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
  * boundaries.
  *
  */
-public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
+public class MassRangeIsomersGetter implements Iterator<SpeciesInfoContainer> {
 
-    private static final Logger LOGGER = Logger.getLogger(MassRangeIsomersGetter.class);
+    //private static final Logger LOGGER = Logger.getLogger(MassRangeIsomersGetter.class);
     private Iterator<LipidChainConfigEstimate> estimatesIterator;
     private Iterator<GeneralIsomersGenerator> generatorIterator;
     private GeneralIsomersGenerator generator;
     private Double minMass;
     private Double maxMass;
     private LipidChainConfigEstimate currentEstimate;
-    private IsomerInfoContainer currentResult;
+    private SpeciesInfoContainer currentResult;
     private final List<SingleLinkConfiguration> allowedLinkers;
     private final ChainFactoryGenerator cfGenerator;
     private Boolean exoticModeOn;
@@ -99,10 +99,13 @@ public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
     public MassRangeIsomersGetter(List<HeadGroup> allowedHeadGroups, List<SingleLinkConfiguration> allowedLinkers, ChainFactoryGenerator cfGenerator,
             MassRange range, Boolean exoticModeOn, ChemInfoContainerGenerator cicg) throws CDKException, IOException {
         this(allowedHeadGroups, allowedLinkers, cfGenerator, range.getMinMass(), range.getMaxMass(), exoticModeOn, cicg);
-        if (range instanceof PPMBasedMassRange) {
-            this.devCalculator = new MassDeviationCalculator(((PPMBasedMassRange) range).getQueriedMass());
-            this.calculateDeviation = true;
-        }
+    }
+    
+    public MassRangeIsomersGetter(List<HeadGroup> allowedHeadGroups, List<SingleLinkConfiguration> allowedLinkers, ChainFactoryGenerator cfGenerator,
+            PPMBasedMassRange range, Boolean exoticModeOn, ChemInfoContainerGenerator cicg) throws CDKException, IOException {
+        this(allowedHeadGroups, allowedLinkers, cfGenerator, range.getMinMass(), range.getMaxMass(), exoticModeOn, cicg);
+        this.devCalculator = new MassDeviationCalculator(range.getQueriedMass()); //removed redundant cast :) - jm
+        this.calculateDeviation = true;
     }
 
     /**
@@ -120,12 +123,12 @@ public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
         }
     }
 
-    public IsomerInfoContainer next() {
+    public SpeciesInfoContainer next() {
         /**
          * First we need to get the generator to use on this iteration. The generator comes initialized and ready to
          * use.
          */
-        IsomerInfoContainer toRet = currentResult;
+        SpeciesInfoContainer toRet = currentResult;
         if (this.generator != null) {
             currentResult = this.generator.getIsomerInfoContainer();
             if (this.calculateDeviation) {
@@ -156,7 +159,7 @@ public class MassRangeIsomersGetter implements Iterator<IsomerInfoContainer> {
                 generator = this.generatorIterator.next();
                 generator.setFirstResultOnly(true);
                 generator.execute();
-                IsomerInfoContainer res = generator.getIsomerInfoContainer();
+                SpeciesInfoContainer res = generator.getIsomerInfoContainer();
                 if (res.getMass() != null) {
                     if (res.getMass() >= this.minMass && res.getMass() <= this.maxMass) {
                         this.currentResult = res;

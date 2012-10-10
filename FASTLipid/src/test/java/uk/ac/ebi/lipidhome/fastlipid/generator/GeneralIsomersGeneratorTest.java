@@ -10,7 +10,7 @@ import junit.framework.TestCase;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
-import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
@@ -177,7 +177,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
 
         generator.execute();
         
-        IsomerInfoContainer container = generator.getIsomerInfoContainer();
+        SpeciesInfoContainer container = generator.getIsomerInfoContainer();
         assertNotNull(container);
         System.out.println("Mols generated : "+container.getNumOfMolsGenerated());
         assertTrue(container.getNumOfMolsGenerated()>0);

@@ -46,6 +46,7 @@ public abstract class AbstractIsomersGenerator {
 
     public AbstractIsomersGenerator() {
     }
+    
     ChainFactoryGenerator chainFactoryGenerator;
     ChemInfoContainerGenerator chemInfoContainerGenerator;
     boolean exoticModeOn = false;

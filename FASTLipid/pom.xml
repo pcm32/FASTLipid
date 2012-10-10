@@ -5,7 +5,7 @@
 
     <groupId>uk.ac.ebi.lipidhome</groupId>
     <artifactId>fast-lipid</artifactId>
-    <version>1.7-SNAPSHOT</version>
+    <version>1.7.5</version>
     <packaging>jar</packaging>
 
     <name>FASTLipid</name>
@@ -14,7 +14,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cdk.version>1.4.13</cdk.version>
-        <caf.version>0.8.5-SNAPSHOT</caf.version>
     </properties>
     
     <developers>
@@ -48,6 +47,31 @@
     </distributionManagement>
 
     <build>
+        
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.directory}/nocdk-fast-lipid-${version}.jar</outputFile>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>org.openscience.cdk:*</exclude>
+                                </excludes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+  
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
@@ -74,11 +98,6 @@
             <artifactId>cdk-core</artifactId>
             <version>${cdk.version}</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>org.openscience.cdk</groupId>
-            <artifactId>cdk-reaction</artifactId>
-            <version>${cdk.version}</version>
-        </dependency> -->
         <dependency>
             <groupId>org.openscience.cdk</groupId>
             <artifactId>cdk-io</artifactId>
@@ -114,26 +133,11 @@
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>org.openscience.cdk</groupId>
-            <artifactId>cdk-pdb</artifactId>
-            <version>${cdk.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openscience.cdk</groupId>
-            <artifactId>cdk-log4j</artifactId>
-            <version>${cdk.version}</version>
-        </dependency> -->
         <dependency>
             <artifactId>cdk-data</artifactId>
             <groupId>org.openscience.cdk</groupId>
             <version>${cdk.version}</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>org.openscience.cdk</groupId>
-            <artifactId>cdk-sdg</artifactId>
-            <version>${cdk.version}</version>
-        </dependency> -->
         <dependency>
             <artifactId>cdk-formula</artifactId>
             <groupId>org.openscience.cdk</groupId>
@@ -146,19 +150,13 @@
             <version>1.0-SNAPSHOT</version>
             <type>jar</type>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>11.0.1</version>
             <type>jar</type>
-        </dependency>
+        </dependency> -->
     </dependencies>
-    
-    <!-- <dependencySets>
-        <dependencySet>
-            <exclude>org.openscience.cdk:cdk-formula</exclude>
-        </dependencySet>
-    </dependencySets> -->
     
     <repositories>
         <repository>
@@ -176,11 +174,4 @@
         </repository>
     </repositories>
     
-    <!-- <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.3</version>
-      </plugin>
-    </plugins> -->
 </project>

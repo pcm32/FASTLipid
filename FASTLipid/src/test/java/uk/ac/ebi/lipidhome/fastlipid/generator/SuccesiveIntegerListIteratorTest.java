@@ -30,24 +30,13 @@ public class SuccesiveIntegerListIteratorTest extends TestCase {
     }
 
     /**
-     * Test of initialize method, of class MultiSetBasedIntegerListIterator.
-     */
-    public void testInitialize() {
-        System.out.println("initialize");
-        Integer maxToShare = 20;
-        Integer minPerSlot = 2;
-        MultiSetBasedIntegerListIterator instance = new MultiSetBasedIntegerListIterator(4, 2);
-        instance.initialize(maxToShare, minPerSlot);
-    }
-
-    /**
      * Test of next method, of class MultiSetBasedIntegerListIterator.
      */
     public void testIteration() {
         System.out.println("Iteration");
         Integer maxToShare = 20;
         Integer minPerSlot = 2;
-        MultiSetBasedIntegerListIterator instance = new MultiSetBasedIntegerListIterator(4, 2);
+        IntegerListIterator instance = new AccAscConstrainedBasedIntegerListIterator(4, 2);
         instance.initialize(maxToShare, minPerSlot);
         int counter = 0;
         Map<List<Integer>, Integer> seenVectors = new HashMap<List<Integer>, Integer>();
@@ -64,7 +53,7 @@ public class SuccesiveIntegerListIteratorTest extends TestCase {
             }
             System.out.println(sols+repeatStr);            
         }
-        assertEquals(70, counter);
+        assertEquals(72, counter);
     }
 
     /**
@@ -74,7 +63,7 @@ public class SuccesiveIntegerListIteratorTest extends TestCase {
         System.out.println("Iteration of a single slot (so should only produce one result)");
         Integer maxToShare = 20;
         Integer minPerSlot = 2;
-        MultiSetBasedIntegerListIterator instance = new MultiSetBasedIntegerListIterator(1, 2);
+        IntegerListIterator instance = new AccAscConstrainedBasedIntegerListIterator(1, 2);
         instance.initialize(maxToShare, minPerSlot);
         int counter = 1;
         assertTrue(instance.hasNext());
@@ -93,13 +82,13 @@ public class SuccesiveIntegerListIteratorTest extends TestCase {
         Integer totalDoubleBonds = 5;
         Integer minDoubleBondPerFA = 0;
 
-        MultiSetBasedIntegerListIterator carbonIterator = new MultiSetBasedIntegerListIterator(fattyAcids, carbonStep);
+        IntegerListIterator carbonIterator = new AccAscConstrainedBasedIntegerListIterator(fattyAcids, carbonStep);
         carbonIterator.initialize(totalCarbons, minCarbPerFA);
 
 
         while (carbonIterator.hasNext()) {
             List<Integer> carbonDisp = carbonIterator.next();
-            MultiSetBasedIntegerListIterator doubleBondIterator = new MultiSetBasedIntegerListIterator(fattyAcids, 1);
+            IntegerListIterator doubleBondIterator = new AccAscConstrainedBasedIntegerListIterator(fattyAcids, 1);
             doubleBondIterator.initialize(totalDoubleBonds, minDoubleBondPerFA);
             System.out.println("Carbons : " + carbonDisp);
             while (doubleBondIterator.hasNext()) {

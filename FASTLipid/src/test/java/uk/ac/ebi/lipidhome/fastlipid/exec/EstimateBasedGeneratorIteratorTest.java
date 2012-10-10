@@ -20,7 +20,7 @@ import uk.ac.ebi.lipidhome.fastlipid.mass.ChainEstimatorByMass;
 import uk.ac.ebi.lipidhome.fastlipid.mass.FutureEstimatesIterator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
-import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
@@ -94,7 +94,7 @@ public class EstimateBasedGeneratorIteratorTest extends TestCase {
             while(instance.hasNext()) {
                 GeneralIsomersGenerator result = instance.next();
                 result.execute();
-                IsomerInfoContainer res = result.getIsomerInfoContainer();
+                SpeciesInfoContainer res = result.getIsomerInfoContainer();
                 System.out.print("\tTC:"+res.getNumOfCarbons()+"::TD:"+res.getNumOfDoubleBonds());
                 if(res.getNumOfMolsGenerated()>0) {
                     System.out.println("\t"+res.getNumOfMolsGenerated()+"\t"+res.getMolecularFormula()+":Head::"+res.getHeadGroup()
