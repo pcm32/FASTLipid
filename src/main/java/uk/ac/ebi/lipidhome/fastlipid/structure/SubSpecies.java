@@ -22,6 +22,7 @@
 package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.log4j.Logger;
 
@@ -41,8 +42,19 @@ public class SubSpecies {
     private List<FattyAcidSpecies> fattyAcids;
     private List<SingleLinkConfiguration> linkages;
     private String name;
-    private String headName;
+    private HeadGroup hg;
     private Integer isomerCount;
+
+    public SubSpecies(ChemInfoContainer cont) {
+        this.hg = cont.getHg();
+        this.linkages = new ArrayList<SingleLinkConfiguration>(cont.getLinkers());
+        this.fattyAcids = new ArrayList<FattyAcidSpecies>();
+        for (ChainInfoContainer chainInfoContainer : cont.getChains()) {
+            this.fattyAcids.add(new FattyAcidSpecies(chainInfoContainer.getNumCarbons(), chainInfoContainer.getDoubleBondPositions().size()));
+        }
+        this.linkages.addAll(cont.getLinkers());
+        
+    }
     
     public void addFattyAcid(FattyAcidSpecies fattyAcid, SingleLinkConfiguration linkage) {
         this.fattyAcids.add(fattyAcid);
@@ -75,6 +87,10 @@ public class SubSpecies {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public HeadGroup getHeadGroup() {
+        return hg;
     }
     
     

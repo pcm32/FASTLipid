@@ -19,16 +19,10 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
  */
 public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
 
-    /*private Integer carbonsChainA;
-    private Integer carbonsChainB;*/
     private List<Integer> carbonsPerChain;
-    /*private Integer doubleBondsChainA;
-    private Integer doubleBondsChainB;*/
     private List<Integer> doubleBondsPerChain;
-    //private String pathToHead;
     private ChemInfoContainerGenerator chemInfoContainerGenerator;
     private GeneralIsomersGeneratorDefinedFattyAcids generator;
-    //private InputStream headMolStream;
     private HeadGroup hg;
 
     private Integer numOfStructs;

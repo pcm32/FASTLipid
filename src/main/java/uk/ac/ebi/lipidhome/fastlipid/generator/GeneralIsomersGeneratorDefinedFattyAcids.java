@@ -154,24 +154,6 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
                 new NoDoubleBondsTogetherRule(),
                 new StarterDoubleBondRule(2));
 
-        /*
-         * ChainFactory cfA = new PooledChainFactory(); ChainFactory cfB = new PooledChainFactory();
-         *
-         *
-         * cfA.setSeeder(new BooleanRBCounterStartSeeder(rules)); cfB.setSeeder(new BooleanRBCounterStartSeeder(rules));
-         *
-         *
-         * // We can have this configurates outside... although this runs only once. for (BondRule bondRule : rules) {
-         * cfA.addAlwaysRule(bondRule); cfB.addAlwaysRule(bondRule); }
-         *
-         * cfA.setUseRuleBasedBooleanCounter(true); cfB.setUseRuleBasedBooleanCounter(true);
-         *
-         * cfA.setLinkConf(this.linkConfR1); cfB.setLinkConf(this.linkConfR2);
-         *
-         * BooleanRBCounterStartSeeder.addRule(new BondDistance3nPlus2Rule()); BooleanRBCounterStartSeeder.addRule(new
-         * NoDoubleBondsTogetherRule()); BooleanRBCounterStartSeeder.addRule(new StarterDoubleBondRule(2));
-         */
-
         if (allRAtomAreNotNull(rAtoms)) {
             int generatedStructs = 0;
             long start = System.currentTimeMillis();
@@ -203,6 +185,7 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
             ChemInfoContainer cont = lipidFactory.nextLipid();
 
             if (cont != null) {
+                cont.setLinkers(linkConfigs);
                 if (this.isInIterableMode()) {
                     queue.add(cont);
                 }

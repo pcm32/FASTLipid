@@ -38,6 +38,13 @@ public class FattyAcidSpecies {
         this.name = carbonCount+":"+doubleBondsCount;
     }
 
+    @Override
+    public String toString() {
+        return carbonCount+":"+doubleBondsCount;
+    }
+    
+    
+
     /**
      * @return the carbonCount
      */

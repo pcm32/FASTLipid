@@ -25,16 +25,17 @@ import org.openscience.cdk.interfaces.IAtomContainer;
  */
 public class ChemInfoContainerGenerator {
 
-    private Boolean generateInChi;
-    private Boolean generateInChiKey;
-    private Boolean generateInChIAux;
-    private Boolean generateMolFormula;
-    private Boolean generateMass;
-    private Boolean generateSmiles;
-    private Boolean useCachedObjects=false;
+    private Boolean generateInChi = false;
+    private Boolean generateInChiKey = false;
+    private Boolean generateInChIAux = false;
+    private Boolean generateMolFormula = false;
+    private Boolean generateMass = false;
+    private Boolean generateSmiles = false;
+    private Boolean useCachedObjects = false;
+    private Boolean generateCDKMol = false;
     private InChIGeneratorFactory inchiGenFact;
     private InChIGenerator inChIGenerator;
-    private Boolean generateChainInfoContainers;
+    private Boolean generateChainInfoContainers = false;
 
     private void init() {
         //this.inchiGenFact = InChIGeneratorFactory.getInstance();
@@ -45,7 +46,7 @@ public class ChemInfoContainerGenerator {
         } catch (Exception e) {
             //System.err.println("Exception inchi:"+e.getMessage());
         }
-        
+
         this.useCachedObjects = false;
         this.generateSmiles = false;
         this.generateChainInfoContainers = false;
@@ -77,7 +78,14 @@ public class ChemInfoContainerGenerator {
 
     public ChemInfoContainer generateChemInfoContainer(IAtomContainer molOriginal) {
         ChemInfoContainer container = new ChemInfoContainer();
-        IAtomContainer mol=null;
+        try {
+            if (this.generateCDKMol) {
+                container.setCDKMolecule((IAtomContainer) molOriginal.clone());
+            }
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Not clonable" + e.getMessage());
+        }
+        IAtomContainer mol = null;
         if (this.generateInChi || this.generateSmiles || this.generateMolFormula || this.generateMass) {
             try {
                 mol = (IAtomContainer) molOriginal.clone();
@@ -144,11 +152,10 @@ public class ChemInfoContainerGenerator {
             }
 
             if (this.getGenerateMass()) {
-                if(this.useCachedObjects) {
+                if (this.useCachedObjects) {
                     container.setNaturalMass(MolMassCachedCalculator.calcNaturalMass(mol));
                     container.setExactMass(MolMassCachedCalculator.calcExactMass(mol));
-                }
-                else {
+                } else {
                     container.setNaturalMass(AtomContainerManipulator.getNaturalExactMass(mol));
                     container.setExactMass(AtomContainerManipulator.getTotalExactMass(mol));
                 }
@@ -157,11 +164,11 @@ public class ChemInfoContainerGenerator {
                 //IMolecularFormula formula = MolecularFormulaManipulator.getMolecularFormula(mol);
                 container.setMolecularFormula(MolecularFormulaManipulator.getString(MolecularFormulaManipulator.getMolecularFormula(mol)));
             }
-            
+
             // if we are not duplicating the molecule, we need to get rid of hydrogens.
             AtomContainerManipulator.removeHydrogensPreserveMultiplyBonded(mol);
-            
-            
+
+
         }
 
 
@@ -231,5 +238,14 @@ public class ChemInfoContainerGenerator {
 
     boolean getGenerateChainInfoContainers() {
         return generateChainInfoContainers;
+    }
+
+    /**
+     * Whether a clone of the generated molecule should be stored in the cheminfo container.
+     *
+     * @param b
+     */
+    public void setGenerateCDKMol(boolean b) {
+        this.generateCDKMol = b;
     }
 }

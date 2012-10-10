@@ -31,20 +31,30 @@ import org.apache.log4j.Logger;
  * @version $Rev$ : Last Changed $Date$
  * @author  pmoreno
  * @author  $Author$ (this version)
- * @brief   ...class description...
+ * @brief   Info container for fatty acids.
  *
+ * InfoContainer that stores data of a single fatty acid: the number of carbons and positions of double bonds.
  */
 public class ChainInfoContainer {
     
     private static final Logger LOGGER = Logger.getLogger(ChainInfoContainer.class);
     
     private final List<Integer> doubleBondPositions = new ArrayList<Integer>();
+    private Integer numOfCarbons;
+    
+    public ChainInfoContainer(Integer numOfCarbons) {
+        this.numOfCarbons = numOfCarbons;
+    }
     
     public List<Integer> getDoubleBondPositions() {
         return Collections.unmodifiableList(doubleBondPositions);
     }
 
-    public void addDoubleBondPos(int counter) {
-        doubleBondPositions.add(counter);
+    public void addDoubleBondPos(int positionOfDoubleBondInFA) {
+        doubleBondPositions.add(positionOfDoubleBondInFA);
+    }
+
+    public Integer getNumCarbons() {
+        return numOfCarbons;
     }
 }

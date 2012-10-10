@@ -242,8 +242,9 @@ public class LipidFactory {
             }
             this.firstSet=true;
             ChemInfoContainer cont = this.getCDKObjectAsChemInfoObj(head);
-            if(cont!=null)
+            if(cont!=null) {
                 cont.setChainsInfo(chainsInfo);
+            }
             return cont;
         } else {
             IAtomContainer currentChain = chainFactories.get(this.currentIteratingChainFactory).getCurrentChain();
@@ -261,7 +262,9 @@ public class LipidFactory {
                 this.head.add(nextChain);
                 this.head.addBond(bondChain2Head);
                 ChemInfoContainer cont = this.getCDKObjectAsChemInfoObj(head);
-                cont.setChainsInfo(chainsInfo);
+                //if(chemInfoContainerGenerator.getGenerateChainInfoContainers())
+                if(cont!=null)
+                    cont.setChainsInfo(chainsInfo);
                 return cont;
             } else {
                 
@@ -304,7 +307,7 @@ public class LipidFactory {
                      */
                     
                     ChemInfoContainer cont = this.getCDKObjectAsChemInfoObj(head);
-                    if(cont!=null && chemInfoContainerGenerator.getGenerateChainInfoContainers())
+                    if(cont!=null)
                         cont.setChainsInfo(chainsInfo);
                     return cont;
                 }
@@ -341,7 +344,6 @@ public class LipidFactory {
     }
 
     private void replaceChainInfoContainerIndexFromFactory(Integer index, ChainFactory fact) {
-        //this.printChain(nextChain);
         if(chemInfoContainerGenerator.getGenerateChainInfoContainers())
             chainsInfo.set(index, fact.getCurrentChainAsInfoContainer());
     }
@@ -357,9 +359,7 @@ public class LipidFactory {
     }
 
     private void initializeChainInfoContainers() {
-        // first run
-        // if(chemInfoContainerGenerator.getGenerateChainInfoContainers())
-            chainsInfo = new ArrayList<ChainInfoContainer>(chainFactories.size());
+        chainsInfo = new ArrayList<ChainInfoContainer>(chainFactories.size());
     }
 
     private ChemInfoContainer getCDKObjectAsChemInfoObj(IAtomContainer mol) {

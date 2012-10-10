@@ -1,5 +1,5 @@
 /**
- * IsomerInfoContainer.java
+ * SpeciesInfoContainer.java
  *
  * 2012.09.07
  *
@@ -24,9 +24,11 @@ package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 import java.util.List;
 import org.apache.log4j.Logger;
+import uk.ac.ebi.lipidhome.fastlipid.exec.MassRangeIsomersGetter;
+import uk.ac.ebi.lipidhome.fastlipid.mass.PPMBasedMassRange;
 
 /**
- * @name    IsomerInfoContainer
+ * @name    SpeciesInfoContainer
  * @date    2012.09.07
  * @version $Rev$ : Last Changed $Date$
  * @author  pmoreno
@@ -34,9 +36,9 @@ import org.apache.log4j.Logger;
  * @brief   Holds results for a whole group of isomers: number of molecules, common molecular formula, common mass, etc.
  *
  */
-public class IsomerInfoContainer {
+public class SpeciesInfoContainer {
 
-    private static final Logger LOGGER = Logger.getLogger( IsomerInfoContainer.class );
+    private static final Logger LOGGER = Logger.getLogger( SpeciesInfoContainer.class );
     
     private Integer numOfMolsGenerated;
     private String molecularFormula;
@@ -198,7 +200,7 @@ public class IsomerInfoContainer {
     }
 
     /**
-     * Sets the mass deviation in PPM
+     * Sets the mass deviation in PPM for this isomer group.
      * 
      * @param massDevPPM 
      */
@@ -207,7 +209,8 @@ public class IsomerInfoContainer {
     }
 
     /**
-     * Gets the mass deviation in PPM.
+     * Gets the mass deviation in PPM. Currently this is only stored if the {@link MassRangeIsomersGetter} was initialized
+     * with a {@link PPMBasedMassRange} as the mass range parameter. 
      * 
      * @return the massDevPPM
      */

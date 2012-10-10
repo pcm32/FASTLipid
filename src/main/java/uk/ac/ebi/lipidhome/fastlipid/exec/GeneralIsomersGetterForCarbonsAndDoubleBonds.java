@@ -6,18 +6,15 @@ package uk.ac.ebi.lipidhome.fastlipid.exec;
 
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.generator.GeneralIsomersGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
-import uk.ac.ebi.lipidhome.fastlipid.structure.IsomerInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SubSpecies;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
@@ -31,8 +28,6 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
 
     private Integer carbons;
     private Integer doubleBonds;
-    private String pathToHead;
-    private InputStream headMolStream;
     private ChemInfoContainerGenerator chemInfoContainerGenerator;
     private GeneralIsomersGenerator generator;
     private Integer numOfStructs;
@@ -40,11 +35,15 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
     private Double exactMass;
     private Double naturalMass;
     private Set<String> chainConfigs;
+    private Iterator<SubSpecies> subspecies;
 
+    /**
+     * TODO move this to a test class.
+     * 
+     * @param args 
+     */
     public static void main(String[] args) {
-        //String pathToHead = "";// args[0];
-        Integer carbons = 36;//Integer.parseInt(args[1]);
-        //Integer doubleBonds = 0;//Integer.parseInt(args[2]);
+        Integer carbons = 36;
         
         /**
          * Before setting up chain factories, we need to read the head and decide the number of chains for it.
@@ -58,9 +57,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
         GeneralIsomersGetterForCarbonsAndDoubleBonds igfcadb = new GeneralIsomersGetterForCarbonsAndDoubleBonds();
         igfcadb.setChainFactoryGenerator(cfGenerator);
         
-        //igfcadb.setHeadMolStream(IterativePhospholipidGetterDefCarbsDoubleBondPerChain.class.getResourceAsStream("/structures/models/PC.mol"));
         igfcadb.setHead(HeadGroup.PC);
-        //igfcadb.setHeadMolStream(HeadGroup.PC.getHeadMolStream());
         igfcadb.setMaxNumberOfCarbonsInSingleChain(30);
         List<SingleLinkConfiguration> linkers = new ArrayList<SingleLinkConfiguration>();
         linkers.add(SingleLinkConfiguration.Acyl);
@@ -68,12 +65,9 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
         igfcadb.setLinkConfigs(linkers.toArray(new SingleLinkConfiguration[2]));
 
         System.out.println("C\tDB\tNumStruc\tMolForm\tMass\tTime");
-        //for (int i = 4; i<16; i++) {
         for (int i = carbons - 10; i < carbons + 10; i++) {
             for (int b = 0; b < carbons / 2; b++) {
-                //igfcadb.setCarbons(i);
-                //int i=0;
-                //int b=0;
+
                 long start = System.currentTimeMillis();
                 try {
                     igfcadb.setCarbons(i);
@@ -86,33 +80,34 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
                     System.out.println("We are at the weird case!!!");
                 }
                 igfcadb.exec();
-                IsomerInfoContainer stats = igfcadb.getIsomerStatistics();
+                SpeciesInfoContainer stats = igfcadb.getIsomerStatistics();
                 long elapsed = System.currentTimeMillis() - start;
                 if(igfcadb.getFormula()!=null)
                     System.out.println(i+"\t"+b+"\t"+igfcadb.getNumOfStructs()+
                         "\t"+igfcadb.getFormula()+"\t"+igfcadb.getExactMass()+
                         "\t"+elapsed);
-                //Set<String> chainConfigs = igfcadb.getChainConfigs();
-                //for (String config : chainConfigs) {
-                //    System.out.println("Possible: "+config);
-                //}
+
                 if(igfcadb.getNumOfStructs()==0)
                     break;
-                //System.out.println("Carbons & DB:"+i+"\t"+b);
-                //System.out.println("Number of structures:\t" + igfcadb.getNumOfStructs());
-                //System.out.println("Formula:\t" + igfcadb.getFormula());
-                //System.out.println("Mass:\t" + igfcadb.getExactMass());
             }
         }
 
 
 
     }
-    private IsomerInfoContainer isomerStats;
+    private SpeciesInfoContainer isomerStats;
     
 
     public GeneralIsomersGetterForCarbonsAndDoubleBonds() {
         this.init();
+    }
+
+    GeneralIsomersGetterForCarbonsAndDoubleBonds(SpeciesInfoContainer cont) {
+        this.init();
+        this.setCarbons(cont.getNumOfCarbons());
+        this.setDoubleBonds(cont.getNumOfDoubleBonds());
+        this.setHead(cont.getHeadGroup());
+        this.setLinkConfigs(cont.getLinkers().toArray(new SingleLinkConfiguration[cont.getLinkers().size()]));
     }
 
     private void init() {
@@ -124,6 +119,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
         chemInfoContainerGenerator.setGenerateMass(true);
         chemInfoContainerGenerator.setGenerateSmiles(false);
         chemInfoContainerGenerator.setUseCachedObjects(true);
+        chemInfoContainerGenerator.setGenerateChainInfoContainers(true);
 
         chainConfigs = new HashSet<String>();
         generator = new GeneralIsomersGenerator();
@@ -145,6 +141,18 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
         this.setNumOfStructs(this.generator.getTotalGeneratedStructs());
         
         this.isomerStats = this.generator.getIsomerInfoContainer();
+        this.subspecies = this.generator.getSubSpeciesIterator();
+        
+    }
+    
+    /**
+     * Returns an iterator for the different subspecies produced by the underlying generator. Should only be called after
+     * invoking {@link #exec() } method.
+     * 
+     * @return 
+     */
+    public Iterator<SubSpecies> getSupSpeciesIterator() {
+        return this.subspecies;
     }
 
     public void configForSmilesOutput() {
@@ -273,7 +281,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
         this.generator.setLinkConfigs(configs);
     }
 
-    public IsomerInfoContainer getIsomerStatistics() {
+    public SpeciesInfoContainer getIsomerStatistics() {
         return this.isomerStats;
     }
 

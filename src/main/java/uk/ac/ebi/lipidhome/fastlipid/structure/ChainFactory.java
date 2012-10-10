@@ -70,6 +70,13 @@ public class ChainFactory {
         return chain;
     }
 
+    /**
+     * Produces a linear chain of carbon atoms with the given number of conecting bonds (so it has bondsNumber+1 carbons).
+     * This is meant to be the main structure of a fatty acid.
+     * 
+     * @param bondsNumber
+     * @return IAtomContainer with a linear chain of carbon atoms.
+     */
     public IAtomContainer getChain(int bondsNumber) {
         IAtomContainer chain = builder.newInstance(AtomContainer.class);
         IBond previousBond = null;
@@ -128,65 +135,6 @@ public class ChainFactory {
         this.calculateMaxBinaryCounterForBondNumberAndDoubleBonds();
     }
 
-    /*
-     * public char[] nextCharChain() { if (!this.iteratorHasNext) { return null; } //IMolecule tmp =
-     * this.getChain(this.currentCarbons - 1); char[] tmpChain = this.getCharChain(this.currentCarbons -1); boolean
-     * molProd = false; while (!molProd) { if (this.currentCarbons > this.maxCarbons) return null; if
-     * (this.currentUnsatBonds > 0) { //int bitCounts = Long.bitCount(this.binaryCounter);
-     * while(Long.bitCount(this.binaryCounter) != this.currentUnsatBonds || !this.complyWithRules(this.binaryCounter)) {
-     * //while (this.realbinaryCounter.hasNext() && ((Long.bitCount(this.binaryCounter) != this.currentUnsatBonds ||
-     * !this.complyWithRules(this.binaryCounter)))) { //this.binaryCounter++; if(this.realbinaryCounter.hasNext())
-     * this.binaryCounter = this.realbinaryCounter.nextBinaryAsLong(); else { this.binaryCounter++; //break; }
-     * //bitCounts = Long.bitCount(this.binaryCounter); }
-     *
-     * char[] doubleBondPos = new StringBuffer(Long.toBinaryString(binaryCounter)).reverse().toString().toCharArray();
-     * //int bondCounter = 0; if (doubleBondPos.length <= tmpChain.length) { // if (doubleBondPos.length <=
-     * tmp.getBondCount()) { // for (IBond b : tmp.bonds()) { // if (bondCounter == doubleBondPos.length) { // break; //
-     * } // if (doubleBondPos[bondCounter] == '1') { // b.setOrder(IBond.Order.DOUBLE); // } // bondCounter++; // }
-     *
-     * for(int i=0;i<doubleBondPos.length;i++) { if(doubleBondPos[i] == '1') tmpChain[i] = '1'; }
-     *
-     * this.binaryCounter++; //this.binaryCounter = this.realbinaryCounter.nextBinaryAsLong(); molProd = true; if
-     * (this.binaryCounter >= this.maxBinaryCounterForBondLengthAndDoubleBondNum) { // We have reached all the
-     * combinations for the current state of // bond length + double bond numbers. We move on to the next number // of
-     * double bonds //System.out.println("Augmenting double bonds:" + this.currentUnsatBonds); this.currentUnsatBonds++;
-     * //System.out.println("New double bonds:" + this.currentUnsatBonds); //this.binaryCounter = 0;
-     * //this.realbinaryCounter = new RecursiveBinaryCounter(this.currentCarbons-1, this.currentUnsatBonds);
-     * //this.realbinaryCounter = new BooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds);
-     * this.realbinaryCounter = this.getNewBooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds); } if
-     * (this.currentUnsatBonds > this.maxUnsatBonds) { // We have reached the total number ot double bonds for this
-     * carbon // length. We move on to the next number of carbons. // this.currentUnsatBonds = this.minUnsatBonds; //
-     * this.currentCarbons += this.carbonNumberIncrement; this.increaseCarbonAtomsSetMinUnsatsResetBinCounter(); } }
-     * else { // If we are here is because the binary counter got to a place // where more bonds are being considered
-     * than possible within //System.out.println("Augmenting double bonds:" + this.currentUnsatBonds);
-     * this.currentUnsatBonds++; //System.out.println("New double bonds:" + this.currentUnsatBonds);
-     * //this.binaryCounter = 0; //this.realbinaryCounter = new RecursiveBinaryCounter(this.currentCarbons-1,
-     * this.currentUnsatBonds); //this.realbinaryCounter = new BooleanRBCounter(this.currentCarbons-1,
-     * this.currentUnsatBonds); this.realbinaryCounter = this.getNewBooleanRBCounter(this.currentCarbons-1,
-     * this.currentUnsatBonds); if (this.currentUnsatBonds > this.maxUnsatBonds) { // the current amount of bonds. We
-     * need to increase carbon atoms, // set single bonds to min and binary counter = 0 //System.out.println("Changing
-     * due to binary counter being bigger than carbon atoms"); //System.out.println("Current carbon:" +
-     * this.currentCarbons); //System.out.println("Current unsat:" + this.currentUnsatBonds);
-     * //System.out.println("Current bin counter:" + this.binaryCounter); molProd = false;
-     * this.increaseCarbonAtomsSetMinUnsatsResetBinCounter(); //tmp = this.getChain(this.currentCarbons - 1); tmpChain =
-     * this.getCharChain(this.currentCarbons - 1); //System.out.println("New carbon:" + this.currentCarbons);
-     * //System.out.println("New unsat:" + this.currentUnsatBonds); } } } else { molProd = true; if (this.maxUnsatBonds
-     * > this.currentUnsatBonds) { this.currentUnsatBonds++; //this.realbinaryCounter = new
-     * RecursiveBinaryCounter(this.currentCarbons-1, this.currentUnsatBonds); //this.realbinaryCounter = new
-     * BooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds); //this.realbinaryCounter =
-     * this.getNewBooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds); // We can move this out of the if }
-     * else { this.currentCarbons += this.carbonNumberIncrement; //this.realbinaryCounter = new
-     * RecursiveBinaryCounter(this.currentCarbons-1, this.currentUnsatBonds); //this.realbinaryCounter = new
-     * BooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds); //this.realbinaryCounter =
-     * this.getNewBooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds); } this.realbinaryCounter =
-     * this.getNewBooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds); }
-     *
-     * if (this.currentCarbons > this.maxCarbons) { this.iteratorHasNext = false; } else {
-     * this.calculateMaxBinaryCounterForBondNumberAndDoubleBonds(); } } //this.currentChain = tmp; this.currentCharChain
-     * = new char[tmpChain.length]; for(int i=0;i<tmpChain.length;i++) this.currentCharChain[i]=tmpChain[i]; return
-     * tmpChain;
-    }
-     */
     public IAtomContainer nextChain() {
         if (!this.iteratorHasNext) {
             return null;
@@ -308,12 +256,13 @@ public class ChainFactory {
     }
 
     /**
-     * Calculates on demand a ChainInfoContainer that represents the current chain as given by this ChainFactory.
+     * Calculates on demand a ChainInfoContainer that represents the current chain as given by this ChainFactory. This 
+     * method trusts that the internal current chain has not been modified past the getChain() invocation.
      *
-     * @return
+     * @return ChainInfoContainer containing the information of the current chain.
      */
     public ChainInfoContainer getCurrentChainAsInfoContainer() {
-        ChainInfoContainer container = new ChainInfoContainer();
+        ChainInfoContainer container = new ChainInfoContainer(this.currentChain.getAtomCount());
         int counter = 1;
         for (IBond bond : this.currentChain.bonds()) {
             if (bond.getOrder().equals(IBond.Order.DOUBLE) && counter < this.currentChain.getBondCount()) {
