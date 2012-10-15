@@ -102,7 +102,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
         this.init();
     }
 
-    GeneralIsomersGetterForCarbonsAndDoubleBonds(SpeciesInfoContainer cont) {
+    public GeneralIsomersGetterForCarbonsAndDoubleBonds(SpeciesInfoContainer cont) {
         this.init();
         this.setCarbons(cont.getNumOfCarbons());
         this.setDoubleBonds(cont.getNumOfDoubleBonds());
