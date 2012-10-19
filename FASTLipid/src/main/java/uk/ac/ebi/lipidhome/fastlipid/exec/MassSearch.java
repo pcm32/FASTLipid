@@ -180,7 +180,7 @@ public class MassSearch {
                         subSpeciesWriter.write(sp.toString() + "\n");
                     }
                     if (resultType.contains("I")) {
-                        GeneralIterativePhospholipidGetter gipg = new GeneralIterativePhospholipidGetter(sp, cfg);
+                        GeneralIterativeLipidGetter gipg = new GeneralIterativeLipidGetter(sp, cfg);
                         ChemInfoContainerGenerator gen = new ChemInfoContainerGenerator();
                         gen.setGenerateChainInfoContainers(true);
                         gen.setGenerateCDKMol(true);
