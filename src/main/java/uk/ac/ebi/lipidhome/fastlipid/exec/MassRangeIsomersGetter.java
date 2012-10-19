@@ -41,7 +41,8 @@ import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
  *
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
- * @author $Author$ (this version) @brief This class is executable. It receives the desired head group, desired links,
+ * @author $Author$ (this version) 
+ * @brief This class is executable. It receives the desired head group, desired links,
  * and minimum and maximum mass. This class is meant for a short mass range. It should return the different possible
  * configurations and the number of molecules they could have. This second case can only be done if the
  * GeneralIsomersGenerator or equivalent used can produce the mass, to get rid of the cases that fail the mass

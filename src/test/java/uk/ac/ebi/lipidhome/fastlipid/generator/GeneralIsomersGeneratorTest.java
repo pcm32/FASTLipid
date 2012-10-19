@@ -135,6 +135,17 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
     }
     
+    public void testExecuteForBigGlycerol() {
+        int carbons = 65;
+        int doubleBonds = 10;
+        HeadGroup hg = HeadGroup.Glycerol;
+        System.out.println("Big glycerol 65:10");
+        Long start = System.currentTimeMillis();
+        runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
+        Long elapsed = System.currentTimeMillis() - start;
+        System.out.println("Big glycerol 65:10 : "+elapsed);
+    }
+    
     public void testExecuteForPC10_0() {
         int carbons = 10;
         int doubleBonds = 0;
@@ -153,10 +164,10 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         System.out.println("Test for "+hg.name()+" "+carbons+" carbons and "+doubleBonds+" double bonds");
         ChemInfoContainerGenerator chemInfoContainerGenerator = new ChemInfoContainerGenerator();
         chemInfoContainerGenerator.setUseCachedObjects(Boolean.TRUE);
-        chemInfoContainerGenerator.setGenerateInChi(true);
-        chemInfoContainerGenerator.setGenerateInChiKey(true);
-        chemInfoContainerGenerator.setGenerateInChIAux(true);
-        chemInfoContainerGenerator.setGenerateSmiles(true);
+        chemInfoContainerGenerator.setGenerateInChi(false);
+        chemInfoContainerGenerator.setGenerateInChiKey(false);
+        chemInfoContainerGenerator.setGenerateInChIAux(false);
+        chemInfoContainerGenerator.setGenerateSmiles(false);
         chemInfoContainerGenerator.setGenerateMolFormula(Boolean.TRUE);
         
         List<BondRule> rules = Arrays.asList(new BondDistance3nPlus2Rule(), new NoDoubleBondsTogetherRule(), new StarterDoubleBondRule(2));
@@ -171,6 +182,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         generator.setTotalCarbons(carbons);
         generator.setTotalDoubleBonds(doubleBonds);
         generator.setPrintOut(Boolean.TRUE);
+        generator.setMaxCarbonsPerSingleChain(30);
         generator.setStepOfChange(1);
         // TODO Check behaviour of TG with stepChange = 1 and exotic mode on.
         

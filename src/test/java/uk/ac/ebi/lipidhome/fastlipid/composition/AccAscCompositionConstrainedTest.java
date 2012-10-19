@@ -33,4 +33,12 @@ public class AccAscCompositionConstrainedTest extends TestCase {
             System.out.println(instance.next());
         }
     }
+    
+    public void testBigComposition() {
+        System.out.println("65 in 3 slots composition");
+        AccAscComposition instance = new AccAscCompositionConstrained(65,3,2,2);
+        while(instance.hasNext()) {
+            System.out.println(instance.next());
+        }
+    }
 }
