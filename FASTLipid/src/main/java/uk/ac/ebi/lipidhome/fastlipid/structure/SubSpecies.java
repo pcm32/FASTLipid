@@ -43,7 +43,7 @@ public class SubSpecies {
     private List<SingleLinkConfiguration> linkages;
     private String name;
     private HeadGroup hg;
-    private Integer isomerCount;
+    //private Integer isomerCount;
 
     public SubSpecies(ChemInfoContainer cont) {
         this.hg = cont.getHg();
@@ -52,7 +52,6 @@ public class SubSpecies {
         for (ChainInfoContainer chainInfoContainer : cont.getChains()) {
             this.fattyAcids.add(new FattyAcidSpecies(chainInfoContainer.getNumCarbons(), chainInfoContainer.getDoubleBondPositions().size()));
         }
-        this.linkages.addAll(cont.getLinkers());
         
     }
     
@@ -92,7 +91,10 @@ public class SubSpecies {
     public HeadGroup getHeadGroup() {
         return hg;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "H:"+hg.name()+" L:"+linkages.toString()+" FAs:"+fattyAcids.toString();
+    }
     
 }

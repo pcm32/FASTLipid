@@ -95,7 +95,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
 
 
     }
-    private SpeciesInfoContainer isomerStats;
+    private SpeciesInfoContainer speciesStats;
     
 
     public GeneralIsomersGetterForCarbonsAndDoubleBonds() {
@@ -136,11 +136,12 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
     public void exec() {
         chainConfigs.clear();
         this.generator.execute();
-        this.setExactMass(this.generator.getMass());
-        this.setFormula(this.generator.getMolFormula());
-        this.setNumOfStructs(this.generator.getTotalGeneratedStructs());
+        this.speciesStats = this.generator.getIsomerInfoContainer();
+        this.setExactMass(speciesStats.getMass());
+        this.setFormula(speciesStats.getMolecularFormula());
+        this.setNumOfStructs(speciesStats.getNumOfMolsGenerated());
         
-        this.isomerStats = this.generator.getIsomerInfoContainer();
+        
         this.subspecies = this.generator.getSubSpeciesIterator();
         
     }
@@ -282,7 +283,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
     }
 
     public SpeciesInfoContainer getIsomerStatistics() {
-        return this.isomerStats;
+        return this.speciesStats;
     }
 
     public void setHead(HeadGroup headGroup) {

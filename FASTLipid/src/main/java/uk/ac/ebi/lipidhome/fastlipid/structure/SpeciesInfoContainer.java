@@ -218,6 +218,11 @@ public class SpeciesInfoContainer {
         return massDevPPM;
     }
 
+    @Override
+    public String toString() {
+        return molecularFormula+" H:"+headGroup.name()+" L:"+linkers.toString()+" Cs:"+numOfCarbons+" Ds:"+numOfDoubleBonds+" M:"+getMass();
+    }
 
 
+    
 }
