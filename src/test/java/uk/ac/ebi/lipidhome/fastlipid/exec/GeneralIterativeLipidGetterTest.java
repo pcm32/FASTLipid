@@ -10,7 +10,6 @@ import java.util.List;
 import junit.framework.TestCase;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
-import uk.ac.ebi.lipidhome.fastlipid.generator.GeneralIsomersGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.*;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
@@ -20,9 +19,9 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
  *
  * @author pmoreno
  */
-public class GeneralIterativePhospholipidGetterTest extends TestCase {
+public class GeneralIterativeLipidGetterTest extends TestCase {
     
-    public GeneralIterativePhospholipidGetterTest(String testName) {
+    public GeneralIterativeLipidGetterTest(String testName) {
         super(testName);
     }
     
@@ -37,22 +36,22 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
     }
 
     /**
-     * Test of run method, of class GeneralIterativePhospholipidGetter.
+     * Test of run method, of class GeneralIterativeLipidGetter.
      *
     public void testRun() {
         System.out.println("run");
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.run();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of nextChemInfoContainer method, of class GeneralIterativePhospholipidGetter.
+     * Test of nextChemInfoContainer method, of class GeneralIterativeLipidGetter.
      *
     public void testNextChemInfoContainer() {
         System.out.println("nextChemInfoContainer");
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         ChemInfoContainer expResult = null;
         ChemInfoContainer result = instance.nextChemInfoContainer();
         assertEquals(expResult, result);
@@ -61,81 +60,81 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
     }
 
     /**
-     * Test of configForSmilesOutput method, of class GeneralIterativePhospholipidGetter.
+     * Test of configForSmilesOutput method, of class GeneralIterativeLipidGetter.
      *
     public void testConfigForSmilesOutput() {
         System.out.println("configForSmilesOutput");
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.configForSmilesOutput();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of configForMassAndFormula method, of class GeneralIterativePhospholipidGetter.
+     * Test of configForMassAndFormula method, of class GeneralIterativeLipidGetter.
      *
     public void testConfigForMassAndFormula() {
         System.out.println("configForMassAndFormula");
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.configForMassAndFormula();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setCarbonsPerChains method, of class GeneralIterativePhospholipidGetter.
+     * Test of setCarbonsPerChains method, of class GeneralIterativeLipidGetter.
      *
     public void testSetCarbonsPerChains() {
         System.out.println("setCarbonsPerChains");
         Integer[] carbonsChains = null;
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.setCarbonsPerChains(carbonsChains);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setChemInfoContainerGenerator method, of class GeneralIterativePhospholipidGetter.
+     * Test of setChemInfoContainerGenerator method, of class GeneralIterativeLipidGetter.
      *
     public void testSetChemInfoContainerGenerator() {
         System.out.println("setChemInfoContainerGenerator");
         ChemInfoContainerGenerator chemInfoContainerGenerator = null;
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.setChemInfoContainerGenerator(chemInfoContainerGenerator);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setGenerator method, of class GeneralIterativePhospholipidGetter.
+     * Test of setGenerator method, of class GeneralIterativeLipidGetter.
      *
     public void testSetGenerator() {
         System.out.println("setGenerator");
         GeneralIsomersGeneratorDefinedFattyAcids generator = null;
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.setGenerator(generator);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of setGenerateChainInfoContainer method, of class GeneralIterativePhospholipidGetter.
+     * Test of setGenerateChainInfoContainer method, of class GeneralIterativeLipidGetter.
      *
     public void testSetGenerateChainInfoContainer() {
         System.out.println("setGenerateChainInfoContainer");
         boolean generateChainInfoContainer = false;
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.setGenerateChainInfoContainer(generateChainInfoContainer);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
 
     /**
-     * Test of getNumOfTotalStructures method, of class GeneralIterativePhospholipidGetter.
+     * Test of getNumOfTotalStructures method, of class GeneralIterativeLipidGetter.
      *
     public void testGetNumOfTotalStructures() {
         System.out.println("getNumOfTotalStructures");
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         int expResult = 0;
         int result = instance.getNumOfTotalStructures();
         assertEquals(expResult, result);
@@ -144,7 +143,7 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
     }
 
     /**
-     * Test of main method, of class GeneralIterativePhospholipidGetter.
+     * Test of main method, of class GeneralIterativeLipidGetter.
      */
     public void testMain() {
         System.out.println("main");
@@ -156,7 +155,7 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
         List<BondRule> rules = Arrays.asList(new BondDistance3nPlus2Rule(), new StarterDoubleBondRule(2));
         ChainFactoryGenerator cfg = new ChainFactoryGenerator(rules, new BooleanRBCounterStartSeeder(rules), true);
 
-        GeneralIterativePhospholipidGetter ipgdcdbpc = new GeneralIterativePhospholipidGetter(cfg);
+        GeneralIterativeLipidGetter ipgdcdbpc = new GeneralIterativeLipidGetter(cfg);
         ipgdcdbpc.setCarbonsPerChains(carbonsA, carbonsB);
         ipgdcdbpc.setDoubleBondsPerChains(dbA,dbB);
         ipgdcdbpc.setHeadGroup(HeadGroup.PC);
@@ -187,12 +186,12 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
     }
 
     /**
-     * Test of setLinkConfigs method, of class GeneralIterativePhospholipidGetter.
+     * Test of setLinkConfigs method, of class GeneralIterativeLipidGetter.
      *
     public void testSetLinkConfigs() {
         System.out.println("setLinkConfigs");
         SingleLinkConfiguration[] confR1 = {SingleLinkConfiguration.Acyl, SingleLinkConfiguration.Alkyl};
-        GeneralIterativePhospholipidGetter instance = new GeneralIterativePhospholipidGetter();
+        GeneralIterativeLipidGetter instance = new GeneralIterativeLipidGetter();
         instance.setLinkConfigs(confR1);
     }
     */
@@ -213,7 +212,7 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
         Iterator<SubSpecies> subSpIt = gigfcadb.getSupSpeciesIterator();
         while(subSpIt.hasNext()) {
             SubSpecies sp = subSpIt.next();
-            GeneralIterativePhospholipidGetter gipg = new GeneralIterativePhospholipidGetter(sp, cfg);
+            GeneralIterativeLipidGetter gipg = new GeneralIterativeLipidGetter(sp, cfg);
             ChemInfoContainerGenerator gen = new ChemInfoContainerGenerator();
             gen.setGenerateSmiles(Boolean.TRUE);
             gen.setGenerateChainInfoContainers(true);
@@ -252,7 +251,7 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
         Iterator<SubSpecies> subSpIt = gigfcadb.getSupSpeciesIterator();
         while(subSpIt.hasNext()) {
             SubSpecies sp = subSpIt.next();
-            GeneralIterativePhospholipidGetter gipg = new GeneralIterativePhospholipidGetter(sp, cfg);
+            GeneralIterativeLipidGetter gipg = new GeneralIterativeLipidGetter(sp, cfg);
             ChemInfoContainerGenerator gen = new ChemInfoContainerGenerator();
             gen.setGenerateSmiles(Boolean.TRUE);
             gen.setGenerateChainInfoContainers(true);
@@ -269,6 +268,6 @@ public class GeneralIterativePhospholipidGetterTest extends TestCase {
                 System.out.println(cic.getSmiles());
             }
         }
-        
+
     }
 }

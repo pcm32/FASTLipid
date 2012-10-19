@@ -21,7 +21,7 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.*;
  *
  * @author pmoreno
  */
-public class GeneralIterativePhospholipidGetter {
+public class GeneralIterativeLipidGetter {
 
     private List<Integer> carbonsPerChain;
     private List<Integer> doubleBondsPerChain;
@@ -36,7 +36,7 @@ public class GeneralIterativePhospholipidGetter {
     private Boolean generateChainInfoContainer;
     
 
-    public GeneralIterativePhospholipidGetter(ChainFactoryGenerator cfg) {
+    public GeneralIterativeLipidGetter(ChainFactoryGenerator cfg) {
         this.init();
         this.generator.setChainFactoryGenerator(cfg);
     }
@@ -49,7 +49,7 @@ public class GeneralIterativePhospholipidGetter {
      * @param subSpecies
      * @param cfg 
      */
-    public GeneralIterativePhospholipidGetter(SubSpecies subSpecies, ChainFactoryGenerator cfg) {
+    public GeneralIterativeLipidGetter(SubSpecies subSpecies, ChainFactoryGenerator cfg) {
         this.init();
         List<FattyAcidSpecies> fas = subSpecies.getFattyAcids();
         Integer[] carbons = new Integer[fas.size()];
