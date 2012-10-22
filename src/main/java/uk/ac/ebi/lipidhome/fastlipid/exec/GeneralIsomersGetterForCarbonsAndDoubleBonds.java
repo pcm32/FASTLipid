@@ -37,64 +37,6 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
     private Set<String> chainConfigs;
     private Iterator<SubSpecies> subspecies;
 
-    /**
-     * TODO move this to a test class.
-     * 
-     * @param args 
-     */
-    public static void main(String[] args) {
-        Integer carbons = 36;
-        
-        /**
-         * Before setting up chain factories, we need to read the head and decide the number of chains for it.
-         * We should avoid having to deal with chainFactories at this level. What is the need for it??
-         */
-        List<BondRule> rules = Arrays.asList(new BondDistance3nPlus2Rule(), new NoDoubleBondsTogetherRule(), new StarterDoubleBondRule(2));
-        ChainFactoryGenerator cfGenerator = new ChainFactoryGenerator(rules,
-                                                                      new BooleanRBCounterStartSeeder(rules),
-                                                                      true);
-        
-        GeneralIsomersGetterForCarbonsAndDoubleBonds igfcadb = new GeneralIsomersGetterForCarbonsAndDoubleBonds();
-        igfcadb.setChainFactoryGenerator(cfGenerator);
-        
-        igfcadb.setHead(HeadGroup.PC);
-        igfcadb.setMaxNumberOfCarbonsInSingleChain(30);
-        List<SingleLinkConfiguration> linkers = new ArrayList<SingleLinkConfiguration>();
-        linkers.add(SingleLinkConfiguration.Acyl);
-        linkers.add(SingleLinkConfiguration.Acyl);
-        igfcadb.setLinkConfigs(linkers.toArray(new SingleLinkConfiguration[2]));
-
-        System.out.println("C\tDB\tNumStruc\tMolForm\tMass\tTime");
-        for (int i = carbons - 10; i < carbons + 10; i++) {
-            for (int b = 0; b < carbons / 2; b++) {
-
-                long start = System.currentTimeMillis();
-                try {
-                    igfcadb.setCarbons(i);
-                } catch(LNetMoleculeGeneratorException e) {
-                    //System.err.println("Not generating for "+i+" carbons, invalid entry. Turn on exotic mode for this.");
-                    continue;
-                }
-                igfcadb.setDoubleBonds(b);
-                if(i==32 && b==11) {
-                    System.out.println("We are at the weird case!!!");
-                }
-                igfcadb.exec();
-                SpeciesInfoContainer stats = igfcadb.getIsomerStatistics();
-                long elapsed = System.currentTimeMillis() - start;
-                if(igfcadb.getFormula()!=null)
-                    System.out.println(i+"\t"+b+"\t"+igfcadb.getNumOfStructs()+
-                        "\t"+igfcadb.getFormula()+"\t"+igfcadb.getExactMass()+
-                        "\t"+elapsed);
-
-                if(igfcadb.getNumOfStructs()==0)
-                    break;
-            }
-        }
-
-
-
-    }
     private SpeciesInfoContainer speciesStats;
     
 
@@ -131,6 +73,17 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
 
     public void reset() {
         this.init();
+    }
+    
+    /**
+     * Sets the inner generator to stop the generation of molecules once the first molecule has been generated. Is useful
+     * for checking whether a particular head-linkers-carbons-double bonds has any feasible molecules. Needs to be called
+     * before {@link #exec() }.
+     * 
+     * @param firstOnly 
+     */
+    public void setFirstResultOnly(boolean firstOnly) {
+        this.generator.setFirstResultOnly(firstOnly);
     }
 
     public void exec() {

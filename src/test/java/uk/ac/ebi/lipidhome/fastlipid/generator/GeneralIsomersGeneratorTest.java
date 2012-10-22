@@ -174,6 +174,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         ChainFactoryGenerator cfGenerator = new ChainFactoryGenerator(rules, new BooleanRBCounterStartSeeder(rules), true);
 
         GeneralIsomersGenerator generator = new GeneralIsomersGenerator();
+        generator.setFirstResultOnly(true);
         generator.setExoticModeOn(true);
         generator.setChainFactoryGenerator(cfGenerator);
         generator.setChemInfoContainerGenerator(chemInfoContainerGenerator);
