@@ -49,6 +49,7 @@ public class SubSpecies {
         this.hg = cont.getHg();
         this.linkages = new ArrayList<SingleLinkConfiguration>(cont.getLinkers());
         this.fattyAcids = new ArrayList<FattyAcidSpecies>();
+        cont.getChainsInfo();
         for (ChainInfoContainer chainInfoContainer : cont.getChains()) {
             this.fattyAcids.add(new FattyAcidSpecies(chainInfoContainer.getNumCarbons(), chainInfoContainer.getDoubleBondPositions().size()));
         }

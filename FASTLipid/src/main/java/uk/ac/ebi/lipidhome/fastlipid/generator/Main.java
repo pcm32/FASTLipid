@@ -20,9 +20,12 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.LipidFactory;
 
 /**
+ * @TODO get rid of this.
+ * This is an old main and should be deleted
  *
  * @author pmoreno
  */
+@Deprecated
 public class Main {
 
     /**
@@ -100,7 +103,7 @@ public class Main {
 //        }
 
         if (r1 != null && r2 != null) {
-            LipidFactory lipidFactory = new LipidFactory(threadedInt==1);
+            LipidFactory lipidFactory = new LipidFactory(threadedInt==1,false);
             lipidFactory.setHead(mol);
             lipidFactory.addRadicalAnchor(r1);
             lipidFactory.addRadicalAnchor(r2);

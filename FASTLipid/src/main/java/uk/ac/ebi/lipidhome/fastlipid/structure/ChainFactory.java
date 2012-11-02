@@ -36,8 +36,6 @@ public class ChainFactory {
     private int currentShiftsCount;
     private long binaryCounter;
     private long maxBinaryCounterForBondLengthAndDoubleBondNum;
-    //private boolean[] doubleBondBinaryCounter;
-    //private RecursiveBinaryCounter realbinaryCounter;
     private BooleanRBCounter realbinaryCounter;
     private boolean iteratorHasNext;
     private List<BondRule> alwaysRules;
@@ -128,9 +126,6 @@ public class ChainFactory {
         if (this.realbinaryCounter.getCounter() == null) {
             this.iteratorHasNext = false;
             // TODO not very elegant.
-            //System.out.println("We are in config in which the counter is null:");
-            //System.out.println("Bonds:" + (this.currentCarbons - 1));
-            //System.out.println("Double:" + this.currentUnsatBonds);
         }
         this.calculateMaxBinaryCounterForBondNumberAndDoubleBonds();
     }
@@ -214,15 +209,9 @@ public class ChainFactory {
                     if (this.currentUnsatBonds > this.maxUnsatBonds) {
                         // the current amount of bonds. We need to increase carbon atoms,
                         // set single bonds to min and binary counter = 0
-                        //System.out.println("Changing due to binary counter being bigger than carbon atoms");
-                        //System.out.println("Current carbon:" + this.currentCarbons);
-                        //System.out.println("Current unsat:" + this.currentUnsatBonds);
-                        //System.out.println("Current bin counter:" + this.binaryCounter);
                         molProd = false;
                         this.increaseCarbonAtomsSetMinUnsatsResetBinCounter();
                         tmp = this.getChain(this.currentCarbons - 1);
-                        //System.out.println("New carbon:" + this.currentCarbons);
-                        //System.out.println("New unsat:" + this.currentUnsatBonds);
                     }
                 }
             } else {
@@ -262,10 +251,12 @@ public class ChainFactory {
      * @return ChainInfoContainer containing the information of the current chain.
      */
     public ChainInfoContainer getCurrentChainAsInfoContainer() {
-        ChainInfoContainer container = new ChainInfoContainer(this.currentChain.getAtomCount());
+        ChainInfoContainer container = new ChainInfoContainer(getLinkCorrectedCarbonCount());
         int counter = 1;
         for (IBond bond : this.currentChain.bonds()) {
-            if (bond.getOrder().equals(IBond.Order.DOUBLE) && counter < this.currentChain.getBondCount()) {
+            // this part supposes that the additional bonds added for parts of the linkage are added at the end
+            // meaning that they will be at the last positions of the iteration.
+            if (bond.getOrder().equals(IBond.Order.DOUBLE) && counter < getLinkCorrectedCarbonCount()) {
                 container.addDoubleBondPos(counter);
             }
             counter++;
@@ -369,9 +360,6 @@ public class ChainFactory {
     private void increaseCarbonAtomsSetMinUnsatsResetBinCounter() {
         this.currentCarbons += this.carbonNumberIncrement;
         this.currentUnsatBonds = this.minUnsatBonds;
-        //this.binaryCounter = 0;
-        //this.realbinaryCounter = new RecursiveBinaryCounter(this.currentCarbons-1, this.currentUnsatBonds);
-        //this.realbinaryCounter = new BooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds);
         this.realbinaryCounter = this.getNewBooleanRBCounter(this.currentCarbons - 1, this.currentUnsatBonds);
         this.calculateMaxBinaryCounterForBondNumberAndDoubleBonds();
     }
@@ -399,5 +387,10 @@ public class ChainFactory {
      */
     public void setLinkConf(SingleLinkConfiguration linkConf) {
         this.linkConf = linkConf;
+    }
+
+    private Integer getLinkCorrectedCarbonCount() {
+        int additionalLinkageAtoms = linkConf != null ? linkConf.getHeavyAtomCount() - 1 : 0;
+        return this.currentChain.getAtomCount() - additionalLinkageAtoms;
     }
 }

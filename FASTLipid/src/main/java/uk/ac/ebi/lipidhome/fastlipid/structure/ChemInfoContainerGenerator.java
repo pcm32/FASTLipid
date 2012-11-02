@@ -232,8 +232,12 @@ public class ChemInfoContainerGenerator {
         this.useCachedObjects = useCachedObjects;
     }
 
-    public void setGenerateChainInfoContainers(boolean b) {
-        this.generateChainInfoContainers = b;
+    /**
+     * Sets whether {@link ChainInfoContainer} should be generated. 
+     * @param generateContainers true to generate ChainInfoContainers.
+     */
+    public void setGenerateChainInfoContainers(boolean generateContainers) {
+        this.generateChainInfoContainers = generateContainers;
     }
 
     boolean getGenerateChainInfoContainers() {

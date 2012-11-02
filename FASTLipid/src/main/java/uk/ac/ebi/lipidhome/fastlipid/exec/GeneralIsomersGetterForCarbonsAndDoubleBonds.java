@@ -173,13 +173,17 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
     }
 
     /**
+     * @deprecated use {@link SpeciesInfoContainer} instead. The formula no longer needs to be set in this object.
+     * 
      * @param formula the formula to set
      */
+    @Deprecated
     public void setFormula(String formula) {
         this.formula = formula;
     }
 
     /**
+     * @deprecated use {@link 
      * @return the mass
      */
     public Double getExactMass() {
@@ -187,8 +191,11 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
     }
 
     /**
+     * @deprecated use {@link SpeciesInfoContainer} instead. The exact mass no longer needs to be set in this object.
+     * 
      * @param exactMass the mass to set
      */
+    @Deprecated
     public void setExactMass(Double exactMass) {
         this.exactMass = exactMass;
     }
@@ -223,7 +230,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBonds {
         this.generator.setExoticModeOn(exotic);
     }
     
-    public void setStepOfChangForNumberOfCarbonsInChains(Integer step) throws LNetMoleculeGeneratorException {
+    public void setStepOfChangForNumberOfCarbonsInChains(Integer step) {
         this.generator.setStepOfChange(step);
     }
 

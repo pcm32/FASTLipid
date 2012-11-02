@@ -28,6 +28,7 @@ import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
  * @author pmoreno
  */
 public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
+
     private Integer totalCarbons;
     private Integer totalDoubleBonds;
     private Boolean threaded = false;
@@ -76,10 +77,10 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
         } else {
             subSpecies.clear();
         }
-        
+
         IChemObjectBuilder builder = SilentChemObjectBuilder.getInstance();
         IAtomContainer mol = null;
-        
+
         // TODO This part should be refactored to a head reader class.
         if (originalMol == null) {
             try {
@@ -106,24 +107,24 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
         List<IPseudoAtom> rAtoms = detector.detectGenericAtoms(mol);
         // Now we sort the rAtoms according to the labels ((NNPseudoAtom) at).getLabel().equals("R1")
         Collections.sort(rAtoms, new PseudoAtomListComparator());
-        
+
         chainFactories.clear();
         for (int i = 0; i < rAtoms.size(); i++) {
             chainFactories.add(chainFactoryGenerator.makeChainFactory());
         }
-        
-        if(linkConfigs==null) {
+
+        if (linkConfigs == null) {
             linkConfigs = new ArrayList<SingleLinkConfiguration>(this.chainFactories.size());
             for (int i = 0; i < chainFactories.size(); i++) {
                 linkConfigs.add(SingleLinkConfiguration.Acyl);
             }
         }
-        
+
 
         int minCarbonChain = 2; // 1 bond.
-        
+
         List<IAtom> conToRs = new ArrayList<IAtom>(chainFactories.size());
-        
+
         for (int i = 0; i < chainFactories.size(); i++) {
             chainFactories.get(i).setLinkConf(linkConfigs.get(i));
         }
@@ -134,58 +135,55 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
             int generatedStructs = 0;
             long start = System.currentTimeMillis();
             long current;
-            
+
             /**
              * Create and initialize the carbon number iterator.
              */
-            //IntegerListIterator carbonIterator = new ListBasedIntegerListIterator(rAtoms.size(), stepOfChange);
             IntegerListIterator carbonIterator = new AccAscConstrainedBasedIntegerListIterator(rAtoms.size(), stepOfChange);
             carbonIterator.initialize(this.totalCarbons, minCarbonChain);
-            
+
             carbonsConfigLoop:
             while (carbonIterator.hasNext()) {
-                
+
                 List<Integer> carbonDisp = carbonIterator.next();
-                if(this.maxCarbonsPerSingleChain>0 && fattyAcidsWithMoreCarbonsThanAllowed(carbonDisp))
+                if (this.maxCarbonsPerSingleChain > 0 && fattyAcidsWithMoreCarbonsThanAllowed(carbonDisp)) {
                     continue;
+                }
                 /**
-                 * Create and initalize the double bond number iterator. Maybe have a variable for the double bond
-                 * step size.
+                 * Create and initalize the double bond number iterator. Maybe have a variable for the double bond step
+                 * size.
                  */
-                //IntegerListIterator dbIterator = new ListBasedIntegerListIterator(rAtoms.size(), 1);
                 IntegerListIterator dbIterator = new AccAscConstrainedBasedIntegerListIterator(rAtoms.size(), 1);
                 dbIterator.initialize(this.totalDoubleBonds, 0);
-                
+
                 doubleBondsConfigLoop:
-                while(dbIterator.hasNext()) {
+                while (dbIterator.hasNext()) {
                     boolean addedSubSpecie = false;
                     List<Integer> dbDisp = dbIterator.next();
-                    if(incompatibleDoubleBondsWithCarbons(dbDisp,carbonDisp))
+                    if (incompatibleDoubleBondsWithCarbons(dbDisp, carbonDisp)) {
                         continue;
+                    }
                     for (int i = 0; i < chainFactories.size(); i++) {
                         /**
                          * We set each chain factory to the current carbon and double bond iteration
                          */
                         chainFactories.get(i).setChainIterator(carbonDisp.get(i), carbonDisp.get(i), dbDisp.get(i), dbDisp.get(i));
-                        if(this.printOut) {
-                            System.out.println("Chain "+i+" : " + carbonDisp.get(i) + "\tDBs : "+dbDisp.get(i));
-                        }
                     }
 
-                    LipidFactory lipidFactory = new LipidFactory(this.threaded);
+                    LipidFactory lipidFactory = new LipidFactory(this.threaded, this.firstResultOnly);
                     lipidFactory.setChemInfoContainerGenerator(chemInfoContainerGenerator);
                     lipidFactory.setHead(mol);
+                    
                     // The fact that the linkage is an alkyl or an acyl it should
                     // be signalled here, and handled accordingly in the chain
                     // factories. The default should be to have the =O attached,
                     // and removed if the alkyl case is specifed.
                     conToRs.clear();
                     for (int i = 0; i < chainFactories.size(); i++) {
-                        conToRs.add(lipidFactory.addRadicalAnchor(rAtoms.get(i)));   
+                        conToRs.add(lipidFactory.addRadicalAnchor(rAtoms.get(i)));
                     }
-                    
-                    lipidFactory.resetMultipleChainFactories(chainFactories);
 
+                    lipidFactory.resetMultipleChainFactories(chainFactories);
 
                     ChemInfoContainer cont = lipidFactory.nextLipid();
                     // FIXED: again we see a weird cont object with 3:0_4:1, not null but badly formed.
@@ -196,7 +194,7 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
                     if (cont != null) {
                         cont.setLinkers(linkConfigs);
                         cont.setHg(headGroup);
-                        
+
                         if (chemInfoContainerGenerator.getGenerateMass()) {
                             this.exactMass = cont.getExactMass();
                             this.naturalMass = cont.getNaturalMass();
@@ -207,14 +205,14 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
                             chemInfoContainerGenerator.setGenerateMolFormula(false);
                         }
                         if (chainsConfig != null) {
-                            chainsConfig.add(makeChainConfigStr(carbonDisp,dbDisp));
+                            chainsConfig.add(makeChainConfigStr(carbonDisp, dbDisp));
                         }
                         // SubSpecies are only collected once per combination of carbons and double bonds.
-                        if(!addedSubSpecie) {
+                        if (!addedSubSpecie) {
                             this.subSpecies.add(new SubSpecies(cont));
-                            addedSubSpecie=true;
+                            addedSubSpecie = true;
                         }
-                        
+
                     } else {
                         if (chemInfoContainerGenerator.getGenerateMass()) {
                             this.exactMass = null;
@@ -231,8 +229,13 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
 
                     while (cont != null) {
                         generatedStructs++;
-                        if(firstResultOnly)
-                            break carbonsConfigLoop;
+                        /*
+                         * This break is now handled internally by the LipidFactory.
+                         */
+                        //if (firstResultOnly) {
+                        //    break;
+                        //}
+                        //break carbonsConfigLoop;
                         // FIXED: In the exotic case, for 7_1, after 5:1_2:0 is generated, there is a cont that is not null
                         // but that is badly initialized. Solve this problem, which is giving a wrong count.
                         cont = lipidFactory.nextLipid();
@@ -257,15 +260,17 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
 
         }
     }
-    
+
     /**
-     * Returns an iterator for the available subspecies. This should only be invoked after the {@link #execute() } method.
-     * 
+     * Returns an iterator for the available subspecies. This should only be invoked after the {@link #execute() }
+     * method.
+     *
      * @return an iterator for the subspecies seen during the enumeration.
      */
     public Iterator<SubSpecies> getSubSpeciesIterator() {
         return this.subSpecies.iterator();
     }
+
     /**
      * @deprecated use {@link #getIsomerInfoContainer() } instead.
      * @return the totalGeneratedStructs
@@ -302,7 +307,7 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
 
     /**
      * TODO Implement something better for this.
-     * 
+     *
      * @return the chainsConfig
      */
     public Set<String> getChainsConfig() {
@@ -311,7 +316,7 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
 
     /**
      * TODO revise this.
-     * 
+     *
      * @param chainsConfig the chainsConfig to set
      */
     public void setChainsConfigContainer(Set<String> chainsConfig) {
@@ -320,7 +325,7 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
 
     /**
      * The step of change used to increase the size of the fatty acid chains as the enumeration progresses.
-     * 
+     *
      * @return the stepOfChange
      */
     public Integer getStepOfChange() {
@@ -329,14 +334,15 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
 
     /**
      * Checks whether the carbon proposed carbons configuration does not violate the maxCarbonPerSingleChain boundary.
-     * 
+     *
      * @param carbonDisp
-     * @return 
+     * @return
      */
     private boolean fattyAcidsWithMoreCarbonsThanAllowed(List<Integer> carbonDisp) {
         for (Integer chainLength : carbonDisp) {
-            if(chainLength > this.maxCarbonsPerSingleChain)
+            if (chainLength > this.maxCarbonsPerSingleChain) {
                 return true;
+            }
         }
         return false;
     }
@@ -350,7 +356,7 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
         cont.setNumOfCarbons(totalCarbons);
         cont.setNumOfDoubleBonds(totalDoubleBonds);
         cont.setNumOfMolsGenerated(totalGeneratedStructs);
-        
+
         return cont;
     }
 }

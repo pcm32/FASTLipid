@@ -31,9 +31,12 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
 
 /**
+ * TODO
+ * This is old code, it should be either deleted or updated.
  *
  * @author pmoreno
  */
+@Deprecated
 public class IsomersGeneratorDefinedFattyAcids implements IterableGenerator, Runnable {
 
     private String headMolFile;
@@ -205,7 +208,7 @@ public class IsomersGeneratorDefinedFattyAcids implements IterableGenerator, Run
                 System.out.println("Chain A:" + carbonsChainA + "\tDoubleBonds A:" + doubleBondsA);
                 System.out.println("Chain B:" + carbonsChainB + "\tDoubleBonds B:" + doubleBondsB);
             }
-            LipidFactory lipidFactory = new LipidFactory(this.threaded);
+            LipidFactory lipidFactory = new LipidFactory(this.threaded,false);
             lipidFactory.setChemInfoContainerGenerator(chemInfoContainerGenerator);
             lipidFactory.setHead(mol);
             conToR1 = lipidFactory.addRadicalAnchor(r1);

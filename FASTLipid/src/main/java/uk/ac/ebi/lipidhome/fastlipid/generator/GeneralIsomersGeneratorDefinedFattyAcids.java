@@ -169,7 +169,7 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
                 }
             }
 
-            LipidFactory lipidFactory = new LipidFactory(this.threaded);
+            LipidFactory lipidFactory = new LipidFactory(this.threaded,this.firstResultOnly);
             lipidFactory.setChemInfoContainerGenerator(chemInfoContainerGenerator);
             lipidFactory.setHead(mol);
             // The fact that the linkage is an alkyl or an acyl it should
