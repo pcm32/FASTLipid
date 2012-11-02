@@ -7,6 +7,7 @@ package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
+import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 
 /**
@@ -20,14 +21,31 @@ public enum SingleLinkConfiguration {
     
     private IMolecularFormula formula;
     private Double mass;
+    private Integer heavyAtoms;
     
     SingleLinkConfiguration(String formula) {
         this.formula = MolecularFormulaManipulator.getMajorIsotopeMolecularFormula(formula, SilentChemObjectBuilder.getInstance());
         this.mass = MolecularFormulaManipulator.getTotalExactMass(this.formula);
+        this.heavyAtoms = AtomContainerManipulator.getHeavyAtoms(MolecularFormulaManipulator.getAtomContainer(this.formula)).size();
     }
     
+    /**
+     * The exact mass of the linkage, based on the formula.
+     * 
+     * @return Double with the mass of the link, based on its formula. 
+     */
     public Double getMass() {
         return mass;
+    }
+
+    /**
+     * 
+     * The heavy atom (non hydrogen) count. 
+     * 
+     * @return int with the number of atoms
+     */
+    public int getHeavyAtomCount() {
+        return heavyAtoms;
     }
 
 }

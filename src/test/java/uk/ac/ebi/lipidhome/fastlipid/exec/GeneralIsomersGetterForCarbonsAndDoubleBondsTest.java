@@ -13,6 +13,7 @@ import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SubSpecies;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
@@ -42,7 +43,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsTest extends TestCase {
      * Test of complete execution, of class GeneralIsomersGetterForCarbonsAndDoubleBonds.
      */
     public void testCompleteExecution() {
-        Integer carbons = 36;
+        Integer carbons = 20;
 
         /**
          * Before setting up chain factories, we need to read the head and decide the number of chains for it. We should
@@ -71,13 +72,9 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsTest extends TestCase {
                 try {
                     igfcadb.setCarbons(i);
                 } catch (LNetMoleculeGeneratorException e) {
-                    //System.err.println("Not generating for "+i+" carbons, invalid entry. Turn on exotic mode for this.");
                     continue;
                 }
                 igfcadb.setDoubleBonds(b);
-                if (i == 32 && b == 11) {
-                    System.out.println("We are at the weird case!!!");
-                }
                 igfcadb.exec();
                 SpeciesInfoContainer stats = igfcadb.getIsomerStatistics();
                 long elapsed = System.currentTimeMillis() - start;
@@ -92,11 +89,44 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsTest extends TestCase {
                 }
             }
         }
-
-
-
     }
 
+    public void testMissingPairs() {
+        Integer carbons = 7;
+        Integer dbBonds = 1;
+        System.out.println("Missing pairs "+carbons+":"+dbBonds);
+        
+        List<BondRule> rules = Arrays.asList(new BondDistance3nPlus2Rule(), new NoDoubleBondsTogetherRule(), new StarterDoubleBondRule(2));
+        ChainFactoryGenerator cfGenerator = new ChainFactoryGenerator(rules,
+                new BooleanRBCounterStartSeeder(rules),
+                true);
+
+        GeneralIsomersGetterForCarbonsAndDoubleBonds igfcadb = new GeneralIsomersGetterForCarbonsAndDoubleBonds();
+        igfcadb.setChainFactoryGenerator(cfGenerator);
+
+        igfcadb.setHead(HeadGroup.PC);
+        igfcadb.setMaxNumberOfCarbonsInSingleChain(30);
+        List<SingleLinkConfiguration> linkers = new ArrayList<SingleLinkConfiguration>();
+        linkers.add(SingleLinkConfiguration.Acyl);
+        linkers.add(SingleLinkConfiguration.Alkyl);
+        igfcadb.setLinkConfigs(linkers.toArray(new SingleLinkConfiguration[2]));
+        
+        igfcadb.setFirstResultOnly(true);
+        igfcadb.setExoticMode(true);
+        igfcadb.setCarbons(carbons);
+        igfcadb.setDoubleBonds(dbBonds);
+        igfcadb.setStepOfChangForNumberOfCarbonsInChains(1);
+        
+        igfcadb.exec();
+        
+        Iterator<SubSpecies> sbSpIt = igfcadb.getSupSpeciesIterator();
+        
+        while(sbSpIt.hasNext()) {
+            System.out.println(sbSpIt.next().toString());
+        }
+        
+        
+    }
     /**
      * Test of reset method, of class GeneralIsomersGetterForCarbonsAndDoubleBonds.
      *

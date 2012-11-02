@@ -5,12 +5,14 @@
 package uk.ac.ebi.lipidhome.fastlipid.generator;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
 import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
+import uk.ac.ebi.lipidhome.fastlipid.structure.SubSpecies;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondDistance3nPlus2Rule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 import uk.ac.ebi.lipidhome.fastlipid.structure.rule.NoDoubleBondsTogetherRule;
@@ -106,21 +108,17 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         instance.setThreaded(b);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }
+    }*/
 
-    /**
-     * Test of execute method, of class GeneralIsomersGenerator.
-     */
+    
     public void testExecute() {
-        int carbons = 20;
-        int doubleBonds = 5;
+        int carbons = 6;
+        int doubleBonds = 1;
         HeadGroup hg = HeadGroup.PC;
         runTestForHeadgroupCarbsAndDBs(hg, carbons, doubleBonds);
     }
     
-        /**
-     * Test of execute method, of class GeneralIsomersGenerator.
-     */
+ 
     public void testExecuteForMG1() {
         int carbons = 20;
         int doubleBonds = 2;
@@ -146,6 +144,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         System.out.println("Big glycerol 65:10 : "+elapsed);
     }
     
+    
     public void testExecuteForPC10_0() {
         int carbons = 10;
         int doubleBonds = 0;
@@ -169,6 +168,7 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         chemInfoContainerGenerator.setGenerateInChIAux(false);
         chemInfoContainerGenerator.setGenerateSmiles(false);
         chemInfoContainerGenerator.setGenerateMolFormula(Boolean.TRUE);
+        chemInfoContainerGenerator.setGenerateChainInfoContainers(true);
         
         List<BondRule> rules = Arrays.asList(new BondDistance3nPlus2Rule(), new NoDoubleBondsTogetherRule(), new StarterDoubleBondRule(2));
         ChainFactoryGenerator cfGenerator = new ChainFactoryGenerator(rules, new BooleanRBCounterStartSeeder(rules), true);
@@ -189,6 +189,11 @@ public class GeneralIsomersGeneratorTest extends TestCase {
         
 
         generator.execute();
+        
+        Iterator<SubSpecies> subspIt = generator.getSubSpeciesIterator();
+        while(subspIt.hasNext()){
+            System.out.println(subspIt.next().toString());
+        }
         
         SpeciesInfoContainer container = generator.getIsomerInfoContainer();
         assertNotNull(container);
