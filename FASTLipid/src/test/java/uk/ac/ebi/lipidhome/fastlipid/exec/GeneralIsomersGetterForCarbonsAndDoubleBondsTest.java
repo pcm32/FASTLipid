@@ -121,9 +121,13 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsTest extends TestCase {
         
         Iterator<SubSpecies> sbSpIt = igfcadb.getSupSpeciesIterator();
         
+        int counter=0;
         while(sbSpIt.hasNext()) {
+            counter++;
             System.out.println(sbSpIt.next().toString());
         }
+        // This is only valid for 7:1 in the current config.
+        assertEquals(4, counter);
         
         
     }

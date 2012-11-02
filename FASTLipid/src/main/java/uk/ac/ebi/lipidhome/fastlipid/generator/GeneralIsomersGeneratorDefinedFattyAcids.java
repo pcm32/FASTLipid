@@ -202,16 +202,13 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
 
             while (cont != null) {
                 generatedStructs++;
-                //printChain(mol);
                 if (generatedStructs % 500 == 0 && this.printOut) {
                     current = System.currentTimeMillis() - start;
                     System.out.println("StructsGen:" + generatedStructs + " Time:" + current);
                 }
-                //System.out.println("Mol number:"+counter++);
                 if (cont.getSmiles() != null && this.printOut) {
                     System.out.println("Smiles:" + cont.getSmiles());
                 }
-                //System.out.println("Mass:"+cont.getNaturalMass()+"\n\n");
                 cont = lipidFactory.nextLipid();
                 if (this.isInIterableMode() && cont != null) {
                     try {

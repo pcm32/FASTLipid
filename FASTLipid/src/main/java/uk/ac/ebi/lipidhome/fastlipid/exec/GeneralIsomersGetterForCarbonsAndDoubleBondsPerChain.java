@@ -31,7 +31,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
     private Double naturalMass;
 
 
-
+/*
     public static void main(String[] args) {
         HeadGroup hg = HeadGroup.valueOf(args[0]);
         Integer carbonsA = Integer.parseInt(args[1]);
@@ -52,7 +52,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
         System.out.println("Mass:\t"+igfcadbpc.getExactMass());
         
     }
-    
+  */  
 
     public GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain() {
         this.init();

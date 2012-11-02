@@ -147,7 +147,7 @@ public class GeneralIterativeLipidGetterTest extends TestCase {
      */
     public void testMain() {
         System.out.println("main");
-                int carbonsA=12;
+        int carbonsA=12;
         int carbonsB=14;
         int dbA=3;
         int dbB=2;
@@ -156,6 +156,7 @@ public class GeneralIterativeLipidGetterTest extends TestCase {
         ChainFactoryGenerator cfg = new ChainFactoryGenerator(rules, new BooleanRBCounterStartSeeder(rules), true);
 
         GeneralIterativeLipidGetter ipgdcdbpc = new GeneralIterativeLipidGetter(cfg);
+        ipgdcdbpc.setExoticModeOn(true);
         ipgdcdbpc.setCarbonsPerChains(carbonsA, carbonsB);
         ipgdcdbpc.setDoubleBondsPerChains(dbA,dbB);
         ipgdcdbpc.setHeadGroup(HeadGroup.PC);
@@ -170,18 +171,16 @@ public class GeneralIterativeLipidGetterTest extends TestCase {
             System.out.println("Smiles:"+res.getSmiles());
             int count=1;
             for (ChainInfoContainer chainInfo : res.getChainsInfo()) {
-                System.out.println("Chain "+count+": Double bonds in pos:");
+                System.out.println("Chain "+count+" Cs:"+chainInfo.getNumCarbons()+" DBs:"+chainInfo.getDoubleBondPositions());
                 count++;
-                for (Integer integer : chainInfo.getDoubleBondPositions()) {
-                    System.out.print(integer+" ");
-                }
-                System.out.println();
             }
-            System.out.println("Exact mass:"+res.getExactMass());
-            System.out.println("Natural mass:"+res.getNaturalMass());
+            System.out.println("Exact mass:"+ipgdcdbpc.getExactMass());
+            System.out.println("Natural mass:"+ipgdcdbpc.getNaturalMass());
             res = ipgdcdbpc.nextChemInfoContainer();
+            System.out.println();
         }
-
+        // This is a bit dangerous to call before all the chemInfoContainers have been retrieved, due to the multi threading
+        // of the inner Iterative generator. I should fix this so that it can wait for a Future.
         System.out.println("Total:"+ipgdcdbpc.getNumOfTotalStructures());
     }
 

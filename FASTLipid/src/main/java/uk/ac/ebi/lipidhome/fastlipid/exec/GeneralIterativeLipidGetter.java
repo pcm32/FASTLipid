@@ -86,6 +86,25 @@ public class GeneralIterativeLipidGetter {
         generator.setThreaded(false);
         generator.setPrintOut(false);
     }
+    
+    /**
+     * Sets the exotic mode on, which allows to use odd numbers of carbons. This should be invoked before setting the
+     * number of carbons.
+     * 
+     * @param exotic true if the generator should be set to exotic mode. 
+     */
+    public void setExoticModeOn(boolean exotic) {
+        this.generator.setExoticModeOn(true);
+    }
+    
+    /**
+     * Sets the number of carbons that should be added/removed to a fatty acid each time its size is modified.
+     * 
+     * @param carbonStepSize the number of carbons to add or remove at each size changing iteration. 
+     *
+    public void setCarbonStepSize(Integer carbonStepSize) {
+        this.generator.setStepOfChange(carbonStepSize);
+    }*/
 
     public void run() {
         chemInfoContainerGenerator.setGenerateChainInfoContainers(generateChainInfoContainer);
@@ -99,7 +118,7 @@ public class GeneralIterativeLipidGetter {
 
     public void configForSmilesOutput() {
         this.chemInfoContainerGenerator.setGenerateSmiles(true);
-        this.chemInfoContainerGenerator.setGenerateMass(false);
+        this.chemInfoContainerGenerator.setGenerateMass(true);
         this.chemInfoContainerGenerator.setGenerateMolFormula(false);
         this.chemInfoContainerGenerator.setGenerateInChi(false);
         this.chemInfoContainerGenerator.setGenerateInChIAux(false);
@@ -183,6 +202,17 @@ public class GeneralIterativeLipidGetter {
     }
     
     /**
+     * Retrieves the exact mass for the generated lipids of defined carbons and double bonds. This should only be executed
+     * once the first ChemInfoContainer has been retrieved with {@link #nextChemInfoContainer() }. The exact mass is calculated
+     * using the most abundant isotope for each atom. Is the desired mass to use in mass spectrometry.
+     * 
+     * @return the exact mass. 
+     */
+    public Double getExactMass() {
+        return this.generator.getExactMass();
+    }
+    
+    /**
      * Sets the head group to be used.
      * @param hg 
      */
@@ -198,6 +228,18 @@ public class GeneralIterativeLipidGetter {
      */
     public void setLinkConfigs(SingleLinkConfiguration... linkers) {
         this.generator.setLinkConfigs(linkers);
+    }
+
+    /**
+     * Retrieves the natural mass for the generated lipids of defined carbons and double bonds. This should only be executed
+     * once the first ChemInfoContainer has been retrieved with {@link #nextChemInfoContainer() }. The natural mass is
+     * calculated from the weighted averages based abundances of each of the isotopes for each of the atoms. Is what would
+     * be obtained out of measuring a solid of this material in a balance (and then dividing by the mols of molecules).
+     * 
+     * @return the natural mass. 
+     */
+    public Double getNaturalMass() {
+        return this.generator.getNaturalMass();
     }
 
 }

@@ -4,8 +4,6 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.structure;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -165,16 +163,10 @@ public class LipidFactory {
                     chain2head.setAtom(chain.getFirstAtom(), 0);
                     chain2head.setAtom(this.radicalAnchors.get(i), 1);
                     chain2head.setOrder(IBond.Order.SINGLE);
-                    int duplicateBonds = checkForDuplicateBonds(head).size();
                     //IBond chain2head = builder.newBond(chain.getFirstAtom(), this.radicalAnchors.get(i));
                     this.currentRadicalBonds.add(chain2head);
                     this.head.add(chain);
                     this.head.addBond(chain2head);
-                    if (checkForDuplicateBonds(head).size() > duplicateBonds) {
-                        System.out.println("Duplicate bonds generated part A3 : ");
-                        System.out.println("Current                          : " + checkForDuplicateBonds(head).size());
-                        System.out.println("Previous                         : " + duplicateBonds);
-                    }
                 } else {
                     // one of the chain factories is not producing any results
                     // iterate over the previous ones and remove what ever was inserted into head.
@@ -348,24 +340,27 @@ public class LipidFactory {
      */
     private void addChainToHead(Integer chainIndex, Boolean current) throws IllegalArgumentException {
         IBond bondChain2head;
-        replaceChainInfoContainerIndexFromFactory(chainIndex, chainFactories.get(chainIndex));
         IAtomContainer chain;
         if (current) {
             chain = chainFactories.get(chainIndex).getCurrentChain();
         } else {
             chain = chainFactories.get(chainIndex).nextChain();
         }
-        //this.printChain(innerLoopChain);
+        replaceChainInfoContainerIndexFromFactory(chainIndex, chainFactories.get(chainIndex));
         bondChain2head = builder.newInstance(Bond.class);
         bondChain2head.setAtom(chain.getFirstAtom(), 0);
         bondChain2head.setAtom(this.radicalAnchors.get(chainIndex), 1);
         bondChain2head.setOrder(IBond.Order.SINGLE);
-        //bondChain2head = builder.newBond(innerLoopChain.getFirstAtom(), this.radicalAnchors.get(currentIteratingChainFactory));
         this.currentRadicalBonds.set(chainIndex, bondChain2head);
         this.head.add(chain);
         this.head.addBond(bondChain2head);
     }
 
+    /**
+     * This method always uses the current chain of the factory.
+     * @param index
+     * @param fact 
+     */
     private void replaceChainInfoContainerIndexFromFactory(Integer index, ChainFactory fact) {
         if (chemInfoContainerGenerator.getGenerateChainInfoContainers()) {
             chainsInfo.set(index, fact.getCurrentChainAsInfoContainer());
@@ -492,26 +487,5 @@ public class LipidFactory {
         this.chainFactories.clear();
         this.chainFactories.addAll(chainFactories);
         this.firstSet = false;
-    }
-
-    private List<IBond> checkForDuplicateBonds(IAtomContainer head) {
-        Multimap<Integer, Integer> links = HashMultimap.create();
-        List<IBond> redundantBonds = new ArrayList<IBond>();
-        for (IBond iBond : head.bonds()) {
-            List<Integer> participants = new ArrayList<Integer>();
-            for (IAtom iAtom : iBond.atoms()) {
-                participants.add(head.getAtomNumber(iAtom));
-            }
-            Collections.sort(participants);
-            if (participants.get(0) == -1) {
-                continue;
-            }
-            if (links.containsEntry(participants.get(0), participants.get(1))) {
-                redundantBonds.add(iBond);
-            } else {
-                links.put(participants.get(0), participants.get(1));
-            }
-        }
-        return redundantBonds;
     }
 }
