@@ -6,6 +6,8 @@ package uk.ac.ebi.lipidhome.fastlipid.counter;
 
 /**
  * Counter based on a boolean array. 
+ * 
+ * TODO Explore a different implementation using BitSets
  *
  * @author pmoreno
  */

@@ -7,7 +7,6 @@ package uk.ac.ebi.lipidhome.fastlipid.structure;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import org.openscience.cdk.Atom;
 import org.openscience.cdk.Bond;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IBond;
@@ -23,6 +22,10 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
  * nextLipid method is called. The lipid is represented as an ChemInfoContainer object, which holds information about
  * the lipid that is calculated while the CDK molecule is retained in memory. The properties/fields that can be
  * calculated are set through the ChemInfoContainerGenerator object.
+ * 
+ * In the current implementation, all changes are done in the Head group molecule. TODO The implementation should better 
+ * work on a custom object which can tell which part of the molecule is the head, which part is the first chain, the
+ * second chain, linkers, etc.
  *
  * @author pmoreno
  */
@@ -62,27 +65,50 @@ public class LipidFactory {
         }
     }
 
+    /**
+     * Sets the ChemInfoContainerGenerator that will generate the ChemInfoContainer, which is the main result container.
+     * This generator decides which other features (such as InChI, SMILES, Formula, etc.) are calculated for the resulting
+     * molecule.
+     * 
+     * @param chemInfoContainerGenerator 
+     */
     public void setChemInfoContainerGenerator(ChemInfoContainerGenerator chemInfoContainerGenerator) {
         this.chemInfoContainerGenerator = chemInfoContainerGenerator;
     }
 
+    /**
+     * Sets the head group IAtomContainer, where linkers and fatty acids will be attached. 
+     * All changes are done on this object, which might be dangerous.
+     * 
+     * @param head 
+     */
     public void setHead(IAtomContainer head) {
         this.head = head;
         this.radicalAnchors = new ArrayList<IAtom>();
         this.currentRadicalBonds = new ArrayList<IBond>();
         this.chainFactories = new ArrayList<ChainFactory>();
         this.originalHeadAtoms = new ArrayList<IAtom>(this.head.getAtomCount());
-        //System.out.println("Head:"+sg.createSMILES(head));
         for (IAtom atom : this.head.atoms()) {
             this.originalHeadAtoms.add(atom);
         }
     }
 
+    /**
+     * Given an R group (badly names radical here) of the Head Group, this method REMOVES the R group atom and returns
+     * the atom of the head to which the R group was connected. This is where the generated fatty acid chains will be 
+     * connected.
+     * 
+     * The R group can be restored calling
+     * {@link #restoreRadicalAtom(org.openscience.cdk.interfaces.IAtom, org.openscience.cdk.interfaces.IAtom)}
+     * providing the "radical" atom to the method and where to connect it.
+     * 
+     * @param radical
+     * @return atom in the head to which the "radical" was connected 
+     */
     public IAtom addRadicalAnchor(IAtom radical) {
         if (this.head.contains(radical)) {
-            //this.radicals.add(radical);
             for (IBond radicalBond : this.head.getConnectedBondsList(radical)) {
-                if (this.head.contains(radicalBond)) {
+                if (this.head.contains(radicalBond)) { // TODO This if is probably unnecesary.
                     IAtom conToRad = radicalBond.getConnectedAtom(radical);
                     this.radicalAnchors.add(conToRad);
                     this.head.removeBond(radicalBond);
@@ -93,29 +119,19 @@ public class LipidFactory {
         }
         return null;
     }
-
+    
     /**
-     * Use the list method instead, {@link #resetMultipleChainFactories(java.util.List) }
-     *
-     * @param cfA
-     * @param cfB
-     * @deprecated
+     * Restores the given R group (radical) to the head, connecting it to atom conToRadical, which must be part of the
+     * head.
+     * 
+     * @param radical R group to reconnect to the head.
+     * @param conToRadical 
      */
-    @Deprecated
-    public void resetChainFactories(ChainFactory cfA, ChainFactory cfB) {
-        this.currentIteratingChainFactory = 0;
-        this.chainFactories.clear();
-        this.chainFactories.add(cfA);
-        this.chainFactories.add(cfB);
-        this.firstSet = false;
-    }
-
     public void restoreRadicalAtom(IAtom radical, IAtom conToRadical) {
         if (this.head.contains(conToRadical)) {
             IBond radicalBond = builder.newInstance(Bond.class);
             radicalBond.setAtom(radical, 0);
             radicalBond.setAtom(conToRadical, 1);
-            //IBond radicalBond = builder.newBond(radical, conToRadical);
             this.head.addBond(radicalBond);
             this.head.addAtom(radical);
         }
@@ -163,7 +179,6 @@ public class LipidFactory {
                     chain2head.setAtom(chain.getFirstAtom(), 0);
                     chain2head.setAtom(this.radicalAnchors.get(i), 1);
                     chain2head.setOrder(IBond.Order.SINGLE);
-                    //IBond chain2head = builder.newBond(chain.getFirstAtom(), this.radicalAnchors.get(i));
                     this.currentRadicalBonds.add(chain2head);
                     this.head.add(chain);
                     this.head.addBond(chain2head);
@@ -304,31 +319,6 @@ public class LipidFactory {
         }
     }
 
-    private List<IBond> checkForeignBondsAnomaly(IAtomContainer head) {
-        List<IBond> anom = new ArrayList<IBond>();
-        for (IBond iBond : head.bonds()) {
-            for (IAtom iAtom : iBond.atoms()) {
-                if (!head.contains(iAtom)) {
-                    anom.add(iBond);
-                    break;
-                }
-            }
-        }
-        return anom;
-    }
-
-    public List<IAtom> checkForeignAtomAnomaly(IAtomContainer mol) {
-        List<IAtom> foreignAtoms = new ArrayList<IAtom>();
-        for (IBond iBond : mol.bonds()) {
-            for (IAtom iAtom : iBond.atoms()) {
-                if (!mol.contains(iAtom) && !foreignAtoms.contains(iAtom)) {
-                    foreignAtoms.add(iAtom);
-                }
-            }
-        }
-        return foreignAtoms;
-    }
-
     /**
      * Adds the chain from the chainFactory specified by the index to the head. It will either add the current chain in
      * the factory, or the next chain, according to the boolean value "current". This method does not handle the removal
@@ -358,6 +348,7 @@ public class LipidFactory {
 
     /**
      * This method always uses the current chain of the factory.
+     * 
      * @param index
      * @param fact 
      */
@@ -387,93 +378,11 @@ public class LipidFactory {
         return this.chemInfoContainerGenerator.generateChemInfoContainer(mol);
     }
 
-    /*
-     * Steps into this radical anchor and modifies the chain lying here in terms of double bonds and number of carbons.
+    /**
+     * Kills all the threads of any ThreadedChainFactory.
+     * 
+     * TODO The threaded implementation of chains should be transparent for the LipidFactory. This should be removed.
      */
-    private void changeChain(char[] oldChain, char[] newChain, IAtom anchor) {
-        IAtom chain1stCarbon = null;
-        for (IAtom conAtom : this.head.getConnectedAtomsList(anchor)) {
-            if (!this.originalHeadAtoms.contains(conAtom)) {
-                chain1stCarbon = conAtom;
-                break;
-            }
-        }
-        IAtom previous = anchor;
-        int bondCounter = 0;
-        //int atomCounter=0;
-        IAtom current = chain1stCarbon;
-        //this.atomsToRemove.clear();
-        //this.bondsToRemove.clear();
-        while (current != null) {
-            if (!previous.equals(anchor)) {
-                if (oldChain.length > bondCounter && newChain.length > bondCounter) {
-                    if (oldChain[bondCounter] != newChain[bondCounter]) {
-                        if (newChain[bondCounter] == '1') {
-                            this.head.getBond(previous, current).setOrder(IBond.Order.DOUBLE);
-                        } else {
-                            this.head.getBond(previous, current).setOrder(IBond.Order.SINGLE);
-                        }
-                    }
-                } else if (newChain.length <= bondCounter) {
-                    // Here we mark the atom and bond for removal
-                    this.bondsToRemove.add(this.head.getBond(previous, current));
-                    this.atomsToRemove.add(current);
-                }
-                bondCounter++;
-            }
-
-            IAtom next = this.nextCarbonInChain(current, previous);
-            previous = current;
-            current = next;
-        }
-        if (this.atomsToRemove.size() > 0) {
-            for (IAtom atomToRem : this.atomsToRemove) {
-                this.head.removeAtom(atomToRem);
-            }
-            for (IBond bondToRem : this.bondsToRemove) {
-                this.head.removeBond(bondToRem);
-            }
-            this.atomsToRemove.clear();
-            this.bondsToRemove.clear();
-        }
-        while (newChain.length > bondCounter) {
-            //IAtom carbonAtom = builder.newAtom("C");
-            IAtom carbonAtom = builder.newInstance(Atom.class);
-            carbonAtom.setSymbol("C");
-            IBond newBond = builder.newInstance(Bond.class);
-            newBond.setAtom(previous, 0);
-            newBond.setAtom(carbonAtom, 1);
-            //IBond newBond = builder.newBond(previous, carbonAtom);
-            if (newChain[bondCounter] == '1') {
-                newBond.setOrder(IBond.Order.DOUBLE);
-            }
-            this.head.addAtom(carbonAtom);
-            this.head.addBond(newBond);
-            bondCounter++;
-        }
-    }
-
-    private IAtom nextCarbonInChain(IAtom current, IAtom previous) {
-        for (IAtom conAtom : this.head.getConnectedAtomsList(current)) {
-            if (!conAtom.equals(previous)) {
-                return conAtom;
-            }
-        }
-        return null;
-    }
-
-    private void printChain(IAtomContainer mol) {
-        String res = "C";
-        for (IBond bond : mol.bonds()) {
-            if (bond.getOrder().equals(IBond.Order.SINGLE)) {
-                res += "-C";
-            } else {
-                res += "=C";
-            }
-        }
-        System.out.println(res);
-    }
-
     public void killThreads() {
         for (ChainFactory cf : this.chainFactories) {
             if (cf instanceof ThreadedChainFactory) {
@@ -482,6 +391,11 @@ public class LipidFactory {
         }
     }
 
+    /**
+     * Clears the current chain factories, and replaces them with the ones provided.
+     * 
+     * @param chainFactories 
+     */
     public void resetMultipleChainFactories(List<ChainFactory> chainFactories) {
         this.currentIteratingChainFactory = 0;
         this.chainFactories.clear();
