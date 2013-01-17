@@ -4,15 +4,12 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.exec;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import uk.ac.ebi.lipidhome.fastlipid.generator.ChainFactoryGenerator;
-import uk.ac.ebi.lipidhome.fastlipid.generator.GeneralIsomersGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.generator.GeneralIsomersGeneratorDefinedFattyAcids;
-import uk.ac.ebi.lipidhome.fastlipid.generator.IsomersGeneratorDefinedFattyAcids;
 import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 import uk.ac.ebi.lipidhome.fastlipid.structure.*;
 
