@@ -19,13 +19,14 @@
  * along with CheMet.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.ac.ebi.lipidhome.fastlipid.generator;
+package uk.ac.ebi.lipidhome.fastlipid.util;
 
 
 import java.util.Comparator;
 import org.apache.log4j.Logger;
 import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IPseudoAtom;
+import uk.ac.ebi.lipidhome.fastlipid.generator.LNetMoleculeGeneratorException;
 
 /**
  * @name    PseudoAtomListComparator
@@ -40,9 +41,15 @@ public class PseudoAtomListComparator implements Comparator<IPseudoAtom> {
 
     private static final Logger LOGGER = Logger.getLogger( PseudoAtomListComparator.class );
 
-    public PseudoAtomListComparator() {
-    }
-
+    /**
+     * This comparison assumes that the label of both pseudoatoms follow the R\d+ convention, in which case the 
+     * comparison is based on the numbers following the R.
+     * If one of them doesn't follow this convention, then a runtime exception is thrown.
+     * 
+     * @param o1 first PseudoAtom
+     * @param o2 second PseudoAtom
+     * @return -1 if label of o1 < label of o2, 0 if the same, 
+     */
     public int compare(IPseudoAtom o1, IPseudoAtom o2) {
         try {
             Integer label1 = Integer.parseInt(o1.getLabel().substring(1));

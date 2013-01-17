@@ -4,6 +4,7 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.generator;
 
+import uk.ac.ebi.lipidhome.fastlipid.util.PseudoAtomListComparator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChainFactory;

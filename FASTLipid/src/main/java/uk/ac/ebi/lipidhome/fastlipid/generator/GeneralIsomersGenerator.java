@@ -4,11 +4,10 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.generator;
 
+import uk.ac.ebi.lipidhome.fastlipid.util.PseudoAtomListComparator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
-import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
-import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChainFactory;
 import uk.ac.ebi.lipidhome.fastlipid.structure.LipidFactory;
 import java.util.*;
@@ -186,7 +185,6 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
                     lipidFactory.resetMultipleChainFactories(chainFactories);
 
                     ChemInfoContainer cont = lipidFactory.nextLipid();
-                    // FIXED: again we see a weird cont object with 3:0_4:1, not null but badly formed.
                     if (this.printOut) {
                         chemInfoContainerGenerator.setGenerateMolFormula(true);
                         chemInfoContainerGenerator.setGenerateMass(true);

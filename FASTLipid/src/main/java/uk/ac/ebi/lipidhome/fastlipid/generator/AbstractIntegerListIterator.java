@@ -35,7 +35,7 @@ import java.util.*;
  * @version $Rev$ : Last Changed $Date$
  * @author  pmoreno
  * @author  $Author$ (this version)
- * @brief   ...class description...
+ * @brief   This is one of the first versions of the IntegerListIterator. It is probably obsolete.
  *
  */
 public abstract class AbstractIntegerListIterator {
@@ -170,9 +170,6 @@ public abstract class AbstractIntegerListIterator {
         }
         indexToDecrease = 0;
         indexToIncrease = 1;
-        //        if (indexToIncrease >= counters.size()) {
-        //            hasNext = false;
-        //        }
         /**
          * We copy the state of the counter for the first version of the iterated counter
          */
