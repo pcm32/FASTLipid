@@ -6,6 +6,8 @@
 package uk.ac.ebi.lipidhome.fastlipid.structure.rule;
 
 /**
+ * This rule enforces that there needs to be a minimum number of single bonds before the first double bond is 
+ * present.
  *
  * @author pmoreno
  */
@@ -13,6 +15,12 @@ public class StarterDoubleBondRule extends BondRule {
 
     private int startPos;
 
+    /**
+     * Initializes the rule with the minimum initial position for double bonds. No double bond can be accepted before the
+     * starting position given.
+     * 
+     * @param startPosition 
+     */
     public StarterDoubleBondRule(int startPosition) {
         this.startPos = startPosition-1;
     }

@@ -6,11 +6,15 @@
 package uk.ac.ebi.lipidhome.fastlipid.structure.rule;
 
 /**
- *
+ * This rule enforces that any double bonds need to be at a distance of 3n + 2, where n is any non negative integer.
+ * 
  * @author pmoreno
  */
 public class BondDistance3nPlus2Rule extends BondRule {
 
+    /**
+     * Constructor for the 3n + 2 position rule.
+     */
     public BondDistance3nPlus2Rule() {
         this.shiftingDistance=3;
     }
@@ -47,6 +51,7 @@ public class BondDistance3nPlus2Rule extends BondRule {
         return true;
     }
 
+    @Override
     public boolean[] leftMostValue(int positions, int on, int initialSpace) {
         boolean[] counter = new boolean[positions];
         int usedPositions=0;
@@ -73,6 +78,7 @@ public class BondDistance3nPlus2Rule extends BondRule {
         return counter;
     }
 
+    @Override
     public int firstUsedPosition() {
         return 0;
     }

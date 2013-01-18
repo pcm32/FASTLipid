@@ -6,6 +6,8 @@
 package uk.ac.ebi.lipidhome.fastlipid.structure.rule;
 
 /**
+ * This rule enforces that no two double bonds can be next to each other. This rule is redundant when using the 
+ * 3n + 2 rule. TODO check whether is relevant to have this rule.
  *
  * @author pmoreno
  */
