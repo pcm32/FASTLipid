@@ -11,6 +11,9 @@ import java.util.LinkedList;
 import java.util.Set;
 
 /**
+ * A generic object pool implementation. Since we are interested in objects that do not expire, 
+ * we avoid the validate method. It is implemented with a Set for locked elements (so that removals are cheap) and a deque
+ * for unlocked elements, so that checkouts are cheap as well (no iterator needed).
  *
  * @author pmoreno
  */
@@ -27,16 +30,18 @@ public abstract class ObjectPool<T> {
   public ObjectPool() {
     locked = new HashSet<T>();
     unlocked = new LinkedList<T>();
-    //unlocked = new HashSet<T>();
   }
 
   protected abstract T create();
 
-  //public abstract boolean validate(T o);
-
   public abstract void expire(T o);
   
 
+  /**
+   * Gets an object from the pool. Creates a new one if there is none in the deque.
+   * 
+   * @return an object T from the pool. 
+   */
   public T checkOut() {
     T t;
     if (!unlocked.isEmpty()) {
@@ -46,22 +51,25 @@ public abstract class ObjectPool<T> {
     }
     // no objects available, create a new one
     t = create();
-    //locked.put(t, now);
     locked.add(t);
     return t;
   }
 
+  /**
+   * Gives t back to the pool.
+   * 
+   * @param t the object to be inserted again in the pool.
+   */
   public void checkIn(T t) {
     locked.remove(t);
-    //unlocked.put(t, System.currentTimeMillis());
     unlocked.addLast(t);
   }
   
+  /**
+   * Clears the pool.
+   */
   public void clearPool() {
       this.locked.clear();
       this.unlocked.clear();
   }
 }
-
-//The three remaining methods are abstract
-//and therefore must be implemented by the subclass

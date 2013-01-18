@@ -28,13 +28,20 @@ import org.openscience.cdk.interfaces.IPseudoAtom;
  *
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
- * @author $Author$ (this version) @brief ...class description...
+ * @author $Author$ (this version) 
+ * @brief Detects generic atoms (and retrieves them) in an AtomContainer (molecule).
  *
  */
 public class GenericAtomDetector {
 
     private static final Logger LOGGER = Logger.getLogger(GenericAtomDetector.class);
 
+    /**
+     * Detects and retrieves generic atoms from the given molecule.
+     * 
+     * @param mol
+     * @return a list with generic atoms present in the mol. 
+     */
     public List<IPseudoAtom> detectGenericAtoms(IAtomContainer mol) {
         // This part above should be refactored to a head reader class.
         List<IPseudoAtom> rAtoms = new ArrayList<IPseudoAtom>();

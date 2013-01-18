@@ -44,24 +44,44 @@ public class PoolProvider {
     MoleculePool molPool;
     BondPool bondPool;
     
+    /**
+     * Initializes an atom pool, a mol pool, and a bond pool.
+     */
     private PoolProvider() {
         this.atomPool = new AtomPool(SilentChemObjectBuilder.getInstance());
         this.molPool = new MoleculePool(SilentChemObjectBuilder.getInstance());
         this.bondPool = new BondPool(SilentChemObjectBuilder.getInstance());
     }
     
+    /**
+     * 
+     * @return the atom pool.
+     */
     public AtomPool getAtomPool() {
         return this.atomPool;
     }
     
+    /**
+     * 
+     * @return the bond pool
+     */
     public BondPool getBondPool() {
         return this.bondPool;
     }
     
+    /**
+     * 
+     * @return the molecule pool.
+     */
     public MoleculePool getMoleculePool() {
         return this.molPool;
     }
 
+    /**
+     * Singleton access.
+     * 
+     * @return the pool provider instance.
+     */
     public static PoolProvider getInstance() {
         if(instance==null) {
             instance = new PoolProvider();

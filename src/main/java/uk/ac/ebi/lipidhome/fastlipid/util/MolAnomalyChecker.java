@@ -35,7 +35,8 @@ import org.openscience.cdk.interfaces.IBond;
  * @version $Rev$ : Last Changed $Date$
  * @author  pmoreno
  * @author  $Author$ (this version)
- * @brief   ...class description...
+ * @brief   Checks for anomalies on AtomContainers, such as whether there are bonds or atoms pointing away from the 
+ *          molecule.
  *
  */
 public class MolAnomalyChecker {

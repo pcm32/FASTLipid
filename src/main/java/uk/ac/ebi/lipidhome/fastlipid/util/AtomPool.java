@@ -10,13 +10,19 @@ import org.openscience.cdk.interfaces.IAtom;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 
 /**
- *
+ * A pool of CDK IAtoms 
+ * 
  * @author pmoreno
  */
 public class AtomPool extends ObjectPool<IAtom>{
 
     private IChemObjectBuilder builder;
 
+    /**
+     * Initializes the pool with a defined ChemObjectBuilder.
+     * 
+     * @param builder the builder to build atoms in this pool.
+     */
     public AtomPool(IChemObjectBuilder builder) {
         super();
         this.builder = builder;

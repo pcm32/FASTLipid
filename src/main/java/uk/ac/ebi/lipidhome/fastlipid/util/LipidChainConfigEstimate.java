@@ -89,6 +89,11 @@ public class LipidChainConfigEstimate {
     }
 
 
+    /**
+     * Initializes the estimate result with the given head group.
+     * 
+     * @param hg 
+     */
     public LipidChainConfigEstimate(HeadGroup hg) {
         this.carbonsToMaxDoubleBonds = new HashMap<Integer, Integer>();
         this.carbonsToMinDoubleBonds = new HashMap<Integer, Integer>();
@@ -127,14 +132,35 @@ public class LipidChainConfigEstimate {
         this.carbonsToMinDoubleBonds.put(minCarbons, minDoubleBonds);
     }
     
+    /**
+     * Get the maximum number of double bonds that the estimation allows for the given number of carbons. This method
+     * should be called with min or max number of carbons obtained from the {@link #getMaxCarbons() } and 
+     * {@link #getMinCarbons() }.
+     * 
+     * @param carbons
+     * @return the maximum number of double bonds for that amount of carbons.
+     */
     public Integer getMaxDoubleBonds(Integer carbons) {
         return carbonsToMaxDoubleBonds.get(carbons);
     }
 
+    /**
+     * Get the minimum number of double bonds that the estimation allows for the given number of carbons. This method
+     * should be called with min or max number of carbons obtained from the {@link #getMaxCarbons() } and 
+     * {@link #getMinCarbons() }.
+     * 
+     * @param carbons
+     * @return the min number of double bonds for that amount of carbons.
+     */
     public Integer getMinDoubleBonds(Integer carbons) {
         return carbonsToMinDoubleBonds.get(carbons);
     }
 
+    /**
+     * Gets the head group set for this estimation result.
+     * 
+     * @return the head group previously set. 
+     */
     public HeadGroup getHeadGroup() {
         return this.hg;
     }
