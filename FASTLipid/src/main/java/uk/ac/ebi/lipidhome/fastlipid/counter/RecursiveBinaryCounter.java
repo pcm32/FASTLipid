@@ -8,6 +8,7 @@ package uk.ac.ebi.lipidhome.fastlipid.counter;
 import java.math.BigInteger;
 
 /**
+ * Binary counter based on a Big Integer.
  *
  * @author pmoreno
  */

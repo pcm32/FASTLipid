@@ -21,15 +21,17 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 /**
- * @name MultiSetBasedIntegerListIterator @date 2012.08.17
- *
+ * @name MultiSetBasedIntegerListIterator 
+ * @date 2012.08.17
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
  * @author $Author$ (this version) 
  * @brief Handles the iteration on a list of carbon or double bond counters, as the
  * number of carbons or double bonds is either decreased or increased.
  *
+ * @deprecated use {@link AccAscConstrainedBasedIntegerListIterator} instead.
  */
+@Deprecated
 public class ListBasedIntegerListIterator extends AbstractNCIntegerListIterator implements IntegerListIterator {
 
     private static final Logger LOGGER = Logger.getLogger(ListBasedIntegerListIterator.class);

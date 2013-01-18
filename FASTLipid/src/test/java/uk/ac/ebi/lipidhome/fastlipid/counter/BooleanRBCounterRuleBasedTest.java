@@ -4,8 +4,6 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.counter;
 
-import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterRuleBased;
-import uk.ac.ebi.lipidhome.fastlipid.counter.BooleanRBCounterStartSeeder;
 import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
@@ -49,7 +47,7 @@ public class BooleanRBCounterRuleBasedTest extends TestCase {
                 new StarterDoubleBondRule(2));
 
         BooleanRBCounterStartSeeder seeder = new BooleanRBCounterStartSeeder(rules);
-        BooleanRBCounterRuleBased binCounter = new BooleanRBCounterRuleBased(total, on, seeder);
+        BinaryCounter binCounter = new BooleanRBCounterRuleBased(total, on, seeder);
 
 
         boolean[] counter = seeder.getStartingSeedFor(total, on);

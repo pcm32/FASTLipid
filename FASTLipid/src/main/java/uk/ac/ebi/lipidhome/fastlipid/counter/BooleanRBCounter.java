@@ -5,13 +5,13 @@
 package uk.ac.ebi.lipidhome.fastlipid.counter;
 
 /**
- * Counter based on a boolean array. 
+ * Binary counter based on a boolean array. 
  * 
  * TODO Explore a different implementation using BitSets
  *
  * @author pmoreno
  */
-public class BooleanRBCounter {
+public class BooleanRBCounter implements BinaryCounter {
 
     private boolean[] counter;
     protected Integer bitCount;
@@ -104,6 +104,7 @@ public class BooleanRBCounter {
      * 
      * @return 
      */
+    @Override
     public String binaryAsString() {
         String count = "";
         // TODO in outer classes this string is reversed, it could well be written in reverse mode here instead of
@@ -122,6 +123,7 @@ public class BooleanRBCounter {
      * Advances the internal counter and returns the next value as a Long.
      * @return 
      */
+    @Override
     public Long nextBinaryAsLong() {
         Long res = longValue();
         // Find leftmost 1
@@ -191,6 +193,7 @@ public class BooleanRBCounter {
         return val;
     }
 
+    @Override
     public boolean hasNext() {
         return this.next;
     }
@@ -200,6 +203,7 @@ public class BooleanRBCounter {
      * 
      * @return boolean array for the counter in the current position. 
      */
+    @Override
     public boolean[] getCounter() {
         return counter;
     }
@@ -207,6 +211,7 @@ public class BooleanRBCounter {
     /**
      * @param counter the counter to set
      */
+    @Override
     public void setCounter(boolean[] counter) {
         this.counter = counter;
     }

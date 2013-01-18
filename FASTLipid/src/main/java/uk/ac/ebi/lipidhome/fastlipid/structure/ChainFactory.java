@@ -16,6 +16,7 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.rule.BondRule;
 
 import java.util.ArrayList;
 import java.util.List;
+import uk.ac.ebi.lipidhome.fastlipid.counter.BinaryCounter;
 
 /**
  *
@@ -33,10 +34,9 @@ public class ChainFactory {
     private int maxUnsatBonds;
     private int minUnsatBonds;
     private int currentUnsatBonds;
-    private int currentShiftsCount;
     private long binaryCounter;
     private long maxBinaryCounterForBondLengthAndDoubleBondNum;
-    private BooleanRBCounter realbinaryCounter;
+    private BinaryCounter realbinaryCounter;
     private boolean iteratorHasNext;
     private List<BondRule> alwaysRules;
     private List<BondRule> anyRules;
@@ -56,10 +56,24 @@ public class ChainFactory {
         this.linkConf = SingleLinkConfiguration.Acyl;
     }
 
+    /**
+     * Returns true if the chain iterator could possibly have a next chain to return. A true value does not guarantee that
+     * the there will be a next chain, so it is worth calling the {@link #nextChain() } method. However, a false value 
+     * indicates that there is nothing else in the chain iterator.
+     * 
+     * @return 
+     */
     public boolean couldNextExist() {
         return iteratorHasNext;
     }
 
+    /**
+     * Produces a linear chain of carbon atoms with the given number of conecting bonds (so it has bondsNumber+1 carbons).
+     * This is meant to be the main structure of a fatty acid.
+     * 
+     * @param bondsNumber
+     * @return char[] representing the positions of double bonds with a 1.
+     */
     public char[] getCharChain(int bondsNumber) {
         char[] chain = new char[bondsNumber];
         for (int i = 0; i < bondsNumber; i++) {
@@ -108,6 +122,14 @@ public class ChainFactory {
         return chain;
     }
 
+    /**
+     * Sets the chain iterator min and max numbers of carbons and double bonds.
+     * 
+     * @param minCarbonAtoms
+     * @param maxCarbonAtoms
+     * @param minUnsatBonds
+     * @param maxUnsatBonds 
+     */
     public void setChainIterator(int minCarbonAtoms, int maxCarbonAtoms, int minUnsatBonds, int maxUnsatBonds) {
         this.minCarbons = minCarbonAtoms;
         this.maxCarbons = maxCarbonAtoms;
@@ -118,7 +140,6 @@ public class ChainFactory {
         this.currentCarbons = this.minCarbons;
         this.currentUnsatBonds = this.minUnsatBonds;
         this.binaryCounter = 0;
-        this.currentShiftsCount = 0;
         this.iteratorHasNext = true;
         //this.realbinaryCounter = new RecursiveBinaryCounter(this.currentCarbons-1, this.currentUnsatBonds);
         //this.realbinaryCounter = new BooleanRBCounter(this.currentCarbons-1, this.currentUnsatBonds);
@@ -130,6 +151,11 @@ public class ChainFactory {
         this.calculateMaxBinaryCounterForBondNumberAndDoubleBonds();
     }
 
+    /**
+     * Returns the next chain of this factory as an AtomContainer.
+     * 
+     * @return fatty acid chain representation. 
+     */
     public IAtomContainer nextChain() {
         if (!this.iteratorHasNext) {
             return null;
@@ -143,7 +169,7 @@ public class ChainFactory {
             if (this.currentUnsatBonds > 0) {
                 boolean binaryCounterGotToTheTop = false;
                 while (Long.bitCount(this.binaryCounter) != this.currentUnsatBonds 
-                        || !this.complyWithRules(this.realbinaryCounter.getCounter())) {
+                        || !this.complyWithRules(this.realbinaryCounter.getCounter())) { 
                     if (this.realbinaryCounter.hasNext()) {
                         this.binaryCounter = this.realbinaryCounter.nextBinaryAsLong();
                     } else {
@@ -240,6 +266,11 @@ public class ChainFactory {
         return tmp;
     }
 
+    /**
+     * Returns the current chain that the iterator has produced, without advancing the iteration of chains.
+     * 
+     * @return current chain 
+     */
     public IAtomContainer getCurrentChain() {
         return this.currentChain;
     }
@@ -303,8 +334,8 @@ public class ChainFactory {
     public void cleanUp() {
     }
 
-    private BooleanRBCounter getNewBooleanRBCounter(int carbons_minus_one, int unsat_bonds) {
-        BooleanRBCounter counter = useRuleBasedBooleanCounter
+    private BinaryCounter getNewBooleanRBCounter(int carbons_minus_one, int unsat_bonds) {
+        BinaryCounter counter = useRuleBasedBooleanCounter
                 ? new BooleanRBCounterRuleBased(carbons_minus_one, unsat_bonds, seeder)
                 : new BooleanRBCounter(carbons_minus_one, unsat_bonds);
         
@@ -349,10 +380,21 @@ public class ChainFactory {
         return false;
     }
 
+    /**
+     * Adds rules that should always be obeyed by the fatty acid candidates.
+     * 
+     * @param rule 
+     */
     public void addAlwaysRule(BondRule rule) {
         this.alwaysRules.add(rule);
     }
 
+    /**
+     * Adds rules to a group such that if any of the rules in the group are observed, then the fatty acid candidate is
+     * accepted. In practical terms this type of rule is not really being used.
+     * 
+     * @param rule 
+     */
     public void addAnyRule(BondRule rule) {
         this.anyRules.add(rule);
     }
@@ -364,6 +406,9 @@ public class ChainFactory {
         this.calculateMaxBinaryCounterForBondNumberAndDoubleBonds();
     }
 
+    /**
+     * Resets the chain iterator to the initially set min and max carbons and double bonds.
+     */
     public void resetChainIterator() {
         setChainIterator(this.minCarbons, this.maxCarbons, this.minUnsatBonds, this.maxUnsatBonds);
     }
@@ -376,6 +421,9 @@ public class ChainFactory {
     }
 
     /**
+     * Returns the link (between head and fatty acid) configuration that this fatty acid is using.
+     * TODO Check that links are being used from the chain.
+     * 
      * @return the linkConf
      */
     public SingleLinkConfiguration getLinkConf() {
@@ -383,6 +431,8 @@ public class ChainFactory {
     }
 
     /**
+     * Sets the link (between head and fatty acid) to be used.
+     * 
      * @param linkConf the linkConf to set
      */
     public void setLinkConf(SingleLinkConfiguration linkConf) {

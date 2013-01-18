@@ -28,9 +28,12 @@ import org.paukov.combinatorics.permutations.PermutationGenerator;
  *
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
- * @author $Author$ (this version) @brief ...class description...
+ * @author $Author$ (this version) 
+ * @brief Obsolete IntegerListIterator
  *
+ * @deprecated use {@link AccAscConstrainedBasedIntegerListIterator} instead.
  */
+@Deprecated
 public abstract class AbstractNCIntegerListIterator {
 
     List<Integer> counters;
