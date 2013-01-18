@@ -4,12 +4,6 @@
  */
 package uk.ac.ebi.lipidhome.fastlipid.generator;
 
-import uk.ac.ebi.lipidhome.fastlipid.util.PseudoAtomListComparator;
-import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
-import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
-import uk.ac.ebi.lipidhome.fastlipid.structure.SpeciesInfoContainer;
-import uk.ac.ebi.lipidhome.fastlipid.structure.ChainFactory;
-import uk.ac.ebi.lipidhome.fastlipid.structure.LipidFactory;
 import java.util.*;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtom;
@@ -19,10 +13,14 @@ import org.openscience.cdk.interfaces.IPseudoAtom;
 import org.openscience.cdk.io.MDLV2000Reader;
 import org.openscience.cdk.silent.AtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import uk.ac.ebi.lipidhome.fastlipid.structure.SubSpecies;
+import uk.ac.ebi.lipidhome.fastlipid.structure.*;
 import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
+import uk.ac.ebi.lipidhome.fastlipid.util.PseudoAtomListComparator;
 
 /**
+ * Generates isomers given total carbons, double bonds, head, linkers, and number of chains. This is a central object 
+ * of the project. Carbons and double bonds are defined at the total level (all chains), not in a chain specific way.
+ * For chain specific isomer generation, use {@link GeneralIsomersGeneratorDefinedFattyAcids}.
  *
  * @author pmoreno
  */
@@ -40,6 +38,13 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
     private Set<String> chainsConfig;
     private List<SubSpecies> subSpecies;
 
+    /**
+     * Sets the total number of carbons to distribute among the different fatty acid chains. Only even numbers are accepted
+     * if the exotic mode (odd length chains) is off.
+     * 
+     * @param totalCarbons
+     * @throws LNetMoleculeGeneratorException if the total number is not even and the exotic mode is off.
+     */
     public void setTotalCarbons(Integer totalCarbons) throws LNetMoleculeGeneratorException {
         if (!this.exoticModeOn && (totalCarbons % 2 != 0)) {
             throw new LNetMoleculeGeneratorException("Only pair number of carbons"
@@ -50,16 +55,31 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
         this.chemInfoContainerGenerator.setGenerateMolFormula(true);
     }
 
+    /**
+     * Sets the total number of double bonds to distribute among the different fatty acid chains.
+     * 
+     * @param totalDoubleBonds 
+     */
     public void setTotalDoubleBonds(Integer totalDoubleBonds) {
         this.totalDoubleBonds = totalDoubleBonds;
         this.chemInfoContainerGenerator.setGenerateMass(true);
         this.chemInfoContainerGenerator.setGenerateMolFormula(true);
     }
 
+    /**
+     * Sets whether the underlying ChainFactories should work on threaded mode. This is a relatively untested feature which
+     * didn't prove to improve speed. It should be evaluated. The use of this mode is currently not recommended.
+     * 
+     * @param b true if the threaded mode should be used.
+     */
     public void setThreaded(boolean b) {
         this.threaded = b;
     }
 
+    /**
+     * Executes the generator with the settings applied.
+     * 
+     */
     public void execute() {
 
         if (this.printOut == null) {
@@ -345,6 +365,12 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
         return false;
     }
 
+    /**
+     * Gets a SpeciesInfoContainer, which aims to represent the Species level in LipidHome, which is one for each
+     * isomer. This mostly represents the settings used.
+     * 
+     * @return the species info container
+     */
     public SpeciesInfoContainer getIsomerInfoContainer() {
         SpeciesInfoContainer cont = new SpeciesInfoContainer();
         cont.setHeadGroup(headGroup);

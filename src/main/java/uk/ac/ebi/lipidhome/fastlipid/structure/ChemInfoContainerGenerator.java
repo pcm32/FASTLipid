@@ -10,16 +10,22 @@ import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtom;
+import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
-import uk.ac.ebi.lipidhome.fastlipid.mass.IsotopeCacheStaticDec;
+import uk.ac.ebi.lipidhome.fastlipid.mass.IsotopeInfoCache;
 import uk.ac.ebi.lipidhome.fastlipid.mass.MolMassCachedCalculator;
-import org.openscience.cdk.interfaces.IAtomContainer;
 
 /**
+ * Generator that produces the ChemInfoContainer, one of the central objects of the project. This generator is configured
+ * to set which data types/descriptors should be computed for the resulting molecule (of the enumeration). That data are
+ * stored in the ChemInfoContainer. The rationality here is that the least descriptors calculated, the fastest the
+ * enumeration. Only the minimally required should be generated.
+ * 
+ * TODO InChI support might be broken, requires to be checked/completed/fixed.
  *
  * @author pmoreno
  */
@@ -56,18 +62,37 @@ public class ChemInfoContainerGenerator {
         this.init();
     }
 
+    /**
+     * Set to true if the InChI Aux String should be generated for the molecule.
+     * 
+     * @param generateInChIAux 
+     */
     public void setGenerateInChIAux(Boolean generateInChIAux) {
         this.generateInChIAux = generateInChIAux;
     }
 
+    /**
+     * Set to true if the InChI string should be generated for the molecule.
+     * 
+     * @param generateInChi 
+     */
     public void setGenerateInChi(Boolean generateInChi) {
         this.generateInChi = generateInChi;
     }
 
+    /**
+     * Set to true if the InChI Key should be generated for the molecule.
+     * 
+     * @param generateInChiKey 
+     */
     public void setGenerateInChiKey(Boolean generateInChiKey) {
         this.generateInChiKey = generateInChiKey;
     }
 
+    /**
+     * Set to true to generate the mass (TODO which mass, natural or exact?).
+     * @param generateMass 
+     */
     public void setGenerateMass(Boolean generateMass) {
         this.generateMass = generateMass;
     }
@@ -76,7 +101,15 @@ public class ChemInfoContainerGenerator {
         this.generateMolFormula = generateMolFormula;
     }
 
+    /**
+     * Produces a ChemInfoContainer which contains the data of the generated molecule according to the settings of this
+     * object.
+     * 
+     * @param molOriginal to produce the data from
+     * @return ChemInfoContainer with all the requested data of the original mol.
+     */
     public ChemInfoContainer generateChemInfoContainer(IAtomContainer molOriginal) {
+        // TODO This method is extremely long and complicated, improve it.
         ChemInfoContainer container = new ChemInfoContainer();
         try {
             if (this.generateCDKMol) {
@@ -117,10 +150,10 @@ public class ChemInfoContainerGenerator {
         if (this.getGenerateMass() || this.getGenerateMolFormula()) {
 
             for (IAtom atom : mol.atoms()) {
-                //atom.setPoint2d(null);
                 if (atom.getNaturalAbundance() == null || !this.useCachedObjects) {
                     IIsotope major = null;
-                    if (IsotopeCacheStaticDec.getCacheInstance().getAtomicNumberForSymbol(atom.getSymbol()) == null) {
+                    IsotopeInfoCache isotopeCache = IsotopeInfoCache.getInstance();
+                    if (isotopeCache.getAtomicNumberForSymbol(atom.getSymbol()) == null) {
                         try {
                             major = IsotopeFactory.getInstance(SilentChemObjectBuilder.getInstance()).getMajorIsotope(atom.getSymbol());
                         } catch (IOException ex) {
@@ -128,18 +161,18 @@ public class ChemInfoContainerGenerator {
                             System.exit(1);
                         }
                         Integer atomicNumber = major.getAtomicNumber();
-                        IsotopeCacheStaticDec.getCacheInstance().setAtomicNumberForSymbol(atom.getSymbol(), atomicNumber);
+                        isotopeCache.setAtomicNumberForSymbol(atom.getSymbol(), atomicNumber);
                         atom.setAtomicNumber(atomicNumber);
                         Double exactMass = major.getExactMass();
-                        IsotopeCacheStaticDec.getCacheInstance().setExactMassForSymbol(atom.getSymbol(), exactMass);
+                        isotopeCache.setExactMassForSymbol(atom.getSymbol(), exactMass);
                         atom.setExactMass(exactMass);
                         Double natAbundance = major.getNaturalAbundance();
-                        IsotopeCacheStaticDec.getCacheInstance().setNaturalAbundanceForSymbol(atom.getSymbol(), natAbundance);
+                        isotopeCache.setNaturalAbundanceForSymbol(atom.getSymbol(), natAbundance);
                         atom.setNaturalAbundance(natAbundance);
                     } else {
-                        atom.setAtomicNumber(IsotopeCacheStaticDec.getCacheInstance().getAtomicNumberForSymbol(atom.getSymbol()));
-                        atom.setExactMass(IsotopeCacheStaticDec.getCacheInstance().getExactMassForSymbol(atom.getSymbol()));
-                        atom.setNaturalAbundance(IsotopeCacheStaticDec.getCacheInstance().getNaturalAbundanceForSymbol(atom.getSymbol()));
+                        atom.setAtomicNumber(isotopeCache.getAtomicNumberForSymbol(atom.getSymbol()));
+                        atom.setExactMass(isotopeCache.getExactMassForSymbol(atom.getSymbol()));
+                        atom.setNaturalAbundance(isotopeCache.getNaturalAbundanceForSymbol(atom.getSymbol()));
                     }
                 }
 
@@ -153,6 +186,8 @@ public class ChemInfoContainerGenerator {
 
             if (this.getGenerateMass()) {
                 if (this.useCachedObjects) {
+                    // TODO if the atoms where previously configured with their masses, 
+                    // do we need to use the MolMassCachedCalculator??
                     container.setNaturalMass(MolMassCachedCalculator.calcNaturalMass(mol));
                     container.setExactMass(MolMassCachedCalculator.calcExactMass(mol));
                 } else {
@@ -161,18 +196,13 @@ public class ChemInfoContainerGenerator {
                 }
             }
             if (this.getGenerateMolFormula()) {
-                //IMolecularFormula formula = MolecularFormulaManipulator.getMolecularFormula(mol);
                 container.setMolecularFormula(MolecularFormulaManipulator.getString(MolecularFormulaManipulator.getMolecularFormula(mol)));
             }
 
             // if we are not duplicating the molecule, we need to get rid of hydrogens.
             AtomContainerManipulator.removeHydrogensPreserveMultiplyBonded(mol);
-
-
         }
-
-
-
+        
         return container;
     }
 

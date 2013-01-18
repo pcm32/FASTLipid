@@ -7,32 +7,45 @@ package uk.ac.ebi.lipidhome.fastlipid.mass;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.openscience.cdk.Element;
 import org.openscience.cdk.config.IsotopeFactory;
-import org.openscience.cdk.interfaces.IElement;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 /**
- *
+ * A cache for atom masses to speed up the process of retrieving masses from CDK.
+ * 
  * @author pmoreno
  */
 public class AtomExactMassCache {
 
     private Map<String, Double> symbol2exactMass;
+    
+    private static AtomExactMassCache instance;
+    
+    public static AtomExactMassCache getInstance() {
+        if(instance==null)
+            instance = new AtomExactMassCache();
+        return instance;
+    }
 
+    /**
+     * Constructor.
+     */
     public AtomExactMassCache() {
         this.symbol2exactMass = new HashMap<String, Double>();
     }
 
+    /**
+     * Given an element symbol (C,O,H,N,etc.), it retrieves the exact mass. If the symbol has been seen before by this
+     * cache, then the stored mass is retrieved. Else, the IsotopeFactory is used.
+     * 
+     * @param symbol
+     * @return exact mass for the symbol.
+     */
     public Double getExactMassForSymbol(String symbol) {
         if (this.symbol2exactMass.get(symbol) == null) {
             this.symbol2exactMass.put(symbol, this.exactMassForSymbol(symbol));
         }
         return this.symbol2exactMass.get(symbol);
-    }
-
-    public void setExactMassForSymbol(String symbol, Double exactMass) {
-        this.symbol2exactMass.put(symbol, exactMass);
     }
 
     private Double exactMassForSymbol(String symbol) {

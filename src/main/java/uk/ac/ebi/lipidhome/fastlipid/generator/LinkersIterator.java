@@ -28,11 +28,12 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 
 /**
- * @name SuccesiveIntegerListIterator @date 2012.08.17
- *
+ * @name LinkersIterator 
+ * @date 2012.08.17
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
- * @author $Author$ (this version) @brief Handles the iteration on a list of possible linkers, were the list of possible
+ * @author $Author$ (this version) 
+ * @brief Handles the iteration on a list of possible linkers, were the list of possible
  * linkers can be either bigger or smaller than the number of slots for fatty acids.
  *
  */
@@ -41,8 +42,6 @@ public class LinkersIterator {
     private static final Logger LOGGER = Logger.getLogger(LinkersIterator.class);
     private List<SingleLinkConfiguration> possibleLinkers;
     private HeadGroup hg;
-    private Boolean hasNext = false;
-    private Boolean moveTokensBetweenSlot = false;
     private Iterator<ICombinatoricsVector<SingleLinkConfiguration>> swapIterator;
 
 
@@ -59,6 +58,10 @@ public class LinkersIterator {
         resetSwappingIterator();
     }
 
+    /**
+     * 
+     * @return the next linker overall configuration.
+     */
     public List<SingleLinkConfiguration> next() {
         return swapIterator.next().getVector();
     }

@@ -13,17 +13,33 @@ import org.openscience.cdk.interfaces.IElement;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 /**
+ * A cache for atom masses to speed up the process of retrieving masses from CDK.
  *
  * @author pmoreno
  */
 public class AtomNaturalMassCache {
 
     private Map<String, Double> symbol2NaturalMass;
+    
+    private static AtomNaturalMassCache instance;
+    
+    public static AtomNaturalMassCache getInstance() {
+        if(instance==null)
+            instance = new AtomNaturalMassCache();
+        return instance;
+    }
 
-    public AtomNaturalMassCache() {
+    private AtomNaturalMassCache() {
         this.symbol2NaturalMass = new HashMap<String, Double>();
     }
 
+    /**
+     * Given an element symbol (C,O,H,N,etc.), it retrieves the natural mass. If the symbol has been seen before by this
+     * cache, then the stored mass is retrieved. Else, the IsotopeFactory is used.
+     * 
+     * @param symbol
+     * @return exact mass for the symbol.
+     */
     public Double getNaturalMassForSymbol(String symbol) {
         if (this.symbol2NaturalMass.get(symbol) == null) {
             this.symbol2NaturalMass.put(symbol, this.massForSymbol(symbol));
@@ -31,9 +47,9 @@ public class AtomNaturalMassCache {
         return this.symbol2NaturalMass.get(symbol);
     }
 
-    public void setNaturalMassForSymbol(String symbol, Double exactMass) {
-        this.symbol2NaturalMass.put(symbol, exactMass);
-    }
+//    public void setNaturalMassForSymbol(String symbol, Double exactMass) {
+//        this.symbol2NaturalMass.put(symbol, exactMass);
+//    }
 
     private Double massForSymbol(String symbol) {
         double mass = 0.0;
@@ -45,7 +61,6 @@ public class AtomNaturalMassCache {
         }
         // We'll have to change this for CDK 1.3.8
         IElement isotopesElement = SilentChemObjectBuilder.getInstance().newInstance(Element.class);
-        //IElement isotopesElement = SilentChemObjectBuilder.getInstance().newElement();
         isotopesElement.setSymbol(symbol);
         mass += factory.getNaturalMass(isotopesElement);
 

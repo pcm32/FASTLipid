@@ -46,15 +46,19 @@ public class ChainPartMassProvider {
     private double endPartFullySatWeight;
 
     /**
-     * Get the value of endPartFullySatWeight
+     * Gets the exact mass of the end part (last C) of a fatty acid when it is fully saturated. In this case, -CH3
      *
-     * @return the value of endPartFullySatWeight
+     * @return the exact mass of -CH3
      */
-    public double getEndPartFullySatWeight() {
+    public double getEndPartFullySatExactMass() {
         return endPartFullySatWeight;
     }
 
 
+    /**
+     * Gets the unique instance of the ChainPartMassProvider.
+     * @return 
+     */
     public static ChainPartMassProvider getInstance() {
         if(instance==null)
             instance = new ChainPartMassProvider();
@@ -67,14 +71,19 @@ public class ChainPartMassProvider {
         endPartFullySatWeight = MolecularFormulaManipulator.getTotalExactMass(MolecularFormulaManipulator.getMolecularFormula("CH3", SilentChemObjectBuilder.getInstance()));
     }
 
+    /**
+     * Gets the exact mass of a single part (-CH2-) of a fatty acid when it is fully saturated. In this case, -CH2-.
+     *
+     * @return the exact mass of -CH2-
+     */
     public double getFullySatAtomicUnitWeight() {
         return fullySatAtomicUnitWeight;
     }
 
     /**
-     * Get the value of fullyUnSatAtomicUnitWeight
+     * Gets the exact mass of a single part (=C=) of a fatty acid when it is fully unsaturated.
      *
-     * @return the value of fullyUnSatAtomicUnitWeight
+     * @return the exact mass of =C=
      */
     public double getFullyUnSatAtomicUnitWeight() {
         return fullyUnSatAtomicUnitWeight;

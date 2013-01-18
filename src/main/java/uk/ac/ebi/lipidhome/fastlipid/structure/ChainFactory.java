@@ -335,6 +335,7 @@ public class ChainFactory {
     }
 
     private BinaryCounter getNewBooleanRBCounter(int carbons_minus_one, int unsat_bonds) {
+        // TODO Is there a good reason to use a non rule based BinaryCounter?
         BinaryCounter counter = useRuleBasedBooleanCounter
                 ? new BooleanRBCounterRuleBased(carbons_minus_one, unsat_bonds, seeder)
                 : new BooleanRBCounter(carbons_minus_one, unsat_bonds);

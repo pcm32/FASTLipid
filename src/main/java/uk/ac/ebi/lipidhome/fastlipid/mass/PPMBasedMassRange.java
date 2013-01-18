@@ -41,6 +41,12 @@ public class PPMBasedMassRange implements MassRange{
     private Double maxMass;
     private Double queriedMass;
     
+    /**
+     * Initializes a mass range with the given mass as the center, and the given PPM as the tolerance.
+     * 
+     * @param mass defines the center of the range. This is the originally queried mass.
+     * @param ppm 
+     */
     public PPMBasedMassRange(Double mass, Float ppm) {
         double interval = Math.pow(10, -6)*ppm*mass;
         this.minMass = mass - interval;
@@ -56,6 +62,10 @@ public class PPMBasedMassRange implements MassRange{
         return maxMass;
     }
     
+    /**
+     * 
+     * @return the originally queried mass in the constructor. 
+     */
     public Double getQueriedMass() {
         return this.queriedMass;
     }

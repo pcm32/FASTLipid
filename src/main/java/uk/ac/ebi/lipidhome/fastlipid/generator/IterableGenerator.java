@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainer;
 
 /**
+ * Defines an iterable generator functionality
  *
  * @author pmoreno
  */

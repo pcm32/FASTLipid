@@ -34,7 +34,8 @@ import org.openscience.cdk.interfaces.IBond;
  * @version $Rev$ : Last Changed $Date$
  * @author  pmoreno
  * @author  $Author$ (this version)
- * @brief   ...class description...
+ * @brief   This is a work in progress class to identify glycerol, towards a fragmentation module. This is not currently
+ *          required by any other class, and should probably be refactored out into a separate fragmentation project.
  *
  */
 public class GlycerolIdentificator {

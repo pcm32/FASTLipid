@@ -24,10 +24,8 @@ import org.apache.log4j.Logger;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
-import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
 import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
 
 /**
@@ -35,7 +33,8 @@ import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
  *
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
- * @author $Author$ (this version) @brief Given a head group, possible linkers and a mass range, this class estimates
+ * @author $Author$ (this version) 
+ * @brief Given a head group, possible linkers and a mass range, this class estimates
  * the minimal and maximal number of carbons (total chain length) and double bonds (total) that fit within those mass
  * boundaries. Maximal and minimal double bonds are calculated for each carbon length.
  *
@@ -57,6 +56,16 @@ public class ChainEstimatorByMass implements Callable<LipidChainConfigEstimate> 
     private List<SingleLinkConfiguration> allowedLinkers;
     private ChainPartMassProvider massProvider;
 
+    /**
+     * Initializes the chain estimator with range of mass, a head group, and a list of allowed linkers.
+     * 
+     * @param minMass
+     * @param maxMass
+     * @param hg the head group to use.
+     * @param allowedLinkers a list of allowed linkers (between head and fatty acids)
+     * @throws CDKException
+     * @throws IOException 
+     */
     public ChainEstimatorByMass(Double minMass, Double maxMass, HeadGroup hg, List<SingleLinkConfiguration> allowedLinkers) throws CDKException, IOException {
         this.hg = hg;
         this.headMol = hg.getHeadMolecule(SilentChemObjectBuilder.getInstance());
@@ -66,6 +75,12 @@ public class ChainEstimatorByMass implements Callable<LipidChainConfigEstimate> 
         massProvider = ChainPartMassProvider.getInstance();
     }
 
+    /**
+     * Executes the estimation of chain configurations.
+     * 
+     * @return
+     * @throws Exception 
+     */
     public LipidChainConfigEstimate call() throws Exception {
         Double headMass = MolMassCachedCalculator.calcExactMassGenericMol(this.headMol);
         Double minLinkersMass = null;
@@ -87,7 +102,7 @@ public class ChainEstimatorByMass implements Callable<LipidChainConfigEstimate> 
         //double fullySatAtomicUnitWeight = MolecularFormulaManipulator.getTotalExactMass(MolecularFormulaManipulator.getMolecularFormula("CH2", SilentChemObjectBuilder.getInstance()));
         double fullySatAtomicUnitWeight = massProvider.getFullySatAtomicUnitWeight();
         //double endPartFullySatWeight = MolecularFormulaManipulator.getTotalExactMass(MolecularFormulaManipulator.getMolecularFormula("CH3", SilentChemObjectBuilder.getInstance()));
-        double endPartFullySatWeight = massProvider.getEndPartFullySatWeight();
+        double endPartFullySatWeight = massProvider.getEndPartFullySatExactMass();
         // The minimum weight of a chain is achieved in its fully unsaturated state, all double bonds, (n-2)C+CH2
         //double fullyUnSatAtomicUnitWeight = MolecularFormulaManipulator.getTotalExactMass(MolecularFormulaManipulator.getMolecularFormula("C", SilentChemObjectBuilder.getInstance()));
         double fullyUnSatAtomicUnitWeight = massProvider.getFullyUnSatAtomicUnitWeight();
@@ -100,7 +115,9 @@ public class ChainEstimatorByMass implements Callable<LipidChainConfigEstimate> 
         double remainingMaxMass = this.maxMass              // maximum masss
                 - headMass                                  // mass of the head
                 - minLinkersMass * numberOfChains           // lighter linkers
-                - endPartFullyUnSatWeight * numberOfChains; // lighter end parts.  so only the mass of the central chain is left, without linker and end.
+                - endPartFullyUnSatWeight * numberOfChains; // lighter end parts.  
+        // so only the mass of the central chain is left, without linker and end.
+        
         if (remainingMaxMass > 0) {
             // There is space for carbons in the chain 
             Double maxNumCarbonsMinus1 = remainingMaxMass > 0 ? remainingMaxMass / fullyUnSatAtomicUnitWeight : 0d;

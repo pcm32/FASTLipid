@@ -29,7 +29,8 @@ import org.apache.log4j.Logger;
  * @brief Handles the iteration on a list of carbon or double bond counters, as the
  * number of carbons or double bonds is either decreased or increased.
  *
- * @deprecated use {@link AccAscConstrainedBasedIntegerListIterator} instead.
+ * @deprecated use {@link AccAscConstrainedBasedIntegerListIterator} instead. Obsolete implementation, which checked whether
+ * signatures had been already seen or not.
  */
 @Deprecated
 public class ListBasedIntegerListIterator extends AbstractNCIntegerListIterator implements IntegerListIterator {

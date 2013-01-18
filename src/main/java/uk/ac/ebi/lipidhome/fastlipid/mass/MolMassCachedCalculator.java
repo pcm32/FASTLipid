@@ -18,7 +18,7 @@ public class MolMassCachedCalculator {
     public static double calcNaturalMass(IAtomContainer mol) {
         double mass = 0.0;
         for (IAtom atom : mol.atoms()) {
-            mass += AtomNaturalMassCacheStaticDec.getCacheInstance().getNaturalMassForSymbol(atom.getSymbol());
+            mass += AtomNaturalMassCache.getInstance().getNaturalMassForSymbol(atom.getSymbol());
         }
         return mass;
     }
@@ -28,7 +28,7 @@ public class MolMassCachedCalculator {
         for (IAtom atom : mol.atoms()) {
             if(atom instanceof IPseudoAtom)
                 continue;
-            mass += AtomNaturalMassCacheStaticDec.getCacheInstance().getNaturalMassForSymbol(atom.getSymbol());
+            mass += AtomNaturalMassCache.getInstance().getNaturalMassForSymbol(atom.getSymbol());
         }
         return mass;
     }
@@ -36,7 +36,7 @@ public class MolMassCachedCalculator {
     public static double calcExactMass(IAtomContainer mol) {
         double mass = 0.0;
         for (IAtom atom : mol.atoms()) {
-            mass += AtomExactMassCacheStaticDec.getCacheInstance().getExactMassForSymbol(atom.getSymbol());
+            mass += AtomExactMassCache.getInstance().getExactMassForSymbol(atom.getSymbol());
         }
         return mass;
     }
@@ -46,7 +46,7 @@ public class MolMassCachedCalculator {
         for (IAtom atom : mol.atoms()) {
             if(atom instanceof IPseudoAtom)
                 continue;
-            mass += AtomExactMassCacheStaticDec.getCacheInstance().getExactMassForSymbol(atom.getSymbol());
+            mass += AtomExactMassCache.getInstance().getExactMassForSymbol(atom.getSymbol());
         }
         return mass;
     }

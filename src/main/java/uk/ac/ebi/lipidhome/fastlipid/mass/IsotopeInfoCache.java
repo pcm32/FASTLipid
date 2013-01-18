@@ -5,7 +5,8 @@
 
 package uk.ac.ebi.lipidhome.fastlipid.mass;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -13,14 +14,22 @@ import java.util.Hashtable;
  */
 public class IsotopeInfoCache {
 
-    private Hashtable<String,Integer> symbol2AtomicNumber;
-    private Hashtable<String,Double> symbol2ExactMass;
-    private Hashtable<String,Double> symbol2NaturalAbundance;
+    private Map<String,Integer> symbol2AtomicNumber;
+    private Map<String,Double> symbol2ExactMass;
+    private Map<String,Double> symbol2NaturalAbundance;
+    
+    private static IsotopeInfoCache instance;
+    
+    public static IsotopeInfoCache getInstance() {
+        if(instance==null)
+            instance = new IsotopeInfoCache();
+        return instance;
+    }
 
     public IsotopeInfoCache() {
-        this.symbol2AtomicNumber = new Hashtable<String, Integer>();
-        this.symbol2ExactMass = new Hashtable<String, Double>();
-        this.symbol2NaturalAbundance = new Hashtable<String, Double>();
+        this.symbol2AtomicNumber = new HashMap<String, Integer>();
+        this.symbol2ExactMass = new HashMap<String, Double>();
+        this.symbol2NaturalAbundance = new HashMap<String, Double>();
     }
 
     public Integer getAtomicNumberForSymbol(String symbol) {

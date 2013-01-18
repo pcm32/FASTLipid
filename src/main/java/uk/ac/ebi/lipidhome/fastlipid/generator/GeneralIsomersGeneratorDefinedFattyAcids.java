@@ -29,6 +29,12 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
 import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
 
 /**
+ * Generates isomers given total carbons per chain, double bonds per chain, head, linkers per chain, and number of chains. 
+ * This is a central object of the project. Carbons and double bonds are defined at the chain level.
+ * For setting carbons and double bonds at the total level (all chains), use {@link GeneralIsomersGenerator}.
+ * 
+ * This class can be executed in iterable mode, using a background thread. This functionality should be part of a different
+ * class maybe.
  *
  * @author pmoreno
  */
@@ -47,6 +53,9 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
     private ChemInfoContainer FINAL = new ChemInfoContainer();
 
 
+    /**
+     * Initializes the object with no definition of carbons and double bonds.
+     */
     public GeneralIsomersGeneratorDefinedFattyAcids() {
         this.carbonsPerChain = new ArrayList<Integer>();
         this.doubleBondsPerChain = new ArrayList<Integer>();
@@ -233,8 +242,6 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
                 System.out.println("StructsGen:" + generatedStructs + " Time:" + current);
             }
 
-            //lipidFactory.restoreRadicalAtom(r1, conToR1);
-            //lipidFactory.restoreRadicalAtom(r2, conToR2);
             lipidFactory.killThreads();
 
             if (this.printOut) {
@@ -288,6 +295,12 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
         
     }
 
+    /**
+     * Sets the generator to iterable mode. This means that the generation runs in a separate thread than the actual 
+     * retrieval of isomers.
+     * 
+     * @param isIterable true to turn on the iterable mode.
+     */
     public void setIterableMode(boolean isIterable) {
         // if the thread hasn't started or it has finished, then we can change the iterable mode.
         if (t == null) {
@@ -298,6 +311,13 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
         }
     }
 
+    /**
+     * This method works in iterable mode only, else null is returned. When no more elements are in the queue null is
+     * also returned. This could be improved, maybe an exception should be thrown if not in iterable mode.
+     * 
+     * @return the next ChemInfoContainer in the queue.
+     * @throws LNetMoleculeGeneratorException 
+     */
     public ChemInfoContainer getNext() throws LNetMoleculeGeneratorException {
         ChemInfoContainer res = null;
         if (this.isInIterableMode()) {
@@ -313,16 +333,29 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
         return res;
     }
 
+    /**
+     * Checks whether the generator is in iterable mode.
+     * 
+     * @return true if in iterable mode. 
+     */
     public boolean isInIterableMode() {
         return this.iterable;
     }
 
+    /**
+     * Run the execution in a separate thread. This shouldn't be a public method. It will only work if set to iterable 
+     * mode
+     * 
+     */
     public void executeInSeparateThread() {
         if (this.isInIterableMode()) {
             t.start();
         }
     }
 
+    /**
+     * 
+     */
     @Override
     public void execute() {
         this.run();

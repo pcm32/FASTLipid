@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
  * @version $Rev$ : Last Changed $Date$
  * @author  pmoreno
  * @author  $Author$ (this version)
- * @brief   ...class description...
+ * @brief   Calculates the deviation between two masses in PPM, supposing that the first given one (queried) is the base.
  *
  */
 public class MassDeviationCalculator {
@@ -39,10 +39,22 @@ public class MassDeviationCalculator {
 
     private double queriedMass;
     
+    /**
+     * Initializes the object with the queried mass, which is the base for the PPM deviation calculation.
+     * 
+     * @param queriedMass 
+     */
     public MassDeviationCalculator(Double queriedMass) {
         this.queriedMass = queriedMass;
     }
 
+    /**
+     * Given a second mass, this calculates the deviation from the original queriedMass given in the constructor, in PPM
+     * based on the queried mass.
+     * 
+     * @param mass
+     * @return deviation in PPM
+     */
     public double calculateDeviationInPPM(Double mass) {
         double diff = Math.abs(queriedMass - mass);
         return diff/(Math.pow(10, -6)*queriedMass);

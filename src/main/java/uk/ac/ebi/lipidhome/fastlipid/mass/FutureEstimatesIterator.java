@@ -41,16 +41,29 @@ public class FutureEstimatesIterator implements Iterator<LipidChainConfigEstimat
     private final List<Future<LipidChainConfigEstimate>> estimates;
     private LipidChainConfigEstimate current;
 
+    /**
+     * Initializes the iterator with a list of Futures (concurrency) to iterate over.
+     * 
+     * @param estimates the list of futures to iterate over.
+     */
     public FutureEstimatesIterator(List<Future<LipidChainConfigEstimate>> estimates) {
         this.visited = new ArrayList<LipidChainConfigEstimate>(estimates.size());
         this.estimates = estimates;
         setCurrent();
     }
 
+    /**
+     * 
+     * @return true if there is a next Future to visit.
+     */
     public boolean hasNext() {
         return current!=null;
     }
 
+    /**
+     * 
+     * @return the next future estimate. 
+     */
     public LipidChainConfigEstimate next() {
         LipidChainConfigEstimate toRet = current;
         setCurrent();
@@ -83,6 +96,9 @@ public class FutureEstimatesIterator implements Iterator<LipidChainConfigEstimat
         }
     }
 
+    /**
+     * Removes the next future.
+     */
     public void remove() {
         if (hasNext()) {
             next();
