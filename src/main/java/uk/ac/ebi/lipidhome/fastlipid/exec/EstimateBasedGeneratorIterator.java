@@ -32,7 +32,8 @@ import uk.ac.ebi.lipidhome.fastlipid.util.LipidChainConfigEstimate;
  *
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
- * @author $Author$ (this version) @brief Iterates on generators that are combinations of the given estimate of lipid
+ * @author $Author$ (this version) 
+ * @brief Iterates on generators that are combinations of the given estimate of lipid
  * chains config estimate and the allowed linkers.
  *
  */

@@ -27,7 +27,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
-import uk.ac.ebi.lipidhome.fastlipid.structure.SingleLinkConfiguration;
 import org.kohsuke.args4j.Option;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.io.SDFWriter;
@@ -45,7 +44,8 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
  *
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
- * @author $Author$ (this version) @brief Execution for a mass search
+ * @author $Author$ (this version) 
+ * @brief Execution for a mass search, to be exposed as command line.
  *
  */
 public class MassSearch {
