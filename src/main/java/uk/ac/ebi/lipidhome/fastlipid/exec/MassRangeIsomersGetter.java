@@ -68,12 +68,14 @@ public class MassRangeIsomersGetter implements Iterator<SpeciesInfoContainer> {
 
     /**
      * Setups the iteration process, using the ChainEstimatorByMass to decide which carbons and double bonds ranges to
-     * use.
+     * use, according to the given head, linkers, mode and mass range given.
      *
-     * @param allowedHeadGroups
-     * @param allowedLinkers
-     * @param minMass
-     * @param maxMass
+     * @param allowedHeadGroups a list of head groups that can be used.
+     * @param allowedLinkers a list of linkers that can be used.
+     * @param minMass of the mass range.
+     * @param maxMass of the mass range.
+     * @throws CDKException
+     * @throws IOException 
      */
     public MassRangeIsomersGetter(List<HeadGroup> allowedHeadGroups, List<SingleLinkConfiguration> allowedLinkers, ChainFactoryGenerator cfGenerator,
             Double minMass, Double maxMass, Boolean exoticModeOn, ChemInfoContainerGenerator cicg) throws CDKException, IOException {
@@ -97,11 +99,38 @@ public class MassRangeIsomersGetter implements Iterator<SpeciesInfoContainer> {
         getNextGenerator();
     }
 
+    /**
+     * Setups the iteration process, using the ChainEstimatorByMass to decide which carbons and double bonds ranges to
+     * use, according to the given head, linkers, mode and mass range given.
+     * 
+     * @param allowedHeadGroups a list of head groups that can be used.
+     * @param allowedLinkers a list of linkers that can be used.
+     * @param cfGenerator {@link ChainFactoryGenerator} with settings on how to generate the fatty acid chains.
+     * @param range {@link MassRange} object to bound the mass range of the getter.
+     * @param exoticModeOn true if odd length chains are allowed.
+     * @param cicg {@link ChemInfoContainerGenerator} which is configured with the outputs desired (mass, SMILES, etc.)
+     * @throws CDKException
+     * @throws IOException 
+     */
     public MassRangeIsomersGetter(List<HeadGroup> allowedHeadGroups, List<SingleLinkConfiguration> allowedLinkers, ChainFactoryGenerator cfGenerator,
             MassRange range, Boolean exoticModeOn, ChemInfoContainerGenerator cicg) throws CDKException, IOException {
         this(allowedHeadGroups, allowedLinkers, cfGenerator, range.getMinMass(), range.getMaxMass(), exoticModeOn, cicg);
     }
     
+    /**
+     * Setups the iteration process, using the ChainEstimatorByMass to decide which carbons and double bonds ranges to
+     * use, according to the given head, linkers, mode and mass range given. When given a {@link PPMBasedMassRange}, a
+     * mass deviation calculator is initialized internally.
+     * 
+     * @param allowedHeadGroups a list of head groups that can be used.
+     * @param allowedLinkers a list of linkers that can be used.
+     * @param cfGenerator {@link ChainFactoryGenerator} with settings on how to generate the fatty acid chains.
+     * @param range {@link PPMBasedMassRange} object to bound the mass range of the getter.
+     * @param exoticModeOn true if odd length chains are allowed.
+     * @param cicg {@link ChemInfoContainerGenerator} which is configured with the outputs desired (mass, SMILES, etc.)
+     * @throws CDKException
+     * @throws IOException 
+     */
     public MassRangeIsomersGetter(List<HeadGroup> allowedHeadGroups, List<SingleLinkConfiguration> allowedLinkers, ChainFactoryGenerator cfGenerator,
             PPMBasedMassRange range, Boolean exoticModeOn, ChemInfoContainerGenerator cicg) throws CDKException, IOException {
         this(allowedHeadGroups, allowedLinkers, cfGenerator, range.getMinMass(), range.getMaxMass(), exoticModeOn, cicg);
@@ -124,6 +153,11 @@ public class MassRangeIsomersGetter implements Iterator<SpeciesInfoContainer> {
         }
     }
 
+    /**
+     * Retrieves the next result as a {@link SpeciesInfoContainer}. Each mass estimation can generate a number of generators
+     * (different head, linkers, carbons and double bonds configs), which are iterated within this method.
+     * @return 
+     */
     public SpeciesInfoContainer next() {
         /**
          * First we need to get the generator to use on this iteration. The generator comes initialized and ready to
@@ -185,10 +219,17 @@ public class MassRangeIsomersGetter implements Iterator<SpeciesInfoContainer> {
 
     }
 
+    /**
+     * 
+     * @return true if the getter has more results. 
+     */
     public boolean hasNext() {
         return currentResult != null;
     }
 
+    /**
+     * Removes the next result to be retrieved.
+     */
     public void remove() {
         next();
     }

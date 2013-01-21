@@ -45,7 +45,7 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.rule.StarterDoubleBondRule;
  * @version $Rev$ : Last Changed $Date$
  * @author pmoreno
  * @author $Author$ (this version) 
- * @brief Execution for a mass search, to be exposed as command line.
+ * @brief Execution for a mass search, which is exposed as a command line executable.
  *
  */
 public class MassSearch {

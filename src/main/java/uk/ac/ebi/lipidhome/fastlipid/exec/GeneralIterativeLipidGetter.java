@@ -33,6 +33,12 @@ public class GeneralIterativeLipidGetter {
     private Boolean generateChainInfoContainer;
     
 
+    /**
+     * Starts an iterative phospho lipid getter with default settings. The ChainFactoryGenerator provides the logic 
+     * rules to generate the fatty acids.
+     * 
+     * @param cfg 
+     */
     public GeneralIterativeLipidGetter(ChainFactoryGenerator cfg) {
         this.init();
         this.generator.setChainFactoryGenerator(cfg);
@@ -40,8 +46,8 @@ public class GeneralIterativeLipidGetter {
     
     /**
      * Starts an iterative phospho lipid getter from a subspecie definition (that is, a definition of header, linkers,
-     * and number of carbons and double bonds per fatty acid). The ChainFactoryGenerator provides the logic rules to generate
-     * the fatty acids.
+     * and number of carbons and double bonds per fatty acid). The ChainFactoryGenerator provides the logic rules to 
+     * generate the fatty acids.
      * 
      * @param subSpecies
      * @param cfg 
@@ -109,10 +115,21 @@ public class GeneralIterativeLipidGetter {
         this.generator.executeInSeparateThread();
     }
 
+    /**
+     * Retrieves the next result as a {@link ChemInfoContainer}, or null if there is none.
+     * 
+     * @return next result as {@link ChemInfoContainer}
+     * @throws LNetMoleculeGeneratorException 
+     */
     public ChemInfoContainer nextChemInfoContainer() throws LNetMoleculeGeneratorException {
         return this.generator.getNext();
     }
 
+    /**
+     * Configures the ChemInfoContainer to produce SMILES only in the ChemInfoContainer retrieved in the end.
+     * 
+     * TODO this method should be part of an abstract class, like AbstractIsomerGetter
+     */
     public void configForSmilesOutput() {
         this.chemInfoContainerGenerator.setGenerateSmiles(true);
         this.chemInfoContainerGenerator.setGenerateMass(true);
@@ -125,6 +142,12 @@ public class GeneralIterativeLipidGetter {
         this.generator.setPrintOut(false);
     }
 
+    /**
+     * Configures the ChemInfoContainerGenerator to produce Mass, and Molecular Formula in the ChemInfoContainer 
+     * retrieved in the end.
+     * 
+     * TODO this method should be part of an abstract class, like AbstractIsomerGetter
+     */
     public void configForMassAndFormula() {
         this.chemInfoContainerGenerator.setGenerateSmiles(false);
         this.chemInfoContainerGenerator.setGenerateMass(true);

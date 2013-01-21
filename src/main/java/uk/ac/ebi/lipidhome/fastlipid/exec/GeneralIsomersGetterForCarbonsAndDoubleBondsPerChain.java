@@ -12,6 +12,8 @@ import uk.ac.ebi.lipidhome.fastlipid.structure.ChemInfoContainerGenerator;
 import uk.ac.ebi.lipidhome.fastlipid.structure.HeadGroup;
 
 /**
+ * Enumerates lipids for a particular configuration of {@link HeadGroup}, {@link SingleLinkConfiguration} linkers, 
+ * number of carbons per fatty acid chain, and number of double bonds per fatty acid chain.
  *
  * @author pmoreno
  */
@@ -52,6 +54,10 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
     }
   */  
 
+    /**
+     * Default constructor. Sets the {@link ChemInfoContainerGenerator} to produce InChIs, Molecular Formula, Mass, and
+     * use cached objects.
+     */
     public GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain() {
         this.init();
     }
@@ -72,6 +78,10 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
         generator.setPrintOut(true);
     }
 
+    /**
+     * Once configurations have been set, this method should be called to run the generation on the same thread.
+     * 
+     */
     public void exec() {
         this.generator.run();
         this.setExactMass(this.generator.getExactMass());
@@ -79,6 +89,11 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
         this.setNumOfStructs(this.generator.getTotalGeneratedStructs());
     }
 
+    /**
+     * Configures the ChemInfoContainer to produce SMILES only in the ChemInfoContainer retrieved in the end.
+     * 
+     * TODO this method should be part of an abstract class, like AbstractIsomerGetter
+     */
     public void configForSmilesOutput() {
         this.chemInfoContainerGenerator.setGenerateSmiles(true);
         this.chemInfoContainerGenerator.setGenerateMass(false);
@@ -90,6 +105,12 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
         this.generator.setPrintOut(true);
     }
 
+    /**
+     * Configures the ChemInfoContainerGenerator to produce Mass, and Molecular Formula in the ChemInfoContainer 
+     * retrieved in the end.
+     * 
+     * TODO this method should be part of an abstract class, like AbstractIsomerGetter
+     */
     public void configForMassAndFormula() {
         this.chemInfoContainerGenerator.setGenerateSmiles(false);
         this.chemInfoContainerGenerator.setGenerateMass(true);
@@ -116,7 +137,7 @@ public class GeneralIsomersGetterForCarbonsAndDoubleBondsPerChain {
      * 
      * @param carbonsChainA the carbonsChainA to set
      */
-    private void setDoubleBondsPerChains(Integer... doubleBonds) {
+    public void setDoubleBondsPerChains(Integer... doubleBonds) {
         this.doubleBondsPerChain.clear();
         this.doubleBondsPerChain.addAll(Arrays.asList(doubleBonds));
         this.generator.setDoubleBondsPerChain(doubleBonds);
