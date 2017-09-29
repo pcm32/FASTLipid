@@ -11,7 +11,6 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IPseudoAtom;
 import org.openscience.cdk.io.MDLV2000Reader;
-import org.openscience.cdk.silent.AtomContainer;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import uk.ac.ebi.lipidhome.fastlipid.structure.*;
 import uk.ac.ebi.lipidhome.fastlipid.util.GenericAtomDetector;
@@ -105,7 +104,7 @@ public class GeneralIsomersGenerator extends AbstractIsomersGenerator {
             try {
                 MDLV2000Reader reader = new MDLV2000Reader(this.headGroup.getHeadMolStream());
                 // We keep a copy of the original mol to avoid reading it later.
-                originalMol = reader.read(builder.newInstance(AtomContainer.class));
+                originalMol = reader.read(builder.newInstance(IAtomContainer.class));
                 mol = (IAtomContainer) originalMol.clone();
             } catch (CloneNotSupportedException e) {
                 System.out.println("Cloning not supported");

@@ -27,7 +27,7 @@ public class BondPool extends ObjectPool<IBond>{
 
     @Override
     protected IBond create() {
-        return builder.newInstance(Bond.class);
+        return builder.newInstance(IBond.class);
     }
 
     @Override

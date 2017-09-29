@@ -30,7 +30,7 @@ public class AtomPool extends ObjectPool<IAtom>{
 
     @Override
     protected IAtom create() {
-        return builder.newInstance(Atom.class);
+        return builder.newInstance(IAtom.class);
     }
 
     @Override

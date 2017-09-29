@@ -5,7 +5,7 @@
 package uk.ac.ebi.lipidhome.fastlipid.structure;
 
 import java.io.IOException;
-import org.openscience.cdk.config.IsotopeFactory;
+import org.openscience.cdk.config.Isotopes;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
@@ -155,7 +155,7 @@ public class ChemInfoContainerGenerator {
                     IsotopeInfoCache isotopeCache = IsotopeInfoCache.getInstance();
                     if (isotopeCache.getAtomicNumberForSymbol(atom.getSymbol()) == null) {
                         try {
-                            major = IsotopeFactory.getInstance(SilentChemObjectBuilder.getInstance()).getMajorIsotope(atom.getSymbol());
+                            major = Isotopes.getInstance().getMajorIsotope(atom.getSymbol());
                         } catch (IOException ex) {
                             System.out.println("Could not read isotopes file");
                             System.exit(1);

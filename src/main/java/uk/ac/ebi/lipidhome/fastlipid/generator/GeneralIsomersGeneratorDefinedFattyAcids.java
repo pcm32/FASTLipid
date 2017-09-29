@@ -129,7 +129,7 @@ public class GeneralIsomersGeneratorDefinedFattyAcids extends AbstractIsomersGen
             MDLV2000Reader reader = new MDLV2000Reader(this.headGroup.getHeadMolStream());
             // We keep a copy of the original mol to avoid reading it later.
             //mol = (NNMolecule) reader.read(builder.newMolecule());
-            mol = reader.read(builder.newInstance(AtomContainer.class));
+            mol = reader.read(builder.newInstance(IAtomContainer.class));
         } catch (CDKException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

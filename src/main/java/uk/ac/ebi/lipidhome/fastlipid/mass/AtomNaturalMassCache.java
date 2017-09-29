@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.openscience.cdk.Element;
 import org.openscience.cdk.config.IsotopeFactory;
+import org.openscience.cdk.config.Isotopes;
 import org.openscience.cdk.interfaces.IElement;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
@@ -55,12 +56,12 @@ public class AtomNaturalMassCache {
         double mass = 0.0;
         IsotopeFactory factory;
         try {
-            factory = IsotopeFactory.getInstance(SilentChemObjectBuilder.getInstance());
+            factory = Isotopes.getInstance();
         } catch (IOException e) {
             throw new RuntimeException("Could not instantiate the IsotopeFactory.");
         }
         // We'll have to change this for CDK 1.3.8
-        IElement isotopesElement = SilentChemObjectBuilder.getInstance().newInstance(Element.class);
+        IElement isotopesElement = SilentChemObjectBuilder.getInstance().newInstance(IElement.class);
         isotopesElement.setSymbol(symbol);
         mass += factory.getNaturalMass(isotopesElement);
 

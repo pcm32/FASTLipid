@@ -13,7 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <cdk.version>1.4.13</cdk.version>
+        <cdk.version>2.0</cdk.version>
     </properties>
     
     <developers>
@@ -177,7 +177,7 @@
         <dependency>
             <groupId>org.openscience.cdk</groupId>
             <artifactId>cdk-datadebug</artifactId>
-            <version>1.4.13</version>
+            <version>${cdk.version}</version>
             <type>jar</type>
         </dependency>
     </dependencies>
