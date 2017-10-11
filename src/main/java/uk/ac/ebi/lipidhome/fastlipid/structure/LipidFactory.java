@@ -129,7 +129,7 @@ public class LipidFactory {
      */
     public void restoreRadicalAtom(IAtom radical, IAtom conToRadical) {
         if (this.head.contains(conToRadical)) {
-            IBond radicalBond = builder.newInstance(Bond.class);
+            IBond radicalBond = builder.newInstance(IBond.class);
             radicalBond.setAtom(radical, 0);
             radicalBond.setAtom(conToRadical, 1);
             this.head.addBond(radicalBond);
@@ -175,7 +175,7 @@ public class LipidFactory {
                 IAtomContainer chain = this.chainFactories.get(i).nextChain();
                 if (chain != null) {
                     addChainInfoContainerFromChainFactory(this.chainFactories.get(i));
-                    IBond chain2head = builder.newInstance(Bond.class);
+                    IBond chain2head = builder.newInstance(IBond.class);
                     chain2head.setAtom(chain.getFirstAtom(), 0);
                     chain2head.setAtom(this.radicalAnchors.get(i), 1);
                     chain2head.setOrder(IBond.Order.SINGLE);
@@ -241,7 +241,7 @@ public class LipidFactory {
                  * First we create the bond.
                  */
                 replaceChainInfoContainerIndexFromFactory(this.currentIteratingChainFactory, chainFactories.get(currentIteratingChainFactory));
-                IBond bondChain2Head = builder.newInstance(Bond.class);
+                IBond bondChain2Head = builder.newInstance(IBond.class);
                 bondChain2Head.setAtom(nextChain.getFirstAtom(), 0);
                 bondChain2Head.setAtom(this.radicalAnchors.get(this.currentIteratingChainFactory), 1);
                 bondChain2Head.setOrder(IBond.Order.SINGLE);
@@ -337,7 +337,7 @@ public class LipidFactory {
             chain = chainFactories.get(chainIndex).nextChain();
         }
         replaceChainInfoContainerIndexFromFactory(chainIndex, chainFactories.get(chainIndex));
-        bondChain2head = builder.newInstance(Bond.class);
+        bondChain2head = builder.newInstance(IBond.class);
         bondChain2head.setAtom(chain.getFirstAtom(), 0);
         bondChain2head.setAtom(this.radicalAnchors.get(chainIndex), 1);
         bondChain2head.setOrder(IBond.Order.SINGLE);

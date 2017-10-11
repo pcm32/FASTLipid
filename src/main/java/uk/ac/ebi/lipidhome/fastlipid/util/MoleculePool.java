@@ -29,7 +29,7 @@ public class MoleculePool extends ObjectPool<IAtomContainer> {
 
     @Override
     protected IAtomContainer create() {
-        return builder.newInstance(AtomContainer.class);
+        return builder.newInstance(IAtomContainer.class);
     }
 
     @Override

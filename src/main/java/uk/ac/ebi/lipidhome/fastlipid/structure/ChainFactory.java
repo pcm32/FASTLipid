@@ -90,25 +90,25 @@ public class ChainFactory {
      * @return IAtomContainer with a linear chain of carbon atoms.
      */
     public IAtomContainer getChain(int bondsNumber) {
-        IAtomContainer chain = builder.newInstance(AtomContainer.class);
+        IAtomContainer chain = builder.newInstance(IAtomContainer.class);
         IBond previousBond = null;
         for (int i = 0; i < bondsNumber; i++) {
             IBond bond;
             if (previousBond == null) {
                 //IAtom c1 = builder.newAtom("C");
-                IAtom c1 = builder.newInstance(Atom.class);
+                IAtom c1 = builder.newInstance(IAtom.class);
                 c1.setSymbol("C");
                 //IAtom c2 = builder.newAtom("C");
-                IAtom c2 = builder.newInstance(Atom.class);
+                IAtom c2 = builder.newInstance(IAtom.class);
                 c2.setSymbol("C");
-                bond = builder.newInstance(Bond.class);
+                bond = builder.newInstance(IBond.class);
                 bond.setAtom(c1, 0);
                 bond.setAtom(c2, 1);
                 //bond = builder.newBond(c1, c2);
             } else {
-                bond = builder.newInstance(Bond.class);
+                bond = builder.newInstance(IBond.class);
                 bond.setAtom(previousBond.getAtom(1), 0);
-                IAtom c1 = builder.newInstance(Atom.class);
+                IAtom c1 = builder.newInstance(IAtom.class);
                 c1.setSymbol("C");
                 bond.setAtom(c1, 1);
                 //bond = builder.newBond(previousBond.getAtom(1), builder.newAtom("C"));

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.openscience.cdk.config.IsotopeFactory;
-import org.openscience.cdk.silent.SilentChemObjectBuilder;
+import org.openscience.cdk.config.Isotopes;
 
 /**
  * A cache for atom masses to speed up the process of retrieving masses from CDK.
@@ -52,7 +52,7 @@ public class AtomExactMassCache {
         double mass = 0.0;
         IsotopeFactory factory;
         try {
-            factory = IsotopeFactory.getInstance(SilentChemObjectBuilder.getInstance());
+            factory = Isotopes.getInstance();
         } catch (IOException e) {
             throw new RuntimeException("Could not instantiate the IsotopeFactory.");
         }
